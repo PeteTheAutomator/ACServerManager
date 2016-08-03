@@ -1,0 +1,68 @@
+[
+    {
+        "fields": {
+            "lap_gain": 30,
+            "name": "Dusty",
+            "randomness": 1,
+            "session_start": 86,
+            "session_transfer": 50
+        },
+        "model": "library.trackdynamism",
+        "pk": 1
+    },
+    {
+        "fields": {
+            "lap_gain": 50,
+            "name": "Old",
+            "randomness": 3,
+            "session_start": 89,
+            "session_transfer": 80
+        },
+        "model": "library.trackdynamism",
+        "pk": 2
+    },
+    {
+        "fields": {
+            "lap_gain": 300,
+            "name": "Slow",
+            "randomness": 1,
+            "session_start": 96,
+            "session_transfer": 80
+        },
+        "model": "library.trackdynamism",
+        "pk": 3
+    },
+    {
+        "fields": {
+            "lap_gain": 132,
+            "name": "Green",
+            "randomness": 2,
+            "session_start": 95,
+            "session_transfer": 90
+        },
+        "model": "library.trackdynamism",
+        "pk": 4
+    },
+    {
+        "fields": {
+            "lap_gain": 700,
+            "name": "Fast",
+            "randomness": 2,
+            "session_start": 98,
+            "session_transfer": 80
+        },
+        "model": "library.trackdynamism",
+        "pk": 5
+    },
+    {
+        "fields": {
+            "lap_gain": 1,
+            "name": "Optimum",
+            "randomness": 0,
+            "session_start": 100,
+            "session_transfer": 100
+        },
+        "model": "library.trackdynamism",
+        "pk": 6
+    }
+]
