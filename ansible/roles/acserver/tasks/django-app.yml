@@ -1,0 +1,24 @@
+---
+- name: install requisite RPMs
+  yum: name={{item}} state=installed
+  with_items:
+    - git
+    - python-virtualenv
+
+- name: clone ACServerManager project from git
+  git: repo="{{acserver_git_repo}}" dest="{{acserver_app_dir}}" force=yes
+
+- name: resolve pips
+  pip: requirements="{{acserver_app_dir}}/requirements.txt" virtualenv="{{acserver_virtualenv}}"
+
+- name: run django schema migrations
+  django_manage: command=migrate virtualenv="{{acserver_virtualenv}}" app_path="{{acserver_app_dir}}"
+
+- name: import fixtures to django db
+  django_manage: command="loaddata fixtures/{{item}}" virtualenv="{{acserver_virtualenv}}" app_path="{{acserver_app_dir}}"
+  with_items:
+    - track_dynamisms.json
+    - tracks_and_cars.json
+
+- name: collect django static assets
+  django_manage: command=collectstatic virtualenv="{{acserver_virtualenv}}" app_path="{{acserver_app_dir}}"

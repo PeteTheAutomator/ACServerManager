@@ -1,0 +1,22 @@
+Alias /robots.txt {{acserver_app_dir}}/static/robots.txt
+Alias /favicon.ico {{acserver_app_dir}}/static/favicon.ico
+
+Alias /media/ {{acserver_app_dir}}/media/
+Alias /static/ {{acserver_app_dir}}/static/
+
+<Directory {{acserver_app_dir}}/static>
+  Require all granted
+</Directory>
+
+<Directory {{acserver_app_dir}}/media>
+  Require all granted
+</Directory>
+
+WSGIScriptAlias / {{acserver_app_dir}}/acserver/wsgi.py
+WSGIPythonPath {{acserver_app_dir}}:{{acserver_virtualenv}}/lib/python2.7/site-packages
+
+<Directory {{acserver_app_dir}}>
+  <Files wsgi.py>
+    Require all granted
+  </Files>
+</Directory>
