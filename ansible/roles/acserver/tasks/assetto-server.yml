@@ -1,0 +1,21 @@
+---
+- name: create acserver group
+  group: name=acserver state=present
+
+- name: create acserver user
+  user: name=acserver group=acserver
+
+- name: enable group access to acserver home dir
+  file: path=/home/acserver state=directory mode=0770
+
+- name: grant apache acserver group membership
+  user: name=apache state=present groups=acserver
+
+- name: disable sudo requiretty
+  lineinfile: dest=/etc/sudoers state=present regexp='^Defaults\s+!?requiretty' line='Defaults    !requiretty' validate='visudo -cf %s'
+
+- name: copy assetto corsa dedicated server files
+  synchronize: src=assetto-server dest=/home/acserver
+
+- name: set acserver ownership on dedicated server files
+  file: path=/home/acserver/assetto-server owner=acserver group=acserver recurse=yes

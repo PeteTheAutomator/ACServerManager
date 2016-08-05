@@ -1,0 +1,90 @@
+- hosts: localhost
+  connection: local
+  gather_facts: False
+  vars:
+    current_ip: 86.163.198.122
+
+  tasks:
+    - name: Setup VPC
+      ec2_vpc:
+        region: eu-west-1
+        cidr_block: 172.31.0.0/16
+        resource_tags: {"Name":"My Default VPC"}
+        subnets:
+          - cidr: 172.31.0.0/16
+            az: eu-west-1a
+            resource_tags: {"Name":"My Default Subnet"}
+        internet_gateway: True
+        route_tables:
+          - subnets:
+              - 172.31.0.0/16
+            routes:
+              - dest: 0.0.0.0/0
+                gw: igw-f9ba7d9c
+      register: vpc_result
+
+    - name: Setup openvpn security group
+      ec2_group:
+        region: eu-west-1
+        name: assetto
+        description: Assetto Corsa
+        vpc_id: "{{vpc_result.vpc_id}}"
+        rules:
+          - proto: tcp
+            from_port: 22
+            to_port: 22
+            cidr_ip: "{{current_ip}}/32"
+          - proto: tcp
+            from_port: 80
+            to_port: 80
+            cidr_ip: "{{current_ip}}/32"
+          - proto: tcp
+            from_port: 9600
+            to_port: 9600
+            cidr_ip: "0.0.0.0/0"
+          - proto: udp
+            from_port: 9600
+            to_port: 9600
+            cidr_ip: "0.0.0.0/0"
+          - proto: tcp
+            from_port: 8081
+            to_port: 8081
+            cidr_ip: "0.0.0.0/0"
+      register: sg_result
+
+    - debug: var=vpc_result
+    - debug: var=sg_result
+
+    - name: Provision an instance
+      ec2:
+        region: eu-west-1
+        key_name: pete-ubuntu-vm
+        group: assetto
+        instance_type: t2.micro
+        image: ami-8b8c57f8
+        vpc_subnet_id: "{{vpc_result.subnets[0].id}}"
+        assign_public_ip: yes
+        wait: true
+        exact_count: 1
+        count_tag:
+          Name: ACServerManager
+        instance_tags:
+          Name: ACServerManager
+      register: ec2
+
+    - debug: var=ec2
+
+    - name: Add new instance to host group
+      add_host: hostname={{ item.public_ip }} groupname=launched
+      with_items: ec2.tagged_instances
+
+    - name: Wait for SSH to come up
+      wait_for: host={{ item.public_dns_name }} port=22 delay=60 timeout=320 state=started
+      with_items: ec2.instances
+
+- hosts: launched
+  gather_facts: True
+  remote_user: ec2-user
+  sudo: yes
+  roles:
+    - acserver

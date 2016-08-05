@@ -1,3 +1,4 @@
 ---
 - include: django-app.yml
 - include: httpd.yml
+- include: assetto-server.yml

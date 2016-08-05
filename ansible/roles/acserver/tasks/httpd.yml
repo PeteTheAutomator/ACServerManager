@@ -14,3 +14,6 @@
 
 - name: allow apache write access to django db
   file: path="{{acserver_app_dir}}/db.sqlite3" state=file group=apache mode=0664
+
+- name: start httpd
+  service: name=httpd state=running enabled=yes
