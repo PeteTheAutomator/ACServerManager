@@ -4,15 +4,23 @@ from django.db import models
 
 
 class Car(models.Model):
-    name = models.CharField(max_length=100)
+    name = models.CharField(max_length=64)
+
+    def __unicode__(self):
+        return self.name
+
+
+class CarSkin(models.Model):
+    name = models.CharField(max_length=64)
+    car = models.ForeignKey(Car)
 
     def __unicode__(self):
         return self.name
 
 
 class Track(models.Model):
-    name = models.CharField(max_length=100)
-    subversion = models.CharField(max_length=100, null=True, blank=True)
+    name = models.CharField(max_length=64)
+    subversion = models.CharField(max_length=64, null=True, blank=True)
 
     def __unicode__(self):
         if self.subversion:
@@ -22,7 +30,7 @@ class Track(models.Model):
 
 
 class TrackDynamism(models.Model):
-    name = models.CharField(max_length=50)
+    name = models.CharField(max_length=64)
     session_start = models.IntegerField()
     randomness = models.IntegerField()
     session_transfer = models.IntegerField()
@@ -33,8 +41,8 @@ class TrackDynamism(models.Model):
 
 
 class Weather(models.Model):
-    name = models.CharField(max_length=48)
-    graphics = models.CharField(max_length=48)
+    name = models.CharField(max_length=64)
+    graphics = models.CharField(max_length=64)
     base_temperature_ambient = models.IntegerField(default=20, verbose_name='base ambient temperature')
     variation_ambient = models.IntegerField(default=2, verbose_name='ambient variation')
     base_temperature_road = models.IntegerField(default=7, verbose_name='base road temperature')
@@ -45,7 +53,7 @@ class Weather(models.Model):
 
 
 class ServerSetting(models.Model):
-    name = models.CharField(max_length=50, help_text='A common name for your server - this forms a prefix in the Assetto Corsa server listing, followed-by the running race-preset name')
+    name = models.CharField(max_length=64, help_text='A common name for your server - this forms a prefix in the Assetto Corsa server listing, followed-by the running race-preset name')
     welcome_message = models.TextField(default='Welcome!')
     udp_port = models.IntegerField(default=9600, help_text='UDP port number which the ACServer binds to')
     tcp_port = models.IntegerField(default=9600, help_text='TCP port number which the ACServer binds to')

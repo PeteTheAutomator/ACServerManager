@@ -32,7 +32,7 @@ class Preset(models.Model):
 
     # important stuff
     server_setting = models.ForeignKey('library.ServerSetting')
-    name = models.CharField(max_length=50, help_text='The name of the preset - this combined with your server-setting name will appear in the Assetto Corsa server listing')
+    name = models.CharField(max_length=64, help_text='The name of the preset - this combined with your server-setting name will appear in the Assetto Corsa server listing')
     cars = models.ManyToManyField('library.Car', help_text='The models of the cars allowed on the server')
     track = models.ForeignKey('library.Track', related_name='track', help_text='The track (and subversion, if any) to race on')
     track_dynamism = models.ForeignKey('library.TrackDynamism', null=True, blank=True)

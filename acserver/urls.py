@@ -16,6 +16,9 @@ Including another URLconf
 from django.conf.urls import url
 from django.contrib import admin
 
+admin.site.site_header = 'Assetto Corsa Server Manager'
+admin.site.site_title = 'Assetto Corsa Server Manager'
+
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
 ]

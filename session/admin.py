@@ -7,8 +7,9 @@ from tasks import ConfigHandler
 
 def publish_preset(modeladmin, request, queryset):
     for preset in queryset:
-        ch = ConfigHandler()
-        ch.write_config(preset)
+        ch = ConfigHandler('/var/tmp/pete')
+        ch.write_server_config(preset)
+        ch.write_entries_config(preset)
 
 
 class PresetAdmin(admin.ModelAdmin):

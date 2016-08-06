@@ -1,88 +1,129 @@
-import ConfigParser
-
+#import ConfigParser
+import os
+from configparser import ConfigParser
 
 class ConfigHandler:
-    def __init__(self):
-        self.Config = ConfigParser.ConfigParser()
-        self.Config.optionxform = str
+    def __init__(self, config_dir):
+        self.config_dir = config_dir
 
-    def write_config(self, preset):
-        cfgfile = open('/var/tmp/woo.conf', 'w')
-        self.Config.add_section('SERVER')
-        self.Config.set('SERVER', 'NAME', preset.server_setting.name + ' - ' + preset.name)
-        self.Config.set('SERVER', 'CARS', ','.join([car.name for car in preset.cars.all()]))
-        self.Config.set('SERVER', 'CONFIG_TRACK', '' if not preset.track.subversion else preset.track.subversion)
-        self.Config.set('SERVER', 'TRACK', preset.track.name)
-        self.Config.set('SERVER', 'SUN_ANGLE', preset.sun_angle)
-        self.Config.set('SERVER', 'PASSWORD', 'TODO')
-        self.Config.set('SERVER', 'ADMIN_PASSWORD', 'TODO')
-        self.Config.set('SERVER', 'UDP_PORT', preset.server_setting.udp_port)
-        self.Config.set('SERVER', 'TCP_PORT', preset.server_setting.tcp_port)
-        self.Config.set('SERVER', 'HTTP_PORT', preset.server_setting.http_port)
-        self.Config.set('SERVER', 'PICKUP_MODE_ENABLED', int(preset.pickup_mode_enabled))
-        self.Config.set('SERVER', 'LOOP_MODE', int(preset.loop_mode))
-        self.Config.set('SERVER', 'SLEEP_TIME', '1')
-        self.Config.set('SERVER', 'CLIENT_SEND_INTERVAL', preset.server_setting.client_send_interval)
-        self.Config.set('SERVER', 'SEND_BUFFER_SIZE', preset.server_setting.send_buffer_size)
-        self.Config.set('SERVER', 'RECV_BUFFER_SIZE', preset.server_setting.recv_buffer_size)
-        self.Config.set('SERVER', 'RACE_OVER_TIME', preset.race_over_time)
-        self.Config.set('SERVER', 'KICK_QUORUM', preset.kick_quorum)
-        self.Config.set('SERVER', 'VOTING_QUORUM', preset.voting_quorum)
-        self.Config.set('SERVER', 'VOTE_DURATION', preset.vote_duration)
-        self.Config.set('SERVER', 'BLACKLIST_MODE', preset.blacklist_mode)
-        self.Config.set('SERVER', 'FUEL_RATE', preset.fuel_rate)
-        self.Config.set('SERVER', 'DAMAGE_MULTIPLIER', preset.damage_multiplier)
-        self.Config.set('SERVER', 'TYRE_WEAR_RATE', preset.tyre_wear_rate)
-        self.Config.set('SERVER', 'ALLOWED_TYRES_OUT', preset.allowed_tyres_out)
-        self.Config.set('SERVER', 'ABS_ALLOWED', preset.abs_allowed)
-        self.Config.set('SERVER', 'TC_ALLOWED', preset.tc_allowed)
-        self.Config.set('SERVER', 'STABILITY_ALLOWED', int(preset.stability_allowed))
-        self.Config.set('SERVER', 'AUTOCLUTCH_ALLOWED', int(preset.autoclutch_allowed))
-        self.Config.set('SERVER', 'TYRE_BLANKETS_ALLOWED', int(preset.tyre_blankets_allowed))
-        self.Config.set('SERVER', 'FORCE_VIRTUAL_MIRROR', int(preset.force_virtual_mirror))
-        self.Config.set('SERVER', 'REGISTER_TO_LOBBY', '1')
-        self.Config.set('SERVER', 'MAX_CLIENTS', preset.max_clients)
-        self.Config.set('SERVER', 'UDP_PLUGIN_LOCAL_PORT', '0')
-        self.Config.set('SERVER', 'UDP_PLUGIN_ADDRESS', '')
-        self.Config.set('SERVER', 'AUTH_PLUGIN_ADDRESS', '')
-        self.Config.set('SERVER', 'LEGAL_TYRES', 'V;E;HR;ST')
+    def write_server_config(self, preset):
+        config = ConfigParser()
+        config.optionxform = str
+        cfg_file = open(os.path.join(self.config_dir, 'server_cfg.ini'), 'w')
+        config.add_section('SERVER')
+        config.set('SERVER', 'NAME', preset.server_setting.name + ' - ' + preset.name)
+        config.set('SERVER', 'CARS', ','.join([car.name for car in preset.cars.all()]))
+        config.set('SERVER', 'CONFIG_TRACK', '' if not preset.track.subversion else preset.track.subversion)
+        config.set('SERVER', 'TRACK', preset.track.name)
+        config.set('SERVER', 'SUN_ANGLE', str(preset.sun_angle))
+        config.set('SERVER', 'PASSWORD', 'TODO')
+        config.set('SERVER', 'ADMIN_PASSWORD', 'TODO')
+        config.set('SERVER', 'UDP_PORT', str(preset.server_setting.udp_port))
+        config.set('SERVER', 'TCP_PORT', str(preset.server_setting.tcp_port))
+        config.set('SERVER', 'HTTP_PORT', str(preset.server_setting.http_port))
+        config.set('SERVER', 'PICKUP_MODE_ENABLED', str(int(preset.pickup_mode_enabled)))
+        config.set('SERVER', 'LOOP_MODE', str(int(preset.loop_mode)))
+        config.set('SERVER', 'SLEEP_TIME', '1')
+        config.set('SERVER', 'CLIENT_SEND_INTERVAL', str(preset.server_setting.client_send_interval))
+        config.set('SERVER', 'SEND_BUFFER_SIZE', str(preset.server_setting.send_buffer_size))
+        config.set('SERVER', 'RECV_BUFFER_SIZE', str(preset.server_setting.recv_buffer_size))
+        config.set('SERVER', 'RACE_OVER_TIME', str(preset.race_over_time))
+        config.set('SERVER', 'KICK_QUORUM', str(preset.kick_quorum))
+        config.set('SERVER', 'VOTING_QUORUM', str(preset.voting_quorum))
+        config.set('SERVER', 'VOTE_DURATION', str(preset.vote_duration))
+        config.set('SERVER', 'BLACKLIST_MODE', str(preset.blacklist_mode))
+        config.set('SERVER', 'FUEL_RATE', str(preset.fuel_rate))
+        config.set('SERVER', 'DAMAGE_MULTIPLIER', str(preset.damage_multiplier))
+        config.set('SERVER', 'TYRE_WEAR_RATE', str(preset.tyre_wear_rate))
+        config.set('SERVER', 'ALLOWED_TYRES_OUT', str(preset.allowed_tyres_out))
+        config.set('SERVER', 'ABS_ALLOWED', str(preset.abs_allowed))
+        config.set('SERVER', 'TC_ALLOWED', str(preset.tc_allowed))
+        config.set('SERVER', 'STABILITY_ALLOWED', str(int(preset.stability_allowed)))
+        config.set('SERVER', 'AUTOCLUTCH_ALLOWED', str(int(preset.autoclutch_allowed)))
+        config.set('SERVER', 'TYRE_BLANKETS_ALLOWED', str(int(preset.tyre_blankets_allowed)))
+        config.set('SERVER', 'FORCE_VIRTUAL_MIRROR', str(int(preset.force_virtual_mirror)))
+        config.set('SERVER', 'REGISTER_TO_LOBBY', '1')
+        config.set('SERVER', 'MAX_CLIENTS', str(preset.max_clients))
+        config.set('SERVER', 'UDP_PLUGIN_LOCAL_PORT', '0')
+        config.set('SERVER', 'UDP_PLUGIN_ADDRESS', '')
+        config.set('SERVER', 'AUTH_PLUGIN_ADDRESS', '')
+        config.set('SERVER', 'LEGAL_TYRES', 'V;E;HR;ST')
 
         if preset.practice:
-            self.Config.add_section('PRACTICE')
-            self.Config.set('PRACTICE', 'NAME', 'Free Practice')
-            self.Config.set('PRACTICE', 'TIME', preset.practice_time)
-            self.Config.set('PRACTICE', 'IS_OPEN', int(preset.practice_is_open))
+            config.add_section('PRACTICE')
+            config.set('PRACTICE', 'NAME', 'Free Practice')
+            config.set('PRACTICE', 'TIME', str(preset.practice_time))
+            config.set('PRACTICE', 'IS_OPEN', str(int(preset.practice_is_open)))
 
         if preset.qualify:
-            self.Config.add_section('QUALIFY')
-            self.Config.set('QUALIFY', 'NAME', 'Qualify')
-            self.Config.set('QUALIFY', 'TIME', preset.qualify_time)
-            self.Config.set('QUALIFY', 'IS_OPEN', int(preset.qualify_is_open))
+            config.add_section('QUALIFY')
+            config.set('QUALIFY', 'NAME', 'Qualify')
+            config.set('QUALIFY', 'TIME', str(preset.qualify_time))
+            config.set('QUALIFY', 'IS_OPEN', str(int(preset.qualify_is_open)))
 
         if preset.race:
-            self.Config.add_section('RACE')
-            self.Config.set('RACE', 'NAME', 'Race')
-            self.Config.set('RACE', 'LAPS', preset.race_laps)
-            self.Config.set('RACE', 'WAIT_TIME', preset.race_wait_time)
-            self.Config.set('RACE', 'IS_OPEN', preset.race_is_open)
+            config.add_section('RACE')
+            config.set('RACE', 'NAME', 'Race')
+            config.set('RACE', 'LAPS', str(preset.race_laps))
+            config.set('RACE', 'WAIT_TIME', str(preset.race_wait_time))
+            config.set('RACE', 'IS_OPEN', str(preset.race_is_open))
 
         if preset.track_dynamism:
-            self.Config.add_section('DYNAMIC_TRACK')
-            self.Config.set('DYNAMIC_TRACK', 'SESSION_START', preset.track_dynamism.session_start)
-            self.Config.set('DYNAMIC_TRACK', 'RANDOMNESS', preset.track_dynamism.randomness)
-            self.Config.set('DYNAMIC_TRACK', 'SESSION_TRANSFER', preset.track_dynamism.session_transfer)
-            self.Config.set('DYNAMIC_TRACK', 'LAP_GAIN', preset.track_dynamism.lap_gain)
+            config.add_section('DYNAMIC_TRACK')
+            config.set('DYNAMIC_TRACK', 'SESSION_START', str(preset.track_dynamism.session_start))
+            config.set('DYNAMIC_TRACK', 'RANDOMNESS', str(preset.track_dynamism.randomness))
+            config.set('DYNAMIC_TRACK', 'SESSION_TRANSFER', str(preset.track_dynamism.session_transfer))
+            config.set('DYNAMIC_TRACK', 'LAP_GAIN', str(preset.track_dynamism.lap_gain))
 
         weather_count = 0
         for weather in preset.weathers.all():
             weather_section = 'WEATHER_' + str(weather_count)
-            self.Config.add_section(weather_section)
-            self.Config.set(weather_section, 'GRAPHICS', weather.graphics)
-            self.Config.set(weather_section, 'BASE_TEMPERATURE_AMBIENT', weather.base_temperature_ambient)
-            self.Config.set(weather_section, 'VARIATION_AMBIENT', weather.variation_ambient)
-            self.Config.set(weather_section, 'BASE_TEMPERATURE_ROAD', weather.base_temperature_road)
-            self.Config.set(weather_section, 'VARIATION_ROAD', weather.variation_road)
+            config.add_section(weather_section)
+            config.set(weather_section, 'GRAPHICS', weather.graphics)
+            config.set(weather_section, 'BASE_TEMPERATURE_AMBIENT', str(weather.base_temperature_ambient))
+            config.set(weather_section, 'VARIATION_AMBIENT', str(weather.variation_ambient))
+            config.set(weather_section, 'BASE_TEMPERATURE_ROAD', str(weather.base_temperature_road))
+            config.set(weather_section, 'VARIATION_ROAD', str(weather.variation_road))
             weather_count += 1
 
-        self.Config.write(cfgfile)
-        cfgfile.close()
+        config.write(cfg_file, space_around_delimiters=False)
+        cfg_file.close()
+
+    def write_entries_config(self, preset):
+        '''
+        Write the entries config - this implementation simply iterates over each car and skin defined in
+        the preset until we reach max_clients.  Bookings aren't implemented yet - assuming pickup mode only.
+
+        :param preset:
+        :return:
+        '''
+        config = ConfigParser()
+        config.optionxform = str
+        cfg_file = open(os.path.join(self.config_dir, 'entry_list.ini'), 'w')
+        car_count = 0
+        skin_count = {}
+        while car_count < preset.max_clients:
+            for car in preset.cars.all():
+
+                # keep track of the skin indexes we've applied for each model - when we run out of skins
+                # reset the model's skin index to 0
+                if car.name not in skin_count:
+                    skin_count[car.name] = 0
+                else:
+                    if skin_count[car.name] > len(car.carskin_set.all()) - 1:
+                        skin_count[car.name] = 0
+
+                car_section = 'CAR_' + str(car_count)
+                config.add_section(car_section)
+                config.set(car_section, 'MODEL', car.name)
+                config.set(car_section, 'SKIN', car.carskin_set.all()[skin_count[car.name]].name)
+                config.set(car_section, 'SPECTATOR_MODE', '0')
+                config.set(car_section, 'DRIVER_NAME', '')
+                config.set(car_section, 'TEAM', '')
+                config.set(car_section, 'GUID', '')
+                config.set(car_section, 'BALLAST', '0')
+                car_count += 1
+                skin_count[car.name] += 1
+
+        config.write(cfg_file, space_around_delimiters=False)
+        cfg_file.close()

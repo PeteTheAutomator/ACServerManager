@@ -18,7 +18,7 @@
   django_manage: command="loaddata fixtures/{{item}}" virtualenv="{{acserver_virtualenv}}" app_path="{{acserver_app_dir}}"
   with_items:
     - track_dynamisms.json
-    - tracks_and_cars.json
+    - cars_skins_tracks.json
 
 - name: collect django static assets
   django_manage: command=collectstatic virtualenv="{{acserver_virtualenv}}" app_path="{{acserver_app_dir}}"
