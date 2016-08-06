@@ -7,7 +7,7 @@ from tasks import ConfigHandler
 
 def publish_preset(modeladmin, request, queryset):
     for preset in queryset:
-        ch = ConfigHandler('/var/tmp/pete')
+        ch = ConfigHandler('/home/acserver/cfg')
         ch.write_server_config(preset)
         ch.write_entries_config(preset)
 

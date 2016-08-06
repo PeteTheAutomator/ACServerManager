@@ -19,3 +19,6 @@
 
 - name: set acserver ownership on dedicated server files
   file: path=/home/acserver/assetto-server owner=acserver group=acserver recurse=yes
+
+ - name: create server config dir
+   file: path=/home/acserver/cfg state=directory owner=acserver group=acserver mode=0775
