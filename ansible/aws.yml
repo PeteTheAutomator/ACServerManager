@@ -54,6 +54,10 @@
             from_port: 50042
             to_port: 50042
             cidr_ip: "0.0.0.0/0"
+          - proto: tcp
+            from_port: 50041
+            to_port: 50041
+            cidr_ip: "{{current_ip}}/32"
       register: sg_result
 
     - debug: var=vpc_result

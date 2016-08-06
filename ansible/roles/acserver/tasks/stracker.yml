@@ -4,6 +4,7 @@
   with_items:
     - unzip
     - glibc.i686
+    - libgcc.i686
     - zlib.i686
 
 - name: setup stracker directory
