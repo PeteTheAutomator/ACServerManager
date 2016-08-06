@@ -50,6 +50,10 @@
             from_port: 8081
             to_port: 8081
             cidr_ip: "0.0.0.0/0"
+          - proto: tcp
+            from_port: 50042
+            to_port: 50042
+            cidr_ip: "0.0.0.0/0"
       register: sg_result
 
     - debug: var=vpc_result

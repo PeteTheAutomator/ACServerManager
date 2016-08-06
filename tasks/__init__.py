@@ -1,4 +1,3 @@
-#import ConfigParser
 import os
 from configparser import ConfigParser
 
@@ -44,8 +43,8 @@ class ConfigHandler:
         config.set('SERVER', 'FORCE_VIRTUAL_MIRROR', str(int(preset.force_virtual_mirror)))
         config.set('SERVER', 'REGISTER_TO_LOBBY', '1')
         config.set('SERVER', 'MAX_CLIENTS', str(preset.max_clients))
-        config.set('SERVER', 'UDP_PLUGIN_LOCAL_PORT', '0')
-        config.set('SERVER', 'UDP_PLUGIN_ADDRESS', '')
+        config.set('SERVER', 'UDP_PLUGIN_LOCAL_PORT', '11000')
+        config.set('SERVER', 'UDP_PLUGIN_ADDRESS', '127.0.0.1:12000')
         config.set('SERVER', 'AUTH_PLUGIN_ADDRESS', '')
         config.set('SERVER', 'LEGAL_TYRES', 'V;E;HR;ST')
 

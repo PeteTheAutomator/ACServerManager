@@ -1,0 +1,18 @@
+---
+- name: install requisite RPMs
+  yum: name=unzip state=installed
+
+- name: setup stracker directory
+  file: path="{{acserver_stracker_dir}}" state=directory owner=acserver group=acserver
+
+- name: fetch and extract the stracker bundle archive
+  unarchive: src="{{acserver_stracker_bundle_url}}" dest="{{acserver_stracker_dir}}" remote_src=yes copy=no
+
+- name: extract the stracker linux archive
+  unarchive: src="{{acserver_stracker_dir}}/stracker_linux_x86.tgz" dest="{{acserver_stracker_dir}}" remote_src=yes copy=no
+
+- name: set acserver ownership on stracker files
+  file: path="{{acserver_stracker_dir}}" owner=acserver group=acserver recurse=yes
+
+- name: write stracker config
+  template: src=stracker/stracker.ini.j2 dest="{{acserver_stracker_dir}}/stracker.ini"

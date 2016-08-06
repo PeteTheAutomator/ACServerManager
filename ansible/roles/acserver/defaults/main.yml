@@ -1,5 +1,14 @@
 ---
+# vars for the django app
 acserver_install_prefix: /usr/local
 acserver_app_dir: "{{acserver_install_prefix}}/ACServerManager"
 acserver_virtualenv: /var/lib/acserver
 acserver_git_repo: https://github.com/PeteTheAutomator/ACServerManager.git
+
+# vars for the assetto corsa dedicates server
+acserver_server_install_prefix: /home/acserver
+acserver_server_install_dir: "{{acserver_server_install_prefix}}/assetto-server"
+
+# vars for stracker
+acserver_stracker_bundle_url: http://www.n-e-y-s.de/downloads/stracker/stable/stracker-V3.2.10.zip
+acserver_stracker_dir: "{{acserver_server_install_prefix}}/stracker"
