@@ -1,6 +1,10 @@
 ---
 - name: install requisite RPMs
-  yum: name=unzip state=installed
+  yum: name={{item}} state=installed
+  with_items:
+    - unzip
+    - glibc.i686
+    - zlib.i686
 
 - name: setup stracker directory
   file: path="{{acserver_stracker_dir}}" state=directory owner=acserver group=acserver
