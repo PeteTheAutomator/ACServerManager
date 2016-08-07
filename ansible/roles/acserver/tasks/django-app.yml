@@ -6,7 +6,7 @@
     - python-virtualenv
 
 - name: clone ACServerManager project from git
-  git: repo="{{acserver_git_repo}}" dest="{{acserver_app_dir}}" force=yes version=background_tasks
+  git: repo="{{acserver_git_repo}}" dest="{{acserver_app_dir}}" force=yes
   notify: restart httpd
 
 - name: resolve pips

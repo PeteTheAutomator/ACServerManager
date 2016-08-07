@@ -13,7 +13,6 @@ Very much a work-in-progress at this stage; if you stumble across this project p
 TODO
 ----
 
-* create systemd services for acServer and stracker (and implement control/visibility of these services in the ACServerManager ui)
 * add minor-rating
 * either migrate from sqlite to postgres, or properly configure selinux so apache can write the django sqlite db
 * write a bespoke ui for configuring session presets etc (something that mirrors the behaviour of the native windows ACServerManager ui, or at least something more intuitive than the django-admin ui)
