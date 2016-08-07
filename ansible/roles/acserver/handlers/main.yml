@@ -1,2 +1,3 @@
 ---
-# handlers file for acserver
+- name: restart httpd
+  service: name=httpd state=restarted

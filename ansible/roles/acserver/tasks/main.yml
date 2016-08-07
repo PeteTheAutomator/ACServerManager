@@ -1,5 +1,5 @@
 ---
-- include: django-app.yml
 - include: httpd.yml
+- include: django-app.yml
 - include: assetto-server.yml
 - include: stracker.yml
