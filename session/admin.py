@@ -2,7 +2,7 @@ from django.contrib import admin
 from django.contrib.auth.models import User, Group
 
 from .models import Preset
-from tasks import ConfigHandler
+from .tasks import ConfigHandler
 
 
 def publish_preset(modeladmin, request, queryset):

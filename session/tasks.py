@@ -1,6 +1,7 @@
 import os
 from configparser import ConfigParser
 
+
 class ConfigHandler:
     def __init__(self, config_dir):
         self.config_dir = config_dir
