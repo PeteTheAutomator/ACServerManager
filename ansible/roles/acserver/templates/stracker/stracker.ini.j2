@@ -10,7 +10,7 @@ keep_alive_ptracker_conns = True
 ; Listening port for incoming connections of ptracker. Must be one of 50042, 50043, 54242, 54243, 60023, 60024, 62323, 62324, 42423, 42424, 23232, 23233, <AC udp port>+42; ptracker will try all these ports on the ac server's ip address (until a better solution is found...)
 listening_port = 50042
 ; name of the stracker log file (utf-8 encoded), all messages go into there
-log_file = ./stracker.log
+log_file = {{acserver_stracker_dir}}/stracker.log
 ; Valid values are "info", "debug" and "dump". Use "dump" only for problem analysis, log files can get very big.
 log_level = info
 ; set to true, if you want the log messages to be prefixed with a timestamp
@@ -58,7 +58,7 @@ message_types_to_send_over_chat = best_lap+welcome+race_finished
 
 [DATABASE]
 ; Only relevant if database_type=sqlite3. Path to the stracker database. If a relative path is given, it is relative to the <stracker> executable
-database_file = ./stracker.db3
+database_file = {{acserver_stracker_dir}}/stracker.db3
 ; Valid values are "sqlite3" and "postgres". Selects the database to be used.
 database_type = sqlite3
 ; Set to "False", if you do not want stracker to backup the database before migrating to a new db version. Note: The backups will be created as sqlite3 db in the current working directory.

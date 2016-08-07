@@ -19,3 +19,6 @@
 
 - name: set acserver ownership on dedicated server files
   file: path="{{acserver_server_install_dir}}" owner=acserver group=acserver recurse=yes
+
+- name: write acserver systemd unit file
+  template: src=acserver/acserver.service.j2 dest=/usr/lib/systemd/system/acserver.service owner=root group=root mode=0644
