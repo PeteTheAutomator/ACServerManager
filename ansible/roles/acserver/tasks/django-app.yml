@@ -22,3 +22,9 @@
 
 - name: collect django static assets
   django_manage: command=collectstatic virtualenv="{{acserver_virtualenv}}" app_path="{{acserver_app_dir}}"
+
+- name: write djtasks.sh wrapper script
+  template: src=django-app/djtasks.sh.j2 dest="{{acserver_app_dir}}/djtasks.sh" mode=0770 owner=root group=apache
+
+- name: write djtasks systemd unit file
+  template: src=django-app/djtasks.service.j2 dest=/usr/lib/systemd/system/djtasks.service owner=root group=root mode=0644

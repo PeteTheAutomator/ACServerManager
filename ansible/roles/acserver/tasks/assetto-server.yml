@@ -3,7 +3,7 @@
   group: name=acserver state=present
 
 - name: create acserver user
-  user: name=acserver group=acserver
+  user: name=acserver group=acserver groups=apache
 
 - name: enable group access to acserver install prefix
   file: path="{{acserver_server_install_prefix}}" state=directory mode=0770

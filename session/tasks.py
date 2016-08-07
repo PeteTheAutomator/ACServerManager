@@ -7,7 +7,7 @@ from datetime import datetime, timedelta
 @background(schedule=timedelta(seconds=10))
 def kick_services():
     fh = open('/var/tmp/kick.log', 'a')
-    fh.write(str(datetime.now()) + ' - services kicked')
+    fh.write(str(datetime.now()) + ' - services kicked\n')
     fh.close()
 
 

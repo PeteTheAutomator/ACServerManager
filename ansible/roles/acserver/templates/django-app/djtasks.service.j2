@@ -1,0 +1,13 @@
+[Unit]
+Description=Background Task Queue for Assetto Corsa Server Manager
+After=syslog.target network.target
+
+[Service]
+User=acserver
+ExecStart={{acserver_app_dir}}/djtasks.sh
+ExecReload=/bin/kill -HUP $MAINPID
+KillMode=process
+
+[Install]
+WantedBy=multi-user.target
+
