@@ -2,13 +2,18 @@ import os
 from configparser import ConfigParser
 from background_task import background
 from datetime import datetime, timedelta
+import subprocess
 
 
 @background(schedule=timedelta(seconds=10))
 def kick_services():
-    fh = open('/var/tmp/kick.log', 'a')
-    fh.write(str(datetime.now()) + ' - services kicked\n')
-    fh.close()
+    acserver_return_code = subprocess.call(['/bin/sudo', '/sbin/service', 'acserver', 'restart'])
+    if acserver_return_code != 0:
+        raise Exception('failed to restart assetto corsa server process')
+
+    stracker_return_code = subprocess.call(['/bin/sudo', '/sbin/service', 'stracker', 'restart'])
+    if stracker_return_code != 0:
+        raise Exception('failed to restart stracker server process')
 
 
 class ConfigHandler:

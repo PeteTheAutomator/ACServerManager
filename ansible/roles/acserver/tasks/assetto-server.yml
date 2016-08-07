@@ -22,3 +22,6 @@
 
 - name: write acserver systemd unit file
   template: src=acserver/acserver.service.j2 dest=/usr/lib/systemd/system/acserver.service owner=root group=root mode=0644
+
+- name: write sudoers to grant acserver daemon control
+  file: src=sudoers dest=/etc/sudoers.d/assetto owner=root group=root mode=0440
