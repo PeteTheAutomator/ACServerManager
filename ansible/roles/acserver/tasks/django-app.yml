@@ -18,11 +18,18 @@
 - name: import fixtures to django db
   django_manage: command="loaddata fixtures/{{item}}" virtualenv="{{acserver_virtualenv}}" app_path="{{acserver_app_dir}}"
   with_items:
+    - weathers.json
     - track_dynamisms.json
     - cars_skins_tracks.json
 
 - name: collect django static assets
   django_manage: command=collectstatic virtualenv="{{acserver_virtualenv}}" app_path="{{acserver_app_dir}}"
+
+- name: allow apache write access to django app dir
+  file: path="{{acserver_app_dir}}" state=directory group=apache mode=0775
+
+- name: allow apache write access to django db
+  file: path="{{acserver_app_dir}}/db.sqlite3" state=file group=apache mode=0664
 
 - name: write djtasks.sh wrapper script
   template: src=django-app/djtasks.sh.j2 dest="{{acserver_app_dir}}/djtasks.sh" mode=0770 owner=root group=apache

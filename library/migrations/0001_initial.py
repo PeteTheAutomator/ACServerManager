@@ -15,6 +15,9 @@ class Migration(migrations.Migration):
             fields=[
                 ('id', models.AutoField(verbose_name='ID', serialize=False, auto_created=True, primary_key=True)),
                 ('name', models.CharField(max_length=64)),
+                ('brand', models.CharField(max_length=64)),
+                ('clarse', models.CharField(max_length=64, verbose_name=b'class')),
+                ('dirname', models.CharField(max_length=64)),
             ],
         ),
         migrations.CreateModel(
@@ -43,8 +46,13 @@ class Migration(migrations.Migration):
             name='Track',
             fields=[
                 ('id', models.AutoField(verbose_name='ID', serialize=False, auto_created=True, primary_key=True)),
-                ('name', models.CharField(max_length=64)),
+                ('name', models.CharField(max_length=128)),
+                ('dirname', models.CharField(max_length=64)),
                 ('subversion', models.CharField(max_length=64, null=True, blank=True)),
+                ('run', models.CharField(max_length=64)),
+                ('country', models.CharField(max_length=64)),
+                ('pitboxes', models.IntegerField(default=0)),
+                ('description', models.CharField(max_length=128)),
             ],
         ),
         migrations.CreateModel(
@@ -68,6 +76,7 @@ class Migration(migrations.Migration):
                 ('variation_ambient', models.IntegerField(default=2, verbose_name=b'ambient variation')),
                 ('base_temperature_road', models.IntegerField(default=7, verbose_name=b'base road temperature')),
                 ('variation_road', models.IntegerField(default=2, verbose_name=b'road variation')),
+                ('realistic_road_temp', models.IntegerField(default=7, verbose_name=b'realistic road temperature')),
             ],
         ),
     ]

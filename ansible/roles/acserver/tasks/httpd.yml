@@ -9,11 +9,5 @@
 - name: write apache config
   template: src=httpd/acserver.conf.j2 dest=/etc/httpd/conf.d/acserver.conf
 
-- name: allow apache write access to django app dir
-  file: path="{{acserver_app_dir}}" state=directory group=apache mode=0775
-
-- name: allow apache write access to django db
-  file: path="{{acserver_app_dir}}/db.sqlite3" state=file group=apache mode=0664
-
 - name: start httpd
   service: name=httpd state=running enabled=yes

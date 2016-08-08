@@ -1,0 +1,9 @@
+{% if preset_list %}
+    <ul>
+    {% for preset in preset_list %}
+        <li><a href="/session/preset/{{ preset.id }}/">{{ preset.name }}</a></li>
+    {% endfor %}
+    </ul>
+{% else %}
+    <p>No presets are available.</p>
+{% endif %}

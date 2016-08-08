@@ -1,0 +1,600 @@
+[
+    {
+        "pk": 0, 
+        "model": "library.track", 
+        "fields": {
+            "run": "clockwise", 
+            "name": "Nordschleife", 
+            "country": "Germany", 
+            "subversion": "nordschleife", 
+            "pitboxes": "24", 
+            "dirname": "ks_nordschleife", 
+            "description": "Nurburgring Nordschleife"
+        }
+    }, 
+    {
+        "pk": 1, 
+        "model": "library.track", 
+        "fields": {
+            "run": "clockwise", 
+            "name": "Nordschleife - Endurance Cup", 
+            "country": "Germany", 
+            "subversion": "endurance_cup", 
+            "pitboxes": "24", 
+            "dirname": "ks_nordschleife", 
+            "description": "Nurburgring Nordschleife"
+        }
+    }, 
+    {
+        "pk": 2, 
+        "model": "library.track", 
+        "fields": {
+            "run": "clockwise", 
+            "name": "Nordschleife - Tourist", 
+            "country": "Germany", 
+            "subversion": "touristenfahrten", 
+            "pitboxes": "32", 
+            "dirname": "ks_nordschleife", 
+            "description": "Nurburgring Nordschleife"
+        }
+    }, 
+    {
+        "pk": 3, 
+        "model": "library.track", 
+        "fields": {
+            "run": "clockwise", 
+            "name": "Nordschleife - Endurance", 
+            "country": "Germany", 
+            "subversion": "endurance", 
+            "pitboxes": "24", 
+            "dirname": "ks_nordschleife", 
+            "description": "Nurburgring Nordschleife"
+        }
+    }, 
+    {
+        "pk": 4, 
+        "model": "library.track", 
+        "fields": {
+            "run": "anti-clockwise", 
+            "name": "Imola", 
+            "country": "Italy", 
+            "subversion": null, 
+            "pitboxes": "24", 
+            "dirname": "imola", 
+            "description": "Autodromo Enzo e Dino Ferrari"
+        }
+    }, 
+    {
+        "pk": 5, 
+        "model": "library.track", 
+        "fields": {
+            "run": "clockwise", 
+            "name": "Donington GP", 
+            "country": "UK", 
+            "subversion": "gp", 
+            "pitboxes": "24", 
+            "dirname": "doningtonpark", 
+            "description": "Donington Park GP Circuit"
+        }
+    }, 
+    {
+        "pk": 6, 
+        "model": "library.track", 
+        "fields": {
+            "run": "clockwise", 
+            "name": "Donington National", 
+            "country": "UK", 
+            "subversion": "national", 
+            "pitboxes": "24", 
+            "dirname": "doningtonpark", 
+            "description": "Donington Park National Circuit"
+        }
+    }, 
+    {
+        "pk": 7, 
+        "model": "library.track", 
+        "fields": {
+            "run": "clockwise", 
+            "name": "Monza - 1966", 
+            "country": "Italy", 
+            "subversion": null, 
+            "pitboxes": "25", 
+            "dirname": "monza66", 
+            "description": "Autodromo di Monza"
+        }
+    }, 
+    {
+        "pk": 8, 
+        "model": "library.track", 
+        "fields": {
+            "run": "clockwise", 
+            "name": "Hungaroring", 
+            "country": "Hungary", 
+            "subversion": null, 
+            "pitboxes": "30", 
+            "dirname": "hungaroring", 
+            "description": "Hungarian Grand Prix"
+        }
+    }, 
+    {
+        "pk": 9, 
+        "model": "library.track", 
+        "fields": {
+            "run": "clockwise", 
+            "name": "Brands Hatch - Indy", 
+            "country": "Great Britain", 
+            "subversion": "indy", 
+            "pitboxes": "24", 
+            "dirname": "ks_brands_hatch", 
+            "description": "Brands Hatch Circuit"
+        }
+    }, 
+    {
+        "pk": 10, 
+        "model": "library.track", 
+        "fields": {
+            "run": "clockwise", 
+            "name": "Brands Hatch - GP", 
+            "country": "Great Britain", 
+            "subversion": "gp", 
+            "pitboxes": "24", 
+            "dirname": "ks_brands_hatch", 
+            "description": "Brands Hatch Circuit"
+        }
+    }, 
+    {
+        "pk": 11, 
+        "model": "library.track", 
+        "fields": {
+            "run": "dragstrip", 
+            "name": "Drag 200m", 
+            "country": "Italy", 
+            "subversion": "drag200", 
+            "pitboxes": "2", 
+            "dirname": "ks_drag", 
+            "description": "fast&furious"
+        }
+    }, 
+    {
+        "pk": 12, 
+        "model": "library.track", 
+        "fields": {
+            "run": "dragstrip", 
+            "name": "Drag 2000m", 
+            "country": "Italy", 
+            "subversion": "drag2000", 
+            "pitboxes": "2", 
+            "dirname": "ks_drag", 
+            "description": "fast&furious"
+        }
+    }, 
+    {
+        "pk": 13, 
+        "model": "library.track", 
+        "fields": {
+            "run": "dragstrip", 
+            "name": "Drag 400m", 
+            "country": "Italy", 
+            "subversion": "drag400", 
+            "pitboxes": "2", 
+            "dirname": "ks_drag", 
+            "description": "fast&furious"
+        }
+    }, 
+    {
+        "pk": 14, 
+        "model": "library.track", 
+        "fields": {
+            "run": "dragstrip", 
+            "name": "Drag 500m", 
+            "country": "Italy", 
+            "subversion": "drag500", 
+            "pitboxes": "2", 
+            "dirname": "ks_drag", 
+            "description": "fast&furious"
+        }
+    }, 
+    {
+        "pk": 15, 
+        "model": "library.track", 
+        "fields": {
+            "run": "dragstrip", 
+            "name": "Drag 1000m", 
+            "country": "Italy", 
+            "subversion": "drag1000", 
+            "pitboxes": "2", 
+            "dirname": "ks_drag", 
+            "description": "fast&furious"
+        }
+    }, 
+    {
+        "pk": 16, 
+        "model": "library.track", 
+        "fields": {
+            "run": "clockwise", 
+            "name": "Vallelunga - Club", 
+            "country": "Italy", 
+            "subversion": "club_circuit", 
+            "pitboxes": "24", 
+            "dirname": "ks_vallelunga", 
+            "description": "Autodromo Piero Taruffi"
+        }
+    }, 
+    {
+        "pk": 17, 
+        "model": "library.track", 
+        "fields": {
+            "run": "clockwise", 
+            "name": "Vallelunga - Classic", 
+            "country": "Italy", 
+            "subversion": "classic_circuit", 
+            "pitboxes": "24", 
+            "dirname": "ks_vallelunga", 
+            "description": "Autodromo Piero Taruffi"
+        }
+    }, 
+    {
+        "pk": 18, 
+        "model": "library.track", 
+        "fields": {
+            "run": "clockwise", 
+            "name": "Vallelunga", 
+            "country": "Italy", 
+            "subversion": "extended_circuit", 
+            "pitboxes": "24", 
+            "dirname": "ks_vallelunga", 
+            "description": "Autodromo Piero Taruffi"
+        }
+    }, 
+    {
+        "pk": 19, 
+        "model": "library.track", 
+        "fields": {
+            "run": "clockwise", 
+            "name": "Silverstone GP", 
+            "country": "Great Britain", 
+            "subversion": "gp", 
+            "pitboxes": "24", 
+            "dirname": "ks_silverstone", 
+            "description": "Circuit of Silverstone"
+        }
+    }, 
+    {
+        "pk": 20, 
+        "model": "library.track", 
+        "fields": {
+            "run": "clockwise", 
+            "name": "Silverstone - National", 
+            "country": "Great Britain", 
+            "subversion": "national", 
+            "pitboxes": "24", 
+            "dirname": "ks_silverstone", 
+            "description": "Circuit of Silverstone"
+        }
+    }, 
+    {
+        "pk": 21, 
+        "model": "library.track", 
+        "fields": {
+            "run": "clockwise", 
+            "name": "Silverstone - International", 
+            "country": "Great Britain", 
+            "subversion": "international", 
+            "pitboxes": "24", 
+            "dirname": "ks_silverstone", 
+            "description": "Circuit of Silverstone"
+        }
+    }, 
+    {
+        "pk": 22, 
+        "model": "library.track", 
+        "fields": {
+            "run": "DRIFT", 
+            "name": "Drift", 
+            "country": "Japan", 
+            "subversion": null, 
+            "pitboxes": "18", 
+            "dirname": "drift", 
+            "description": "Drift Track"
+        }
+    }, 
+    {
+        "pk": 23, 
+        "model": "library.track", 
+        "fields": {
+            "run": "clockwise", 
+            "name": "Mugello", 
+            "country": "Italy", 
+            "subversion": null, 
+            "pitboxes": "24", 
+            "dirname": "mugello", 
+            "description": "Autodromo del Mugello"
+        }
+    }, 
+    {
+        "pk": 24, 
+        "model": "library.track", 
+        "fields": {
+            "run": "clockwise", 
+            "name": "Spa", 
+            "country": "Belgium", 
+            "subversion": null, 
+            "pitboxes": "24", 
+            "dirname": "spa", 
+            "description": "Spa-Francorchamps"
+        }
+    }, 
+    {
+        "pk": 25, 
+        "model": "library.track", 
+        "fields": {
+            "run": "clockwise", 
+            "name": "Barcelona - GP", 
+            "country": "Spain", 
+            "subversion": "layout_gp", 
+            "pitboxes": "24", 
+            "dirname": "ks_barcelona", 
+            "description": "Circuit de Barcelona"
+        }
+    }, 
+    {
+        "pk": 26, 
+        "model": "library.track", 
+        "fields": {
+            "run": "clockwise", 
+            "name": "Barcelona - Moto", 
+            "country": "Spain", 
+            "subversion": "layout_moto", 
+            "pitboxes": "24", 
+            "dirname": "ks_barcelona", 
+            "description": "Circuit de Barcelona"
+        }
+    }, 
+    {
+        "pk": 27, 
+        "model": "library.track", 
+        "fields": {
+            "run": "clockwise", 
+            "name": "Magione", 
+            "country": "Italy", 
+            "subversion": null, 
+            "pitboxes": "18", 
+            "dirname": "magione", 
+            "description": "Autodromo di Umbria"
+        }
+    }, 
+    {
+        "pk": 28, 
+        "model": "library.track", 
+        "fields": {
+            "run": "anti-clockwise", 
+            "name": "Black Cat County - Long", 
+            "country": "U.S.A.", 
+            "subversion": "layout_long", 
+            "pitboxes": "24", 
+            "dirname": "ks_black_cat_county", 
+            "description": "Fictional U.S.A. Road"
+        }
+    }, 
+    {
+        "pk": 29, 
+        "model": "library.track", 
+        "fields": {
+            "run": "anti-clockwise", 
+            "name": "Black Cat County", 
+            "country": "U.S.A.", 
+            "subversion": "layout_int", 
+            "pitboxes": "24", 
+            "dirname": "ks_black_cat_county", 
+            "description": "Fictional U.S.A. Road"
+        }
+    }, 
+    {
+        "pk": 30, 
+        "model": "library.track", 
+        "fields": {
+            "run": "anti-clockwise", 
+            "name": "Black Cat County - Short", 
+            "country": "U.S.A.", 
+            "subversion": "layout_short", 
+            "pitboxes": "24", 
+            "dirname": "ks_black_cat_county", 
+            "description": "Fictional U.S.A. Road"
+        }
+    }, 
+    {
+        "pk": 31, 
+        "model": "library.track", 
+        "fields": {
+            "run": "clockwise", 
+            "name": "Nurburgring - GP", 
+            "country": "Germany", 
+            "subversion": "layout_gp_a", 
+            "pitboxes": "24", 
+            "dirname": "ks_nurburgring", 
+            "description": "Nuerburgring"
+        }
+    }, 
+    {
+        "pk": 32, 
+        "model": "library.track", 
+        "fields": {
+            "run": "clockwise", 
+            "name": "Nurburgring - GP (GT)", 
+            "country": "Germany", 
+            "subversion": "layout_gp_b", 
+            "pitboxes": "24", 
+            "dirname": "ks_nurburgring", 
+            "description": "Nuerburgring"
+        }
+    }, 
+    {
+        "pk": 33, 
+        "model": "library.track", 
+        "fields": {
+            "run": "clockwise", 
+            "name": "Nurburgring - Sprint (GT)", 
+            "country": "Germany", 
+            "subversion": "layout_sprint_b", 
+            "pitboxes": "24", 
+            "dirname": "ks_nurburgring", 
+            "description": "Nuerburgring"
+        }
+    }, 
+    {
+        "pk": 34, 
+        "model": "library.track", 
+        "fields": {
+            "run": "clockwise", 
+            "name": "Nurburgring - Sprint", 
+            "country": "Germany", 
+            "subversion": "layout_sprint_a", 
+            "pitboxes": "24", 
+            "dirname": "ks_nurburgring", 
+            "description": "Nuerburgring"
+        }
+    }, 
+    {
+        "pk": 35, 
+        "model": "library.track", 
+        "fields": {
+            "run": "clockwise", 
+            "name": "Trento-Bondone", 
+            "country": "Italy", 
+            "subversion": null, 
+            "pitboxes": "4", 
+            "dirname": "trento-bondone", 
+            "description": "Hillclimb course"
+        }
+    }, 
+    {
+        "pk": 36, 
+        "model": "library.track", 
+        "fields": {
+            "run": "clockwise", 
+            "name": "Red Bull Ring National", 
+            "country": "Austria", 
+            "subversion": "layout_national", 
+            "pitboxes": "24", 
+            "dirname": "ks_red_bull_ring", 
+            "description": "Red Bull Ring S\ufffd\ufffddschleife National Circuit"
+        }
+    }, 
+    {
+        "pk": 37, 
+        "model": "library.track", 
+        "fields": {
+            "run": "clockwise", 
+            "name": "Red Bull Ring GP", 
+            "country": "Austria", 
+            "subversion": "layout_gp", 
+            "pitboxes": "24", 
+            "dirname": "ks_red_bull_ring", 
+            "description": "Red Bull Ring Grand Prix Cricuit"
+        }
+    }, 
+    {
+        "pk": 38, 
+        "model": "library.track", 
+        "fields": {
+            "run": "Lake loop forward", 
+            "name": "Lake Louise 2.08 Lake Loop Forward", 
+            "country": "Canada", 
+            "subversion": "lake_fwd", 
+            "pitboxes": "29", 
+            "dirname": "lakelouise_208", 
+            "description": "Short drive around the lake"
+        }
+    }, 
+    {
+        "pk": 39, 
+        "model": "library.track", 
+        "fields": {
+            "run": "Any Direction", 
+            "name": "Lake Louise 2.08 23km MP Free Roam", 
+            "country": "Canada", 
+            "subversion": "23freeroam", 
+            "pitboxes": "29", 
+            "dirname": "lakelouise_208", 
+            "description": "All 23km! No AI Line/Camera"
+        }
+    }, 
+    {
+        "pk": 40, 
+        "model": "library.track", 
+        "fields": {
+            "run": "Lake reverse", 
+            "name": "Lake Louise 2.08 Lake Loop Reverse", 
+            "country": "Canada", 
+            "subversion": "lake_rev", 
+            "pitboxes": "29", 
+            "dirname": "lakelouise_208", 
+            "description": "Gem of the Rockies"
+        }
+    }, 
+    {
+        "pk": 41, 
+        "model": "library.track", 
+        "fields": {
+            "run": "West reverse", 
+            "name": "Lake Louise 2.08 West Reverse", 
+            "country": "Canada", 
+            "subversion": "west_rev", 
+            "pitboxes": "29", 
+            "dirname": "lakelouise_208", 
+            "description": "Gem of the Rockies"
+        }
+    }, 
+    {
+        "pk": 42, 
+        "model": "library.track", 
+        "fields": {
+            "run": "West downhill", 
+            "name": "Lake Louise 2.08 West Downhill", 
+            "country": "Canada", 
+            "subversion": "west_downhill", 
+            "pitboxes": "4", 
+            "dirname": "lakelouise_208", 
+            "description": "From top to bottom"
+        }
+    }, 
+    {
+        "pk": 43, 
+        "model": "library.track", 
+        "fields": {
+            "run": "West forward", 
+            "name": "Lake Louise 2.08 West Forward", 
+            "country": "Canada", 
+            "subversion": "west_fwd", 
+            "pitboxes": "29", 
+            "dirname": "lakelouise_208", 
+            "description": "The Original Lake Louise Loop Road"
+        }
+    }, 
+    {
+        "pk": 44, 
+        "model": "library.track", 
+        "fields": {
+            "run": "clockwise", 
+            "name": "Monza", 
+            "country": "Italy", 
+            "subversion": null, 
+            "pitboxes": "26", 
+            "dirname": "monza", 
+            "description": "Autodromo di Monza"
+        }
+    }, 
+    {
+        "pk": 45, 
+        "model": "library.track", 
+        "fields": {
+            "run": "clockwise", 
+            "name": "Zandvoort", 
+            "country": "Netherlands", 
+            "subversion": null, 
+            "pitboxes": "18", 
+            "dirname": "ks_zandvoort", 
+            "description": "Zandvoort Circuit Park"
+        }
+    }
+]

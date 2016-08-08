@@ -1,0 +1,93 @@
+[
+    {
+        "fields": {
+            "base_temperature_ambient": 20,
+            "base_temperature_road": 7,
+            "graphics": "1_heavy_fog",
+            "name": "Heavy Fog",
+            "realistic_road_temp": -4,
+            "variation_ambient": 2,
+            "variation_road": 2
+        },
+        "model": "library.weather",
+        "pk": 1
+    },
+    {
+        "fields": {
+            "base_temperature_ambient": 20,
+            "base_temperature_road": 7,
+            "graphics": "2_light_fog",
+            "name": "Light Fog",
+            "realistic_road_temp": -4,
+            "variation_ambient": 2,
+            "variation_road": 2
+        },
+        "model": "library.weather",
+        "pk": 2
+    },
+    {
+        "fields": {
+            "base_temperature_ambient": 20,
+            "base_temperature_road": 7,
+            "graphics": "3_clear",
+            "name": "Clear",
+            "realistic_road_temp": 8,
+            "variation_ambient": 2,
+            "variation_road": 2
+        },
+        "model": "library.weather",
+        "pk": 3
+    },
+    {
+        "fields": {
+            "base_temperature_ambient": 20,
+            "base_temperature_road": 7,
+            "graphics": "4_mid_clear",
+            "name": "Mid Clear",
+            "realistic_road_temp": 8,
+            "variation_ambient": 2,
+            "variation_road": 2
+        },
+        "model": "library.weather",
+        "pk": 4
+    },
+    {
+        "fields": {
+            "base_temperature_ambient": 20,
+            "base_temperature_road": 7,
+            "graphics": "5_light_clouds",
+            "name": "Light Clouds",
+            "realistic_road_temp": -2,
+            "variation_ambient": 2,
+            "variation_road": 2
+        },
+        "model": "library.weather",
+        "pk": 5
+    },
+    {
+        "fields": {
+            "base_temperature_ambient": 20,
+            "base_temperature_road": 7,
+            "graphics": "6_mid_clouds",
+            "name": "Mid Clouds",
+            "realistic_road_temp": -2,
+            "variation_ambient": 2,
+            "variation_road": 2
+        },
+        "model": "library.weather",
+        "pk": 6
+    },
+    {
+        "fields": {
+            "base_temperature_ambient": 20,
+            "base_temperature_road": 7,
+            "graphics": "7_heavy_clouds",
+            "name": "Heavy Clouds",
+            "realistic_road_temp": -2,
+            "variation_ambient": 2,
+            "variation_road": 2
+        },
+        "model": "library.weather",
+        "pk": 7
+    }
+]
