@@ -24,20 +24,13 @@ class Migration(migrations.Migration):
             ],
         ),
         migrations.CreateModel(
-            name='EntryGroup',
-            fields=[
-                ('id', models.AutoField(verbose_name='ID', serialize=False, auto_created=True, primary_key=True)),
-                ('name', models.CharField(max_length=64)),
-                ('pickup_mode_enabled', models.BooleanField(default=True)),
-            ],
-        ),
-        migrations.CreateModel(
-            name='Environment',
+            name='Preset',
             fields=[
                 ('id', models.AutoField(verbose_name='ID', serialize=False, auto_created=True, primary_key=True)),
                 ('name', models.CharField(help_text=b'The name of the preset - this will appear in the Assetto Corsa server listing', max_length=64)),
                 ('welcome_message', models.TextField(default=b'Welcome!')),
                 ('max_clients', models.IntegerField(default=12, help_text=b'Maximum number of clients (racers)')),
+                ('pickup_mode_enabled', models.BooleanField(default=True, help_text=b'For sessions that require booking this option must be disabled, otherwise for "first-come-first served" enable this option')),
                 ('practice', models.BooleanField(default=1)),
                 ('practice_time', models.IntegerField(default=10)),
                 ('practice_is_open', models.BooleanField(default=1)),
@@ -71,13 +64,8 @@ class Migration(migrations.Migration):
             ],
         ),
         migrations.AddField(
-            model_name='entrygroup',
-            name='environment_preset',
-            field=models.ForeignKey(to='session.Environment'),
-        ),
-        migrations.AddField(
             model_name='entry',
-            name='driver_preset',
-            field=models.ForeignKey(to='session.EntryGroup'),
+            name='environment',
+            field=models.ForeignKey(to='session.Preset'),
         ),
     ]

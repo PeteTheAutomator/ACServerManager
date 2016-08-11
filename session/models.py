@@ -1,7 +1,7 @@
 from django.db import models
-from library.models import Car
 
-class Environment(models.Model):
+
+class Preset(models.Model):
     BLACKLIST_MODE_CHOICES = (
         (0, 'normal kick'),
         (1, 'until server restart'),
@@ -34,6 +34,8 @@ class Environment(models.Model):
     track = models.ForeignKey('library.Track', related_name='track', help_text='The track (and subversion, if any) to race on')
     track_dynamism = models.ForeignKey('library.TrackDynamism', null=True, blank=True)
     max_clients = models.IntegerField(default=12, help_text='Maximum number of clients (racers)')
+    pickup_mode_enabled = models.BooleanField(default=True,
+                                              help_text='For sessions that require booking this option must be disabled, otherwise for "first-come-first served" enable this option')
 
     # session types
     practice = models.BooleanField(default=1)
@@ -71,35 +73,8 @@ class Environment(models.Model):
         return self.name
 
 
-class EntryGroup(models.Model):
-    environment_preset = models.ForeignKey(Environment)
-    name = models.CharField(max_length=64)
-    pickup_mode_enabled = models.BooleanField(default=True)
-
-    def __unicode__(self):
-        return self.name
-
-    def auto_populate(self, tag):
-        if self.environment_preset:
-            num_entries = self.environment_preset.track.pitboxes
-            entry_counter = 0
-
-            cars = Car.objects.filter(tags=tag)
-            car_iterator = 0
-
-            while entry_counter < num_entries:
-                Entry.objects.create(
-                    driver_preset=self,
-                    name='CAR_' + str(entry_counter),
-                    car=cars[car_iterator],
-                )
-                entry_counter += 1
-                car_iterator += 1
-                if car_iterator > len(cars):
-                    car_iterator = 0
-
 class Entry(models.Model):
-    driver_preset = models.ForeignKey(EntryGroup)
+    environment = models.ForeignKey(Preset)
     name = models.CharField(max_length=64)
     car = models.ForeignKey('library.Car')
     #skin = models.ForeignKey('library.Car.carskin')
