@@ -1,6 +1,7 @@
 from django.contrib import admin
 from django.contrib.auth.models import User, Group
 
+from library.models import Car, CarSkin
 from .models import Preset, Entry
 from .tasks import kick_services, ConfigHandler
 
@@ -26,6 +27,6 @@ class EnvironmentAdmin(admin.ModelAdmin):
 
 
 admin.site.register(Preset, EnvironmentAdmin)
-#admin.site.register(Entry)
+admin.site.register(Entry)
 #admin.site.unregister(User)
 #admin.site.unregister(Group)

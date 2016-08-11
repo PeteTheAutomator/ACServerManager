@@ -1,4 +1,5 @@
 from django.db import models
+from smart_selects.db_fields import ChainedForeignKey
 
 
 class Preset(models.Model):
@@ -77,7 +78,13 @@ class Entry(models.Model):
     environment = models.ForeignKey(Preset)
     name = models.CharField(max_length=64)
     car = models.ForeignKey('library.Car')
-    #skin = models.ForeignKey('library.Car.carskin')
+    skin = ChainedForeignKey(
+        'library.CarSkin',
+        chained_field="car",
+        chained_model_field="car",
+        show_all=False,
+        auto_choose=True
+    )
     spectator_mode = models.BooleanField(default=False)
     team = models.CharField(max_length=64, null=True, blank=True)
     guid = models.CharField(max_length=64, null=True, blank=True)

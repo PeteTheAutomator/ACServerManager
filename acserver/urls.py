@@ -21,4 +21,5 @@ admin.site.site_title = 'Assetto Corsa Server Manager'
 urlpatterns = [
     #url(r'^session/', include('session.urls')),
     url(r'^admin/', include(admin.site.urls)),
+    url(r'^chaining/', include('smart_selects.urls')),
 ]

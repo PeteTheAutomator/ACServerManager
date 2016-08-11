@@ -39,6 +39,7 @@ INSTALLED_APPS = (
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'background_task',
+    'smart_selects',
     'library',
     'session',
 )
