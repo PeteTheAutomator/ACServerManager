@@ -1,0 +1,16 @@
+<html>
+<head>
+</head>
+
+<form method="post">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <input type="submit" value="Submit" />
+</form>
+
+{% for entry in entry_formset %}
+<hr>
+    {{entry.as_p}}
+{% endfor %}
+
+</html>

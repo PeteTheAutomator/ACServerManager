@@ -28,7 +28,7 @@ class Inspector:
                     car_detail = json.loads(car_ui_json_raw.replace('\r\n', '').replace('\t', ''))
                     car_detail['skins'] = None
                     for k in car_detail.keys():
-                        if k not in ['name', 'brand', 'class']:
+                        if k not in ['name', 'brand', 'class', 'tags']:
                             del car_detail[k]
 
                         car_detail['dirname'] = os.path.basename(root)
@@ -94,7 +94,27 @@ class Inspector:
 
         car_pk = 1
         car_skin_pk = 1
+        car_tag_pk = 1
+        car_tag_dict = {}
         for car in self.results['cars']:
+            car_tag_pk_list = []
+
+            for car_tag in car['tags']:
+                if car_tag not in car_tag_dict:
+                    car_tag_dict[car_tag] = car_tag_pk
+                    results.append(
+                        {
+                            'pk': car_tag_pk,
+                            'fields': {
+                                'name': car_tag,
+                            },
+                            'model': 'library.cartag',
+                        }
+                    )
+                    car_tag_pk += 1
+
+                car_tag_pk_list.append(car_tag_dict[car_tag])
+
             results.append(
                 {
                     'pk': car_pk,
@@ -102,6 +122,7 @@ class Inspector:
                         'name': car['name'],
                         'brand': car['brand'],
                         'clarse': car['class'],
+                        'tags': car_tag_pk_list,
                         'dirname': car['dirname'],
                     },
                     'model': 'library.car',

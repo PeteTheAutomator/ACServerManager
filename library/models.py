@@ -1,10 +1,18 @@
 from django.db import models
 
 
+class CarTag(models.Model):
+    name = models.CharField(max_length=64)
+
+    def __unicode__(self):
+        return self.name
+
+
 class Car(models.Model):
     name = models.CharField(max_length=64)
     brand = models.CharField(max_length=64)
     clarse = models.CharField(max_length=64, verbose_name='class')
+    tags = models.ManyToManyField(CarTag)
     dirname = models.CharField(max_length=64)
 
     def __unicode__(self):
@@ -55,16 +63,3 @@ class Weather(models.Model):
     def __unicode__(self):
         return self.name
 
-
-class ServerSetting(models.Model):
-    name = models.CharField(max_length=64, help_text='A common name for your server - this forms a prefix in the Assetto Corsa server listing, followed-by the running race-preset name')
-    welcome_message = models.TextField(default='Welcome!')
-    udp_port = models.IntegerField(default=9600, help_text='UDP port number which the ACServer binds to')
-    tcp_port = models.IntegerField(default=9600, help_text='TCP port number which the ACServer binds to')
-    http_port = models.IntegerField(default=8081, help_text='HTTP port number which Lobby binds to')
-    send_buffer_size = models.IntegerField(default=0)
-    recv_buffer_size = models.IntegerField(default=0)
-    client_send_interval = models.IntegerField(default=15)
-
-    def __unicode__(self):
-        return self.name

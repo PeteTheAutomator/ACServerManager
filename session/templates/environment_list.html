@@ -1,0 +1,11 @@
+{% if environment_list %}
+    <ul>
+    {% for environment in environment_list %}
+        <li><a href="/session/environment/{{ environment.id }}/">{{ environment.name }}</a></li>
+    {% endfor %}
+    </ul>
+{% else %}
+    <p>No environments are available.</p>
+{% endif %}
+
+<p><a href="/session/environment/new/">Add New</a></p>

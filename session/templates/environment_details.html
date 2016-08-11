@@ -1,0 +1,21 @@
+<html>
+<head>
+</head>
+
+<form method="post">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <input type="submit" value="Submit" />
+</form>
+
+
+<hr>
+<h3>entry groups:</h3>
+{% for entrygroup in entrygroups %}
+<p><a href="entrygroup/{{entrygroup.id}}/">{{entrygroup.name}}</a></p>
+{% endfor %}
+
+<a href="entrygroup/new">Add Entry Group</a>
+
+
+</html>

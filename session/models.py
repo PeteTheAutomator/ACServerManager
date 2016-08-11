@@ -1,7 +1,7 @@
 from django.db import models
+from library.models import Car
 
-
-class Preset(models.Model):
+class Environment(models.Model):
     BLACKLIST_MODE_CHOICES = (
         (0, 'normal kick'),
         (1, 'until server restart'),
@@ -29,9 +29,8 @@ class Preset(models.Model):
     )
 
     # important stuff
-    server_setting = models.ForeignKey('library.ServerSetting')
-    name = models.CharField(max_length=64, help_text='The name of the preset - this combined with your server-setting name will appear in the Assetto Corsa server listing')
-    cars = models.ManyToManyField('library.Car', help_text='The models of the cars allowed on the server')
+    name = models.CharField(max_length=64, help_text='The name of the preset - this will appear in the Assetto Corsa server listing')
+    welcome_message = models.TextField(default='Welcome!')
     track = models.ForeignKey('library.Track', related_name='track', help_text='The track (and subversion, if any) to race on')
     track_dynamism = models.ForeignKey('library.TrackDynamism', null=True, blank=True)
     max_clients = models.IntegerField(default=12, help_text='Maximum number of clients (racers)')
@@ -51,7 +50,6 @@ class Preset(models.Model):
 
     # nitty-gritty details
     sun_angle = models.IntegerField(default=48, help_text='Angle of the position of the Sun')
-    pickup_mode_enabled = models.BooleanField(default=True, help_text='For sessions that require booking this option must be disabled, otherwise for "first-come-first served" enable this option')
     tc_allowed = models.IntegerField(default=0, choices=ASSIST_CHOICES, help_text='Traction-control')
     abs_allowed = models.IntegerField(default=0, choices=ASSIST_CHOICES, help_text='Anti-lock brakes')
     stability_allowed = models.BooleanField(default=0, help_text='Stability-control allowed?')
@@ -70,5 +68,45 @@ class Preset(models.Model):
     blacklist_mode = models.IntegerField(choices=BLACKLIST_MODE_CHOICES, default=0)
 
     def __unicode__(self):
-        return self.server_setting.name + ' - ' + self.name
+        return self.name
 
+
+class EntryGroup(models.Model):
+    environment_preset = models.ForeignKey(Environment)
+    name = models.CharField(max_length=64)
+    pickup_mode_enabled = models.BooleanField(default=True)
+
+    def __unicode__(self):
+        return self.name
+
+    def auto_populate(self, tag):
+        if self.environment_preset:
+            num_entries = self.environment_preset.track.pitboxes
+            entry_counter = 0
+
+            cars = Car.objects.filter(tags=tag)
+            car_iterator = 0
+
+            while entry_counter < num_entries:
+                Entry.objects.create(
+                    driver_preset=self,
+                    name='CAR_' + str(entry_counter),
+                    car=cars[car_iterator],
+                )
+                entry_counter += 1
+                car_iterator += 1
+                if car_iterator > len(cars):
+                    car_iterator = 0
+
+class Entry(models.Model):
+    driver_preset = models.ForeignKey(EntryGroup)
+    name = models.CharField(max_length=64)
+    car = models.ForeignKey('library.Car')
+    #skin = models.ForeignKey('library.Car.carskin')
+    spectator_mode = models.BooleanField(default=False)
+    team = models.CharField(max_length=64, null=True, blank=True)
+    guid = models.CharField(max_length=64, null=True, blank=True)
+    ballast = models.IntegerField(default=0)
+
+    def __unicode__(self):
+        return self.name

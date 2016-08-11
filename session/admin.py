@@ -1,7 +1,7 @@
 from django.contrib import admin
 from django.contrib.auth.models import User, Group
 
-from .models import Preset
+from .models import Environment, EntryGroup, Entry
 from .tasks import kick_services, ConfigHandler
 
 
@@ -14,12 +14,30 @@ def publish_preset(modeladmin, request, queryset):
     kick_services()
 
 
-class PresetAdmin(admin.ModelAdmin):
-    model = Preset
-    filter_horizontal = ('cars', 'weathers')
+class EntryGroupInline(admin.StackedInline):
+    model = EntryGroup
+    extra = 1
+
+class EnvironmentAdmin(admin.ModelAdmin):
+    model = Environment
+    filter_horizontal = ('weathers',)
+    inlines = [EntryGroupInline]
+
+
+class EntryInline(admin.StackedInline):
+    model = Entry
+    extra = 0
+
+
+class EntryGroupAdmin(admin.ModelAdmin):
+    model = EntryGroup
+    #filter_horizontal = ('cars',)
     actions = [publish_preset]
+    inlines = [EntryInline]
 
 
-admin.site.register(Preset, PresetAdmin)
+admin.site.register(Environment, EnvironmentAdmin)
+admin.site.register(EntryGroup, EntryGroupAdmin)
+admin.site.register(Entry)
 admin.site.unregister(User)
 admin.site.unregister(Group)
