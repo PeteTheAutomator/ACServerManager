@@ -32,6 +32,10 @@ class ConfigHandler:
             if driver.car.dirname not in car_list:
                 car_list.append(driver.car.dirname)
 
+        # set max_clients value to the track's pitbox value if null
+        if not preset.max_clients:
+            preset.max_clients = preset.track.pitboxes
+
         config.set('SERVER', 'NAME', preset.name)
         config.set('SERVER', 'CARS', ','.join(car_list))
         config.set('SERVER', 'CONFIG_TRACK', '' if not preset.track.subversion else preset.track.subversion)

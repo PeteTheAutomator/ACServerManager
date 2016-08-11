@@ -1,4 +1,5 @@
 from django.db import models
+from django.core.validators import MinValueValidator, MaxValueValidator
 from smart_selects.db_fields import ChainedForeignKey
 
 
@@ -34,7 +35,7 @@ class Preset(models.Model):
     welcome_message = models.TextField(default='Welcome!')
     track = models.ForeignKey('library.Track', related_name='track', help_text='The track (and subversion, if any) to race on')
     track_dynamism = models.ForeignKey('library.TrackDynamism', null=True, blank=True)
-    max_clients = models.IntegerField(default=12, help_text='Maximum number of clients (racers)')
+    max_clients = models.IntegerField(null=True, blank=True, default=None, help_text='Maximum number of clients, or leave blank to use the track\'s number of pitboxes')
     pickup_mode_enabled = models.BooleanField(default=True,
                                               help_text='For sessions that require booking this option must be disabled, otherwise for "first-come-first served" enable this option')
 
@@ -58,12 +59,12 @@ class Preset(models.Model):
     stability_allowed = models.BooleanField(default=0, help_text='Stability-control allowed?')
     autoclutch_allowed = models.BooleanField(default=1, help_text='Automatic clutch allowed?')
     force_virtual_mirror = models.BooleanField(default=0, help_text='Mandatory prominent rear-view mirror?')
-    damage_multiplier = models.IntegerField(default=0)
+    damage_multiplier = models.IntegerField(default=100, validators=[MinValueValidator(0), MaxValueValidator(100)], help_text='Damage from 0 (no damage) to 100 (full damage)')
     fuel_rate = models.IntegerField(default=100)
     tyre_blankets_allowed = models.BooleanField(default=1)
     tyre_wear_rate = models.IntegerField(default=100)
     allowed_tyres_out = models.IntegerField(default=2, choices=ALLOWED_TYRES_OUT_CHOICES)
-    voting_quorum = models.IntegerField(default=75)
+    voting_quorum = models.IntegerField(default=75, validators=[MinValueValidator(0), MaxValueValidator(100)], help_text='Percentage of vote that is required for the SESSION vote to pass')
     vote_duration = models.IntegerField(default=20)
     kick_quorum = models.IntegerField(default=85)
     race_over_time = models.IntegerField(default=180)
@@ -71,12 +72,12 @@ class Preset(models.Model):
     blacklist_mode = models.IntegerField(choices=BLACKLIST_MODE_CHOICES, default=0)
 
     def __unicode__(self):
-        return self.name
+        return self.name + ' / ' + self.track.name
 
 
 class Entry(models.Model):
     environment = models.ForeignKey(Preset)
-    name = models.CharField(max_length=64)
+    name = models.CharField(null=True, blank=True, max_length=64)
     car = models.ForeignKey('library.Car')
     skin = ChainedForeignKey(
         'library.CarSkin',
@@ -91,4 +92,7 @@ class Entry(models.Model):
     ballast = models.IntegerField(default=0)
 
     def __unicode__(self):
-        return self.name
+        if self.name:
+            return self.car.name + ' (' + self.name + ')'
+        else:
+            return self.car.name

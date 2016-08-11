@@ -15,6 +15,9 @@ class Car(models.Model):
     tags = models.ManyToManyField(CarTag)
     dirname = models.CharField(max_length=64)
 
+    class Meta:
+        ordering = ['name']
+
     def __unicode__(self):
         return self.name
 
@@ -36,6 +39,9 @@ class Track(models.Model):
     pitboxes = models.IntegerField(default=0)
     description = models.CharField(max_length=128)
 
+    class Meta:
+        ordering = ['name']
+
     def __unicode__(self):
         return self.name
 
@@ -46,6 +52,9 @@ class TrackDynamism(models.Model):
     randomness = models.IntegerField()
     session_transfer = models.IntegerField()
     lap_gain = models.IntegerField()
+
+    class Meta:
+        ordering = ['-id']
 
     def __unicode__(self):
         return self.name

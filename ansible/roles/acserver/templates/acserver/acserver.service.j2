@@ -4,6 +4,7 @@ After=syslog.target network.target
 
 [Service]
 User=acserver
+WorkingDirectory={{acserver_server_install_dir}}
 ExecStart={{acserver_server_install_dir}}/acServer -c {{acserver_server_config_dir}}/server_cfg.ini -e {{acserver_server_config_dir}}/entry_list.ini
 ExecReload=/bin/kill -HUP $MAINPID
 KillMode=process

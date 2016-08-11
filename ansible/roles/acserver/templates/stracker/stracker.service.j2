@@ -4,6 +4,7 @@ After=syslog.target network.target
 
 [Service]
 User=acserver
+WorkingDirectory={{acserver_stracker_dir}}
 ExecStart={{acserver_stracker_dir}}/stracker_linux_x86/stracker --stracker_ini {{acserver_stracker_dir}}/stracker.ini
 ExecReload=/bin/kill -HUP $MAINPID
 KillMode=process

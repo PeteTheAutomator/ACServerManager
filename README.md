@@ -13,8 +13,21 @@ Very much a work-in-progress at this stage; if you stumble across this project p
 TODO
 ----
 
+* fix the djtasks systemd service (so stops / restarts kill the underlying process)
+* do something with passwords
+* set stracker admin username/pass
+* fix selinux so apache can write to db.sqlite3 (or migrate to postgres?)
+* setup superuser account from ansible vars
+* provide a MORE OBVIOUS way to clone presets as...
+* find a way to automate stracker package bundle
+* show/hide "advanced" preset fields
+* implement the welcome message
+* map sun_angle to time of day
+* ensure full help_text on models
+* revisit model validation
+* hook-up "launch server configuration" links to the publish_preset method and provide some feedback on service restarts/status
 * add minor-rating
-* either migrate from sqlite to postgres, or properly configure selinux so apache can write the django sqlite db
-* write a bespoke ui for configuring session presets etc (something that mirrors the behaviour of the native windows ACServerManager ui, or at least something more intuitive than the django-admin ui)
 * implement bookings (presently only pickup mode works to some extent)
 * use apache to proxy to the stracker http ui - this will need modifications to stracker's http_templates though since static asset paths are absolute.
+
+
