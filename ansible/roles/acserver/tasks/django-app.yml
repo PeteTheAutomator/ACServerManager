@@ -12,6 +12,8 @@
 - name: resolve pips
   pip: requirements="{{acserver_app_dir}}/requirements.txt" virtualenv="{{acserver_virtualenv}}"
 
+- include: django-smart-selects-workaround.yml
+
 - name: run django schema migrations
   django_manage: command=migrate virtualenv="{{acserver_virtualenv}}" app_path="{{acserver_app_dir}}"
 
