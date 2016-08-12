@@ -1,0 +1,5 @@
+---
+# PLEASE EDIT THIS FILE BY REMOVING THE COMMENT (#) ON EACH LINE BELOW, ADDING YOUR OWN VALUES TO EACH FIELD FOLLOWING THE COLON (:)...
+#superuser_name: admin
+#superuser_email: admin@example.com
+#superuser_pass: this_must_be_a_complex_password_having_at_lease_one_uppercase_and_one_numeric_character

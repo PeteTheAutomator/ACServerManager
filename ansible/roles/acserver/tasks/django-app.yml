@@ -27,6 +27,14 @@
 - name: collect django static assets
   django_manage: command=collectstatic virtualenv="{{acserver_virtualenv}}" app_path="{{acserver_app_dir}}"
 
+- name: create django superuser
+  expect:
+    command: "/home/pete/PycharmProjects/ACServerManager/manage.py createsuperuser --username={{superuser_name}} --email={{superuser_email}}"
+    responses:
+      Password: "{{superuser_pass}}"
+      Password: "{{superuser_pass}}"
+  failed_when: False
+
 - name: allow apache write access to django app dir
   file: path="{{acserver_app_dir}}" state=directory group=apache mode=0775
 

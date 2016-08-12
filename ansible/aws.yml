@@ -94,5 +94,7 @@
   gather_facts: True
   remote_user: ec2-user
   sudo: yes
+  vars_files:
+    - vars.yml
   roles:
     - acserver
