@@ -5,6 +5,14 @@
     - git
     - python-virtualenv
 
+- name: install pip using easy_install
+  easy_install: name=pip state=present
+
+- name: install requisite pips
+  pip: name={{item}} state=present
+  with_items:
+    - pexpect
+
 - name: clone ACServerManager project from git
   git: repo="{{acserver_git_repo}}" dest="{{acserver_app_dir}}" force=yes
   notify: restart httpd
@@ -29,7 +37,7 @@
 
 - name: create django superuser
   expect:
-    command: "/home/pete/PycharmProjects/ACServerManager/manage.py createsuperuser --username={{superuser_name}} --email={{superuser_email}}"
+    command: "/bin/bash -c \"source {{acserver_virtualenv}}/bin/activate && {{acserver_app_dir}}/manage.py createsuperuser --username={{superuser_name}} --email={{superuser_email}}\""
     responses:
       Password: "{{superuser_pass}}"
       Password: "{{superuser_pass}}"
