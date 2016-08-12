@@ -49,6 +49,12 @@
 - name: allow apache write access to django db
   file: path="{{acserver_app_dir}}/db.sqlite3" state=file group=apache mode=0664
 
+- name: add selinux context permitting httpd write access to django app dir
+  command: semanage fcontext -a -t httpd_sys_rw_content_t "{{acserver_app_dir}}(/.*)?"
+
+- name: restore selinux contexts
+  command: restorecon -R "{{acserver_app_dir}}"
+
 - name: write djtasks.sh wrapper script
   template: src=django-app/djtasks.sh.j2 dest="{{acserver_app_dir}}/djtasks.sh" mode=0770 owner=root group=apache
 
