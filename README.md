@@ -14,10 +14,7 @@ TODO
 ----
 
 * fix the djtasks systemd service (so stops / restarts kill the underlying process)
-* do something with passwords
-* set stracker admin username/pass
-* fix selinux so apache can write to db.sqlite3 (or migrate to postgres?)
-* setup superuser account from ansible vars
+* provide a way to configure session passwords
 * provide a MORE OBVIOUS way to clone presets as...
 * find a way to automate stracker package bundle
 * show/hide "advanced" preset fields
@@ -29,5 +26,4 @@ TODO
 * add minor-rating
 * implement bookings (presently only pickup mode works to some extent)
 * use apache to proxy to the stracker http ui - this will need modifications to stracker's http_templates though since static asset paths are absolute.
-
-
+* migrate to postgres?
