@@ -10,7 +10,7 @@ import django.core.validators
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('library', '0002_auto_20160817_1412'),
+        ('library', '0001_initial'),
     ]
 
     operations = [

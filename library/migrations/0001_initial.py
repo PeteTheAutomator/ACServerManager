@@ -19,6 +19,9 @@ class Migration(migrations.Migration):
                 ('clarse', models.CharField(max_length=64, verbose_name=b'class')),
                 ('dirname', models.CharField(max_length=64)),
             ],
+            options={
+                'ordering': ['name'],
+            },
         ),
         migrations.CreateModel(
             name='CarSkin',
@@ -47,6 +50,9 @@ class Migration(migrations.Migration):
                 ('pitboxes', models.IntegerField(default=0)),
                 ('description', models.CharField(max_length=128)),
             ],
+            options={
+                'ordering': ['name'],
+            },
         ),
         migrations.CreateModel(
             name='TrackDynamism',
@@ -58,6 +64,9 @@ class Migration(migrations.Migration):
                 ('session_transfer', models.IntegerField()),
                 ('lap_gain', models.IntegerField()),
             ],
+            options={
+                'ordering': ['-id'],
+            },
         ),
         migrations.CreateModel(
             name='Weather',
