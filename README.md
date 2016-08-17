@@ -13,7 +13,6 @@ Very much a work-in-progress at this stage; if you stumble across this project p
 TODO
 ----
 
-* fix the djtasks systemd service (so stops / restarts kill the underlying process)
 * provide a way to configure session passwords
 * provide a MORE OBVIOUS way to clone presets as...
 * find a way to automate stracker package bundle
