@@ -45,7 +45,7 @@ class ConfigHandler:
         config.set('SERVER', 'CONFIG_TRACK', '' if not preset.track.subversion else preset.track.subversion)
         config.set('SERVER', 'TRACK', preset.track.dirname)
         config.set('SERVER', 'SUN_ANGLE', time_to_sun_angle(preset.time_of_day))
-        config.set('SERVER', 'PASSWORD', 'TODO')
+        config.set('SERVER', 'PASSWORD', str(preset.session_password))
         config.set('SERVER', 'ADMIN_PASSWORD', 'TODO')
         config.set('SERVER', 'UDP_PORT', str(settings.ASSETTO_CORSA_SERVER_SETTINGS['udp_port']))
         config.set('SERVER', 'TCP_PORT', str(settings.ASSETTO_CORSA_SERVER_SETTINGS['tcp_port']))
