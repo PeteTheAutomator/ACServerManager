@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import Preset, Entry
+from .models import ServerSetting, Preset, Entry
 from .tasks import kick_services, ConfigHandler
 
 
@@ -31,4 +31,5 @@ class EnvironmentAdmin(admin.ModelAdmin):
     launch_configuration.allow_tags = True
 
 
+admin.site.register(ServerSetting)
 admin.site.register(Preset, EnvironmentAdmin)

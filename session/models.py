@@ -4,6 +4,20 @@ from smart_selects.db_fields import ChainedForeignKey
 import datetime
 
 
+class ServerSetting(models.Model):
+    name = models.CharField(max_length=64, help_text='The name of the server - this will appear in the Assetto Corsa\'s listing of online servers for the public to join')
+    welcome_message = models.TextField(null=True, blank=True, help_text='Place a welcome message here - this will display some dialog to clients upon joining a session which they must click to close')
+    udp_port = models.IntegerField(default=9600, help_text='Assetto Corsa server UDP port number')
+    tcp_port = models.IntegerField(default=9600, help_text='Assetto Corser server TCP port number')
+    http_port = models.IntegerField(default=8081, help_text='Lobby port number')
+    send_buffer_size = models.IntegerField(default=0, help_text='DOCUMENTATION SOURCE NEEDED')
+    recv_buffer_size = models.IntegerField(default=0, help_text='DOCUMENTATION SOURCE NEEDED')
+    client_send_interval = models.IntegerField(default=15, verbose_name='client send interval (Hz)', help_text='refresh rate of packet sending by the server. 10Hz = ~100ms. Higher number = higher MP quality = higher bandwidth resources needed. Really high values can create connection issues')
+
+    def __unicode__(self):
+        return self.name
+
+
 class Preset(models.Model):
     BLACKLIST_MODE_CHOICES = (
         (0, 'normal kick'),
@@ -46,8 +60,8 @@ class Preset(models.Model):
     )
 
     # important stuff
-    name = models.CharField(max_length=64, help_text='The name of the preset - this will appear in the Assetto Corsa server listing')
-    welcome_message = models.TextField(default='Welcome!')
+    name = models.CharField(max_length=64, help_text='A brief label to give the preset some context')
+    server_setting = models.ForeignKey(ServerSetting)
     track = models.ForeignKey('library.Track', related_name='track', help_text='The track (and subversion, if any) to race on')
     track_dynamism = models.ForeignKey('library.TrackDynamism', null=True, blank=True)
     max_clients = models.IntegerField(null=True, blank=True, default=None, help_text='Maximum number of clients, or leave blank to use the track\'s number of pitboxes')

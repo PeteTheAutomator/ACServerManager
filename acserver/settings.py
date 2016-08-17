@@ -106,13 +106,3 @@ USE_TZ = True
 
 STATIC_URL = '/static/'
 STATIC_ROOT = '/usr/local/ACServerManager/static'
-
-# Default, Advanced settings for the Assetto Corsa server
-ASSETTO_CORSA_SERVER_SETTINGS = {
-    'udp_port': 9600,
-    'tcp_port': 9600,
-    'http_port': 8081,
-    'send_buffer_size': 0,
-    'recv_buffer_size': 0,
-    'client_send_interval': 15,
-}

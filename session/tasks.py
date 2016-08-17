@@ -3,7 +3,7 @@ from configparser import ConfigParser
 from background_task import background
 from datetime import datetime, timedelta
 import subprocess
-from django.conf import settings
+
 
 @background(schedule=timedelta(seconds=10))
 def kick_services():
@@ -47,15 +47,15 @@ class ConfigHandler:
         config.set('SERVER', 'SUN_ANGLE', time_to_sun_angle(preset.time_of_day))
         config.set('SERVER', 'PASSWORD', str(preset.session_password))
         config.set('SERVER', 'ADMIN_PASSWORD', 'TODO')
-        config.set('SERVER', 'UDP_PORT', str(settings.ASSETTO_CORSA_SERVER_SETTINGS['udp_port']))
-        config.set('SERVER', 'TCP_PORT', str(settings.ASSETTO_CORSA_SERVER_SETTINGS['tcp_port']))
-        config.set('SERVER', 'HTTP_PORT', str(settings.ASSETTO_CORSA_SERVER_SETTINGS['http_port']))
+        config.set('SERVER', 'UDP_PORT', str(preset.server_setting.udp_port))
+        config.set('SERVER', 'TCP_PORT', str(preset.server_setting.tcp_port))
+        config.set('SERVER', 'HTTP_PORT', str(preset.server_setting.http_port))
         config.set('SERVER', 'PICKUP_MODE_ENABLED', str(int(preset.pickup_mode_enabled)))
         config.set('SERVER', 'LOOP_MODE', str(int(preset.loop_mode)))
         config.set('SERVER', 'SLEEP_TIME', '1')
-        config.set('SERVER', 'CLIENT_SEND_INTERVAL', str(settings.ASSETTO_CORSA_SERVER_SETTINGS['client_send_interval']))
-        config.set('SERVER', 'SEND_BUFFER_SIZE', str(settings.ASSETTO_CORSA_SERVER_SETTINGS['send_buffer_size']))
-        config.set('SERVER', 'RECV_BUFFER_SIZE', str(settings.ASSETTO_CORSA_SERVER_SETTINGS['recv_buffer_size']))
+        config.set('SERVER', 'CLIENT_SEND_INTERVAL', str(preset.server_setting.client_send_interval))
+        config.set('SERVER', 'SEND_BUFFER_SIZE', str(preset.server_setting.send_buffer_size))
+        config.set('SERVER', 'RECV_BUFFER_SIZE', str(preset.server_setting.recv_buffer_size))
         config.set('SERVER', 'RACE_OVER_TIME', str(preset.race_over_time))
         config.set('SERVER', 'KICK_QUORUM', str(preset.kick_quorum))
         config.set('SERVER', 'VOTING_QUORUM', str(preset.voting_quorum))
