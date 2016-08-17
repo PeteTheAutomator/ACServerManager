@@ -53,7 +53,7 @@ class Preset(models.Model):
     max_clients = models.IntegerField(null=True, blank=True, default=None, help_text='Maximum number of clients, or leave blank to use the track\'s number of pitboxes')
     pickup_mode_enabled = models.BooleanField(default=True,
                                               help_text='For sessions that require booking this option must be disabled, otherwise for "first-come-first served" enable this option')
-    session_password = models.TextField(null=True, blank=True, default=None, help_text='If you want the session to require a password to join - set that here, otherwise leave blank for a passwordless session')
+    session_password = models.CharField(max_length=64, null=True, blank=True, default=None, help_text='If you want the session to require a password to join - set that here, otherwise leave blank for a passwordless session')
 
     # session types
     practice = models.BooleanField(default=1)
