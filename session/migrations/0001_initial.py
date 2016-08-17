@@ -69,6 +69,7 @@ class Migration(migrations.Migration):
                 ('id', models.AutoField(verbose_name='ID', serialize=False, auto_created=True, primary_key=True)),
                 ('name', models.CharField(help_text=b"The name of the server - this will appear in the Assetto Corsa's listing of online servers for the public to join", max_length=64)),
                 ('welcome_message', models.TextField(help_text=b'Place a welcome message here - this will display some dialog to clients upon joining a session which they must click to close', null=True, blank=True)),
+                ('admin_password', models.CharField(help_text=b'Server Admin Password - joining the session using this password grants the user admin privilges (allowing you to skip sessions, kick users, etc)', max_length=64)),
                 ('udp_port', models.IntegerField(default=9600, help_text=b'Assetto Corsa server UDP port number')),
                 ('tcp_port', models.IntegerField(default=9600, help_text=b'Assetto Corser server TCP port number')),
                 ('http_port', models.IntegerField(default=8081, help_text=b'Lobby port number')),

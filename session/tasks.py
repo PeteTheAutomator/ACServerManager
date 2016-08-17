@@ -46,7 +46,7 @@ class ConfigHandler:
         config.set('SERVER', 'TRACK', preset.track.dirname)
         config.set('SERVER', 'SUN_ANGLE', time_to_sun_angle(preset.time_of_day))
         config.set('SERVER', 'PASSWORD', str(preset.session_password))
-        config.set('SERVER', 'ADMIN_PASSWORD', 'TODO')
+        config.set('SERVER', 'ADMIN_PASSWORD', str(preset.server_setting.admin_password))
         config.set('SERVER', 'UDP_PORT', str(preset.server_setting.udp_port))
         config.set('SERVER', 'TCP_PORT', str(preset.server_setting.tcp_port))
         config.set('SERVER', 'HTTP_PORT', str(preset.server_setting.http_port))

@@ -7,6 +7,7 @@ import datetime
 class ServerSetting(models.Model):
     name = models.CharField(max_length=64, help_text='The name of the server - this will appear in the Assetto Corsa\'s listing of online servers for the public to join')
     welcome_message = models.TextField(null=True, blank=True, help_text='Place a welcome message here - this will display some dialog to clients upon joining a session which they must click to close')
+    admin_password = models.CharField(max_length=64, help_text='Server Admin Password - joining the session using this password grants the user admin privilges (allowing you to skip sessions, kick users, etc)')
     udp_port = models.IntegerField(default=9600, help_text='Assetto Corsa server UDP port number')
     tcp_port = models.IntegerField(default=9600, help_text='Assetto Corser server TCP port number')
     http_port = models.IntegerField(default=8081, help_text='Lobby port number')
