@@ -16,6 +16,10 @@ def kick_services():
         raise Exception('failed to restart stracker server process')
 
 
+def time_to_sun_angle(time):
+    return str((time.hour - 13) * 16)
+
+
 class ConfigHandler:
     def __init__(self, config_dir):
         self.config_dir = config_dir
@@ -40,7 +44,7 @@ class ConfigHandler:
         config.set('SERVER', 'CARS', ','.join(car_list))
         config.set('SERVER', 'CONFIG_TRACK', '' if not preset.track.subversion else preset.track.subversion)
         config.set('SERVER', 'TRACK', preset.track.dirname)
-        config.set('SERVER', 'SUN_ANGLE', str(preset.sun_angle))
+        config.set('SERVER', 'SUN_ANGLE', time_to_sun_angle(preset.time_of_day))
         config.set('SERVER', 'PASSWORD', 'TODO')
         config.set('SERVER', 'ADMIN_PASSWORD', 'TODO')
         config.set('SERVER', 'UDP_PORT', str(settings.ASSETTO_CORSA_SERVER_SETTINGS['udp_port']))

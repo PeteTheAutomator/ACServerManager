@@ -1,6 +1,7 @@
 from django.db import models
 from django.core.validators import MinValueValidator, MaxValueValidator
 from smart_selects.db_fields import ChainedForeignKey
+import datetime
 
 
 class Preset(models.Model):
@@ -30,6 +31,20 @@ class Preset(models.Model):
         (2, 'close at start'),
     )
 
+    TIME_OF_DAY_CHOICES = (
+        (datetime.time(8), '08:00'),
+        (datetime.time(9), '09:00'),
+        (datetime.time(10), '10:00'),
+        (datetime.time(11), '11:00'),
+        (datetime.time(12), '12:00'),
+        (datetime.time(13), '13:00'),
+        (datetime.time(14), '14:00'),
+        (datetime.time(15), '15:00'),
+        (datetime.time(16), '16:00'),
+        (datetime.time(17), '17:00'),
+        (datetime.time(18), '18:00'),
+    )
+
     # important stuff
     name = models.CharField(max_length=64, help_text='The name of the preset - this will appear in the Assetto Corsa server listing')
     welcome_message = models.TextField(default='Welcome!')
@@ -53,7 +68,7 @@ class Preset(models.Model):
     weathers = models.ManyToManyField('library.Weather')
 
     # nitty-gritty details
-    sun_angle = models.IntegerField(default=48, help_text='Angle of the position of the Sun')
+    time_of_day = models.TimeField(default=datetime.time(10, 00), choices=TIME_OF_DAY_CHOICES)
     tc_allowed = models.IntegerField(default=0, choices=ASSIST_CHOICES, help_text='Traction-control')
     abs_allowed = models.IntegerField(default=0, choices=ASSIST_CHOICES, help_text='Anti-lock brakes')
     stability_allowed = models.BooleanField(default=0, help_text='Stability-control allowed?')

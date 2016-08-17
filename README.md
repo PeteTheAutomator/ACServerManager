@@ -19,7 +19,6 @@ TODO
 * find a way to automate stracker package bundle
 * show/hide "advanced" preset fields
 * implement the welcome message
-* map sun_angle to time of day
 * ensure full help_text on models
 * revisit model validation
 * hook-up "launch server configuration" links to the publish_preset method and provide some feedback on service restarts/status
