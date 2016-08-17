@@ -13,7 +13,6 @@ Very much a work-in-progress at this stage; if you stumble across this project p
 TODO
 ----
 
-* provide a way to configure acserver ADMIN passwords (session passwords are implemented)
 * provide a MORE OBVIOUS way to clone presets as...
 * find a way to automate stracker package bundle
 * show/hide "advanced" preset fields
