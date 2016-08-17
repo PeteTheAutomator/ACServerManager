@@ -62,4 +62,4 @@
   template: src=django-app/djtasks.service.j2 dest=/usr/lib/systemd/system/djtasks.service owner=root group=root mode=0644
 
 - name: start and enable djtasks service
-  systemd: name=djtasks state=started enabled=yes
+  service: name=djtasks state=running enabled=yes
