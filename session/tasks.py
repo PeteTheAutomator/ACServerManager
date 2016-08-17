@@ -40,7 +40,7 @@ class ConfigHandler:
         if not preset.max_clients:
             preset.max_clients = preset.track.pitboxes
 
-        config.set('SERVER', 'NAME', preset.name)
+        config.set('SERVER', 'NAME', preset.server_setting.name)
         config.set('SERVER', 'CARS', ','.join(car_list))
         config.set('SERVER', 'CONFIG_TRACK', '' if not preset.track.subversion else preset.track.subversion)
         config.set('SERVER', 'TRACK', preset.track.dirname)
