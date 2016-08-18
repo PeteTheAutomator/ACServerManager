@@ -5,7 +5,15 @@ from datetime import datetime, timedelta
 import subprocess
 
 
-@background(schedule=timedelta(seconds=10))
+@background(schedule=timedelta(seconds=0))
+def write_config(preset):
+    ch = ConfigHandler('/home/acserver/assetto-server/cfg')
+    ch.write_server_config(preset)
+    ch.write_entries_config(preset)
+    ch.write_welcome_message(preset)
+
+
+@background(schedule=timedelta(seconds=1))
 def kick_services():
     acserver_return_code = subprocess.call(['/bin/sudo', '/sbin/service', 'acserver', 'restart'])
     if acserver_return_code != 0:

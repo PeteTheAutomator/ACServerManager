@@ -1,14 +1,11 @@
 from django.contrib import admin
 from .models import ServerSetting, Preset, Entry
-from .tasks import kick_services, ConfigHandler
+from .tasks import kick_services, write_config
 
 
 def publish_preset(modeladmin, request, queryset):
     for preset in queryset:
-        ch = ConfigHandler('/home/acserver/assetto-server/cfg')
-        ch.write_server_config(preset)
-        ch.write_entries_config(preset)
-        ch.write_welcome_message(preset)
+        write_config(preset)
     kick_services()
 
 
