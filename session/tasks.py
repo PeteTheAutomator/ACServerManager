@@ -78,6 +78,9 @@ class ConfigHandler:
         config.set('SERVER', 'AUTH_PLUGIN_ADDRESS', '')
         config.set('SERVER', 'LEGAL_TYRES', 'V;E;HR;ST')
 
+        if preset.server_setting.welcome_message:
+            config.set('SERVER', 'WELCOME_MESSAGE', str(os.path.join(self.config_dir, 'welcome_message.txt')))
+
         if preset.practice:
             config.add_section('PRACTICE')
             config.set('PRACTICE', 'NAME', 'Free Practice')
@@ -138,3 +141,9 @@ class ConfigHandler:
 
         config.write(cfg_file, space_around_delimiters=False)
         cfg_file.close()
+
+    def write_welcome_message(self, preset):
+        fh = open(os.path.join(self.config_dir, 'welcome_message.txt'), 'w')
+        fh.write(preset.server_setting.welcome_message)
+        fh.close()
+

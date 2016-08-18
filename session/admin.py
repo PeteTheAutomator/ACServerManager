@@ -8,6 +8,7 @@ def publish_preset(modeladmin, request, queryset):
         ch = ConfigHandler('/home/acserver/assetto-server/cfg')
         ch.write_server_config(preset)
         ch.write_entries_config(preset)
+        ch.write_welcome_message(preset)
     kick_services()
 
 
