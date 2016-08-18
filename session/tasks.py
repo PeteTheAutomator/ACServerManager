@@ -131,7 +131,7 @@ class ConfigHandler:
             car_section = 'CAR_' + str(car_count)
             config.add_section(car_section)
             config.set(car_section, 'MODEL', entry.car.dirname)
-            config.set(car_section, 'SKIN', 'TODO')
+            config.set(car_section, 'SKIN', entry.skin.name)
             config.set(car_section, 'SPECTATOR_MODE', str(int(entry.spectator_mode)))
             config.set(car_section, 'DRIVER_NAME', entry.name)
             config.set(car_section, 'TEAM', entry.team)
