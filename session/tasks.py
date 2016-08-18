@@ -2,11 +2,13 @@ import os
 from configparser import ConfigParser
 from background_task import background
 from datetime import datetime, timedelta
+from .models import Preset
 import subprocess
 
 
 @background(schedule=timedelta(seconds=0))
-def write_config(preset):
+def write_config(preset_id):
+    preset = Preset.objects.get(id=preset_id)
     ch = ConfigHandler('/home/acserver/assetto-server/cfg')
     ch.write_server_config(preset)
     ch.write_entries_config(preset)
