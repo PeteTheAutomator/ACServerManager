@@ -3,7 +3,8 @@ from configparser import ConfigParser
 from background_task import background
 from datetime import datetime, timedelta
 from .models import Preset
-import subprocess
+from subprocess import Popen, PIPE
+import re
 
 
 @background(schedule=timedelta(seconds=0))
@@ -17,14 +18,30 @@ def write_config(preset_id):
 
 @background(schedule=timedelta(seconds=1))
 def kick_services():
-    acserver_return_code = subprocess.call(['/bin/sudo', '/sbin/service', 'acserver', 'restart'])
+    p = Popen(['/bin/sudo', '/usr/bin/systemctl', 'restart', 'acserver'], stdin=PIPE, stdout=PIPE, stderr=PIPE)
+    p.communicate()
+    acserver_return_code = p.returncode
+
     if acserver_return_code != 0:
         raise Exception('failed to restart assetto corsa server process')
 
-    stracker_return_code = subprocess.call(['/bin/sudo', '/sbin/service', 'stracker', 'restart'])
+    p = Popen(['/bin/sudo', '/usr/bin/systemctl', 'restart', 'stracker'], stdin=PIPE, stdout=PIPE, stderr=PIPE)
+    p.communicate()
+    stracker_return_code = p.returncode
     if stracker_return_code != 0:
         raise Exception('failed to restart stracker server process')
 
+
+def get_server_status():
+    p = Popen(['/bin/sudo', '/usr/bin/systemctl', 'status', 'postfix'], stdin=PIPE, stdout=PIPE, stderr=PIPE)
+    output, err = p.communicate()
+    rc = p.returncode
+    output_lines = output.split('\n')
+    for line in output_lines:
+        # here we look for the particular config it's running to determine which preset is active
+        if re.match('.*acServer -c.*'):
+            pass
+        
 
 def time_to_sun_angle(time):
     return str((time.hour - 13) * 16)

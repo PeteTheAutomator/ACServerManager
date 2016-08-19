@@ -1,2 +1,2 @@
-acserver ALL=(ALL) NOPASSWD: /sbin/service acserver stop, /sbin/service acserver start, /sbin/service acserver restart, /sbin/service acserver status
-acserver ALL=(ALL) NOPASSWD: /sbin/service stracker stop, /sbin/service stracker start, /sbin/service stracker restart, /sbin/service stracker status
+acserver ALL=(ALL) NOPASSWD: /usr/bin/systemctl stop acserver, /usr/bin/systemctl start acserver, /usr/bin/systemctl restart acserver, /usr/bin/systemctl status acserver
+acserver ALL=(ALL) NOPASSWD: /usr/bin/systemctl stop stracker, /usr/bin/systemctl start stracker, /usr/bin/systemctl restart stracker, /usr/bin/systemctl status stracker

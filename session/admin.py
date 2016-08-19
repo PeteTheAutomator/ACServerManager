@@ -14,7 +14,7 @@ class EntryInline(admin.StackedInline):
     extra = 0
 
 
-class EnvironmentAdmin(admin.ModelAdmin):
+class PresetAdmin(admin.ModelAdmin):
     model = Preset
     filter_horizontal = ('weathers',)
     inlines = [EntryInline]
@@ -25,9 +25,9 @@ class EnvironmentAdmin(admin.ModelAdmin):
     # TODO: hook this up to a new view which provides some feedback into the publish_preset method
     # above, and ideally some output from the background task which kicks services
     def launch_configuration(self, obj):
-        return '<a href="' + str(obj.pk) + '">Launch This Server Configuration</a>'
+        return '<a href="/session/preset/' + str(obj.pk) + '/launch/">Launch This Server Configuration</a>'
     launch_configuration.allow_tags = True
 
 
 admin.site.register(ServerSetting)
-admin.site.register(Preset, EnvironmentAdmin)
+admin.site.register(Preset, PresetAdmin)
