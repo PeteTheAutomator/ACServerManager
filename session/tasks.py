@@ -3,6 +3,7 @@ from configparser import ConfigParser
 from background_task import background
 from datetime import datetime, timedelta
 from .models import Preset
+from django.conf import settings
 from subprocess import Popen, PIPE
 import re
 
@@ -10,7 +11,8 @@ import re
 @background(schedule=timedelta(seconds=0))
 def write_config(preset_id):
     preset = Preset.objects.get(id=preset_id)
-    ch = ConfigHandler('/home/acserver/assetto-server/cfg')
+    config_dir = os.path.join(settings.ACSERVER_CONFIG_DIR, preset_id)
+    ch = ConfigHandler(config_dir)
     ch.write_server_config(preset)
     ch.write_entries_config(preset)
     ch.write_welcome_message(preset)
@@ -33,14 +35,19 @@ def kick_services():
 
 
 def get_server_status():
-    p = Popen(['/bin/sudo', '/usr/bin/systemctl', 'status', 'postfix'], stdin=PIPE, stdout=PIPE, stderr=PIPE)
+    p = Popen(['/bin/sudo', '/usr/bin/systemctl', 'list-units'], stdin=PIPE, stdout=PIPE, stderr=PIPE)
     output, err = p.communicate()
     rc = p.returncode
-    output_lines = output.split('\n')
-    for line in output_lines:
-        # here we look for the particular config it's running to determine which preset is active
-        if re.match('.*acServer -c.*'):
-            pass
+    server_status_dict = {}
+    if rc == 0:
+        output_lines = output.split('\n')
+        for preset in Preset.objects.all():
+            server_status_dict[preset.id] = False
+            acserver_regex = re.compile('\s*acserver@' + str(preset.id) + '\.service\s+loaded active running')
+            for line in output_lines:
+                if re.match(acserver_regex, line):
+                    server_status_dict[preset.id] = True
+    return server_status_dict
         
 
 def time_to_sun_angle(time):
@@ -50,6 +57,8 @@ def time_to_sun_angle(time):
 class ConfigHandler:
     def __init__(self, config_dir):
         self.config_dir = config_dir
+        if not os.path.isdir(self.config_dir):
+            os.makedirs(self.config_dir)
 
     def write_server_config(self, preset):
         config = ConfigParser()
