@@ -36,6 +36,22 @@ def kick_services(preset_id):
         raise Exception('failed to restart stracker server process')
 
 
+@background(schedule=timedelta(seconds=1))
+def stop_services(preset_id):
+    p = Popen(['/bin/sudo', '/usr/bin/systemctl', 'stop', 'acserver@' + str(preset_id)], stdin=PIPE, stdout=PIPE, stderr=PIPE)
+    p.communicate()
+    acserver_return_code = p.returncode
+
+    if acserver_return_code != 0:
+        raise Exception('failed to stop assetto corsa server process')
+
+    p = Popen(['/bin/sudo', '/usr/bin/systemctl', 'stop', 'stracker@' + str(preset_id)], stdin=PIPE, stdout=PIPE, stderr=PIPE)
+    p.communicate()
+    stracker_return_code = p.returncode
+    if stracker_return_code != 0:
+        raise Exception('failed to stop stracker server process')
+
+
 @background(schedule=timedelta(seconds=5))
 def get_server_status():
     p = Popen(['/bin/sudo', '/usr/bin/systemctl', 'list-units'], stdin=PIPE, stdout=PIPE, stderr=PIPE)
