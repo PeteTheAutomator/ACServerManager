@@ -36,7 +36,7 @@ def kick_services(preset_id):
         raise Exception('failed to restart stracker server process')
 
 
-@background(schedule=timedelta(seconds=0))
+@background(schedule=timedelta(seconds=5))
 def get_server_status():
     p = Popen(['/bin/sudo', '/usr/bin/systemctl', 'list-units'], stdin=PIPE, stdout=PIPE, stderr=PIPE)
     output, err = p.communicate()
