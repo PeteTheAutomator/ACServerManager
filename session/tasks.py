@@ -36,20 +36,28 @@ def kick_services(preset_id):
         raise Exception('failed to restart stracker server process')
 
 
+@background(schedule=timedelta(seconds=0))
 def get_server_status():
     p = Popen(['/bin/sudo', '/usr/bin/systemctl', 'list-units'], stdin=PIPE, stdout=PIPE, stderr=PIPE)
     output, err = p.communicate()
     rc = p.returncode
-    server_status_dict = {}
     if rc == 0:
         output_lines = output.split('\n')
         for preset in Preset.objects.all():
-            server_status_dict[preset.id] = False
+            preset_changed = False
             acserver_regex = re.compile('\s*acserver@' + str(preset.id) + '\.service\s+loaded active running')
+            stracker_regex = re.compile('\s*stracker@' + str(preset.id) + '\.service\s+loaded active running')
             for line in output_lines:
                 if re.match(acserver_regex, line):
-                    server_status_dict[preset.id] = True
-    return server_status_dict
+                    if not preset.acserver_run_status:
+                        preset.acserver_run_status = True
+                        preset_changed = True
+                if re.match(stracker_regex, line):
+                    if not preset.stracker_run_status:
+                        preset.stracker_run_status = True
+                        preset_changed = True
+            if preset_changed:
+                preset.save()
         
 
 def time_to_sun_angle(time):
