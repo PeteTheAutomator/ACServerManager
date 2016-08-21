@@ -47,15 +47,24 @@ def get_server_status():
             preset_changed = False
             acserver_regex = re.compile('\s*acserver@' + str(preset.id) + '\.service\s+loaded active running')
             stracker_regex = re.compile('\s*stracker@' + str(preset.id) + '\.service\s+loaded active running')
+
+            acserver_run_status = False
+            stracker_run_status = False
+
             for line in output_lines:
                 if re.match(acserver_regex, line):
-                    if not preset.acserver_run_status:
-                        preset.acserver_run_status = True
-                        preset_changed = True
+                    acserver_run_status = True
                 if re.match(stracker_regex, line):
-                    if not preset.stracker_run_status:
-                        preset.stracker_run_status = True
-                        preset_changed = True
+                    stracker_run_status = True
+
+            if preset.acserver_run_status != acserver_run_status:
+                preset.acserver_run_status = acserver_run_status
+                preset_changed = True
+
+            if preset.stracker_run_status != stracker_run_status:
+                preset.stracker_run_status = stracker_run_status
+                preset_changed = True
+
             if preset_changed:
                 preset.save()
         
