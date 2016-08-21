@@ -22,7 +22,7 @@ def launch_preset(request, preset_id):
     return redirect('/admin/session/preset/')
 
 
-def stop(request, preset_id):
+def stop_preset(request, preset_id):
     # TODO: make it pretty (yeah - it's horrible, but let's get something vaguely working)
     stop_services(preset_id)
     sleep(2)
