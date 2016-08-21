@@ -218,8 +218,9 @@ class ConfigHandler:
         config.set('SWEAR_FILTER', 'ban_duration', '30')
         config.set('SWEAR_FILTER', 'num_warnings', '3')
         config.set('SWEAR_FILTER', 'swear_file', 'bad_words.txt')
+        # TODO: the warning message below originally took parameterised "action" and "num_warnings" values; this caused ConfigParser issues so the message was made static.  Ideally this wants to become dynamic somehow.
         config.set('SWEAR_FILTER', 'warning',
-                   'Please be polite and do not swear in the chat. You will be %(swear_action)s from the server after receiving %(num_warnings_left)d more warnings.')
+                   'Please be polite and do not swear in the chat. You will be kicked from the server after receiving 3 more warnings.')
 
         config.add_section('SESSION_MANAGEMENT')
         config.set('SESSION_MANAGEMENT', 'race_over_strategy', 'none')
@@ -275,6 +276,11 @@ class ConfigHandler:
         config.set('ACPLUGIN', 'proxyPluginPort', '-1')
         config.set('ACPLUGIN', 'rcvPort', '-1')
         config.set('ACPLUGIN', 'sendPort', '-1')
+
+        config.add_section('LAP_VALID_CHECKS')
+        config.set('LAP_VALID_CHECKS', 'invalidateOnCarCollisions', 'True')
+        config.set('LAP_VALID_CHECKS', 'invalidateOnEnvCollisions', 'True')
+        config.set('LAP_VALID_CHECKS', 'ptrackerAllowedTyresOut', '-1')
 
         config.write(cfg_file, space_around_delimiters=True)
         cfg_file.close()
