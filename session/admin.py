@@ -15,9 +15,11 @@ class EntryInline(admin.StackedInline):
 
 
 class PresetAdmin(admin.ModelAdmin):
+    '''
     def __init__(self, *args, **kwargs):
         get_server_status()
         super(PresetAdmin, self).__init__(*args, **kwargs)
+    '''
 
     model = Preset
     filter_horizontal = ('weathers',)
