@@ -16,6 +16,14 @@ class EntryInline(admin.StackedInline):
 
 
 class PresetAdmin(admin.ModelAdmin):
+    def __init__(self, *args, **kwargs):
+        # This try block is to overcome initial schema migrations where the background_task model isn't present
+        try:
+            get_server_status()
+        except:
+            pass
+        super(PresetAdmin, self).__init__(*args, **kwargs)
+
     model = Preset
     filter_horizontal = ('weathers',)
     inlines = [EntryInline]
@@ -23,8 +31,6 @@ class PresetAdmin(admin.ModelAdmin):
     list_display = ('__unicode__', 'launch_configuration', 'acserver_status', 'stracker_status')
     exclude = ('acserver_run_status', 'stracker_run_status',)
 
-    # TODO: hook this up to a new view which provides some feedback into the publish_preset method
-    # above, and ideally some output from the background task which kicks services
     def launch_configuration(self, obj):
         return '<a href="/session/preset/' + str(obj.pk) + '/launch/">Launch This Server Configuration</a>'
     launch_configuration.allow_tags = True

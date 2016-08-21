@@ -17,10 +17,8 @@ TODO
 * show/hide "advanced" preset fields
 * ensure full help_text on models
 * revisit model validation
-* redirect / to /admin
 * hook-up "launch server configuration" links to the publish_preset method and provide some feedback on service restarts/status
 * add minor-rating
-* implement bookings (presently only pickup mode works to some extent)
 * automate stracker package bundle, acserver content artifacts and ACServerManager db fixtures
   - ideally: a python script which can run on a windows host to gather artifacts for both stracker, ACServerManager (database) and for the acserver's cars/tracks contents directory
   - find a way to import stracker's artifacts (either dissect the http form's underlying method, or maybe use a local http post with ansible?)

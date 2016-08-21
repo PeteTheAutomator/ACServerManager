@@ -4,6 +4,9 @@ Alias /favicon.ico {{acserver_app_dir}}/static/favicon.ico
 Alias /media/ {{acserver_app_dir}}/media/
 Alias /static/ {{acserver_app_dir}}/static/
 
+RewriteEngine on
+RewriteRule ^/$ /admin/ [R]
+
 <Directory {{acserver_app_dir}}/static>
   Require all granted
 </Directory>
