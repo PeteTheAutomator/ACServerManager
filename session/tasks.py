@@ -52,7 +52,7 @@ def stop_services(preset_id):
         raise Exception('failed to stop stracker server process')
 
 
-@background(schedule=timedelta(seconds=5))
+@background(schedule=timedelta(seconds=0))
 def get_server_status():
     p = Popen(['/bin/sudo', '/usr/bin/systemctl', 'list-units'], stdin=PIPE, stdout=PIPE, stderr=PIPE)
     output, err = p.communicate()
