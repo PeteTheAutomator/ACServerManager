@@ -20,4 +20,4 @@
   file: path="{{acserver_stracker_dir}}" owner=acserver group=acserver recurse=yes
 
 - name: write stracker systemd unit file
-  template: src=stracker/stracker.service.j2 dest=/usr/lib/systemd/system/stracker.service owner=root group=root mode=0644
+  template: src=stracker/stracker.service.j2 dest=/usr/lib/systemd/system/stracker@.service owner=root group=root mode=0644
