@@ -6,7 +6,7 @@ from .tasks import kick_services, write_config
 def publish_preset(modeladmin, request, queryset):
     for preset in queryset:
         write_config(preset_id=preset.id)
-    kick_services()
+        kick_services(preset_id=preset.id)
 
 
 class EntryInline(admin.StackedInline):

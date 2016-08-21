@@ -11,7 +11,7 @@ import re
 @background(schedule=timedelta(seconds=0))
 def write_config(preset_id):
     preset = Preset.objects.get(id=preset_id)
-    config_dir = os.path.join(settings.ACSERVER_CONFIG_DIR, preset_id)
+    config_dir = os.path.join(settings.ACSERVER_CONFIG_DIR, str(preset_id))
     ch = ConfigHandler(config_dir)
     ch.write_server_config(preset)
     ch.write_entries_config(preset)
@@ -19,8 +19,8 @@ def write_config(preset_id):
 
 
 @background(schedule=timedelta(seconds=1))
-def kick_services():
-    p = Popen(['/bin/sudo', '/usr/bin/systemctl', 'restart', 'acserver'], stdin=PIPE, stdout=PIPE, stderr=PIPE)
+def kick_services(preset_id):
+    p = Popen(['/bin/sudo', '/usr/bin/systemctl', 'restart', 'acserver@' + str(preset_id)], stdin=PIPE, stdout=PIPE, stderr=PIPE)
     p.communicate()
     acserver_return_code = p.returncode
 
