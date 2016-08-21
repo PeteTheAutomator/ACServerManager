@@ -108,3 +108,4 @@ STATIC_URL = '/static/'
 STATIC_ROOT = '/usr/local/ACServerManager/static'
 
 ACSERVER_CONFIG_DIR = '/home/acserver/assetto-server/cfg'
+STRACKER_CONFIG_DIR = '/home/acserver/stracker/cfg'
