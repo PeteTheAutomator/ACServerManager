@@ -1,6 +1,120 @@
 import os
 import json
 import re
+import sys
+from shutil import copyfile
+import hashlib
+import zipfile
+
+
+def md5(fname):
+    hash_md5 = hashlib.md5()
+    with open(fname, "rb") as f:
+        for chunk in iter(lambda: f.read(4096), b""):
+            hash_md5.update(chunk)
+    return hash_md5.hexdigest()
+
+
+def zipdir(path, ziph):
+    for root, dirs, files in os.walk(path):
+        for f in files:
+            ziph.write(os.path.join(root, f))
+
+
+class AssetGatherer:
+    def __init__(self, steam_path, outfile='assetto-assets.zip', tempdir='/var/tmp/assetto-assets'):
+        self.steam_path = steam_path
+        self.outfile = outfile
+        self.tempdir = tempdir
+        self.ac_dir = os.path.join(self.steam_path, 'steamapps', 'common', 'assettocorsa')
+        self.acserver_dir = os.path.join(self.steam_path, 'steamapps', 'common', 'Assetto Corsa Dedicated Server')
+        self.tracks_dir = os.path.join(self.ac_dir, 'content', 'tracks')
+        self.cars_dir = os.path.join(self.ac_dir, 'content', 'cars')
+        self.weather_dir = os.path.join(self.ac_dir, 'content', 'weather')
+        if not os.path.isdir(tempdir):
+            os.makedirs(tempdir)
+
+    def validate_installation(self):
+        expected_dirs = [
+            self.ac_dir,
+            self.tracks_dir,
+            self.cars_dir,
+            self.weather_dir,
+        ]
+
+        missing_folders_list = []
+        for folder in expected_dirs:
+            if not os.path.isdir(folder):
+                missing_folders_list.append(folder)
+
+        if len(missing_folders_list) > 0:
+            print 'Could not find the following folder(s): '
+            for folder in missing_folders_list:
+                print folder
+            sys.exit(1)
+
+        acserver_binary = os.path.join(self.acserver_dir, 'acServer')
+        if not os.path.isfile(acserver_binary):
+            print 'Could not find the Assetto Corsa Dedicated Server binary: '
+            print '   ' + acserver_binary
+            print 'Please install this using Steam.'
+            sys.exit(1)
+
+    def validate_acserver_binary(self, acserver_builds):
+        actual_acserver_md5 = md5(os.path.join(self.acserver_dir, 'acServer'))
+        if actual_acserver_md5 not in acserver_builds:
+            return False
+        else:
+            return True
+
+    def gather_fixtures(self):
+        i = Inspector(self.ac_dir)
+        fixtures = i.generate_fixtures()
+        fh = open(os.path.join(self.tempdir, 'fixtures.json'), 'w')
+        fh.write(json.dumps(fixtures, indent=4))
+        fh.close()
+
+    def gather_track_files(self):
+        file_list = [
+            'drs_zones.ini',
+            'surfaces.ini',
+        ]
+
+        for root, dirs, files in os.walk(self.tracks_dir):
+            for file in files:
+                if file in file_list:
+                    source = os.path.join(root, file)
+                    target = re.sub(self.ac_dir, '', os.path.join(root, file)).strip('/')
+                    destination = os.path.join(self.tempdir, target)
+                    if not os.path.exists(os.path.dirname(destination)):
+                        os.makedirs(os.path.dirname(destination))
+                    copyfile(source, os.path.join(self.tempdir, destination))
+
+    def gather_car_files(self):
+        for root, dirs, files in os.walk(self.cars_dir):
+            for file in files:
+                if file == 'data.acd':
+                    source = os.path.join(root, file)
+                    target = re.sub(self.ac_dir, '', os.path.join(root, file)).strip('/')
+                    destination = os.path.join(self.tempdir, target)
+                    if not os.path.exists(os.path.dirname(destination)):
+                        os.makedirs(os.path.dirname(destination))
+                    copyfile(source, os.path.join(self.tempdir, destination))
+
+    def gather_acserver_binary(self):
+        copyfile(os.path.join(self.acserver_dir, 'acServer'), os.path.join(self.tempdir, 'acServer'))
+
+    def create_archive(self):
+        zipf = zipfile.ZipFile(self.outfile, 'w', zipfile.ZIP_DEFLATED)
+        zipdir(self.tempdir, zipf)
+        zipf.close()
+
+    def create(self):
+        self.gather_fixtures()
+        self.gather_acserver_binary()
+        self.gather_track_files()
+        self.gather_car_files()
+        self.create_archive()
 
 
 class Inspector:
@@ -13,7 +127,7 @@ class Inspector:
         }
 
     def get_cars(self):
-        cars_root = os.path.join(self.path, 'cars')
+        cars_root = os.path.join(self.path, 'content', 'cars')
 
         if not os.path.isdir(cars_root):
             raise Exception('Cannot find cars root directory')
@@ -41,7 +155,7 @@ class Inspector:
                     raise Exception('failed to parse car_ui_json on ' + root)
 
     def get_tracks(self):
-        tracks_root = os.path.join(self.path, 'tracks')
+        tracks_root = os.path.join(self.path, 'content', 'tracks')
 
         if not os.path.isdir(tracks_root):
             raise Exception('Cannot find tracks root directory')
