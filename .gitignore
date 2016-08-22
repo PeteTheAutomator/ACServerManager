@@ -1,2 +1,5 @@
 *.pyc
 db.sqlite3
+docs/_build
+docs/_templates
+docs/_static
