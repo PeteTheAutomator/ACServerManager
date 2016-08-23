@@ -107,5 +107,7 @@ USE_TZ = True
 STATIC_URL = '/static/'
 STATIC_ROOT = '/usr/local/ACServerManager/static'
 
-ACSERVER_CONFIG_DIR = '/home/acserver/assetto-server/cfg'
-STRACKER_CONFIG_DIR = '/home/acserver/stracker/cfg'
+ACSERVER_HOME = '/home/acserver'
+ACSERVER_BIN_DIR = os.path.join(ACSERVER_HOME, 'assetto-server')
+ACSERVER_CONFIG_DIR = os.path.join(ACSERVER_HOME, 'assetto-server/cfg')
+STRACKER_CONFIG_DIR = os.path.join(ACSERVER_HOME, 'stracker/cfg')

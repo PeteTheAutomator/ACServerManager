@@ -22,4 +22,5 @@ urlpatterns = [
     url(r'^admin/', include(admin.site.urls)),
     url(r'^chaining/', include('smart_selects.urls')),
     url(r'^session/', include('session.urls')),
+    url(r'^library/', include('library.urls')),
 ]
