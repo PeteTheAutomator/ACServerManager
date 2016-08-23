@@ -1,7 +1,8 @@
 import zipfile
 import os
 from shutil import copyfile, copytree, rmtree
-from background_task import tasks
+from background_task import background
+from datetime import timedelta
 from django.conf import settings
 from .models import Document
 from django.core.management import call_command
@@ -39,6 +40,7 @@ def validate_assets():
         raise Exception('Cannot find content dir')
 
 
+@background(schedule=timedelta(seconds=0))
 def process_assets(document_id):
     document = Document.objects.get(id=document_id)
     assets_tmp_dir = os.path.join(settings.ACSERVER_HOME, 'assets-tmp')

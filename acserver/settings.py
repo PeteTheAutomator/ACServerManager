@@ -106,6 +106,7 @@ USE_TZ = True
 
 STATIC_URL = '/static/'
 STATIC_ROOT = '/usr/local/ACServerManager/static'
+MEDIA_ROOT = '/usr/local/ACServerManager/media'
 
 ACSERVER_HOME = '/home/acserver'
 ACSERVER_BIN_DIR = os.path.join(ACSERVER_HOME, 'assetto-server')
