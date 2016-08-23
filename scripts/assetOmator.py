@@ -1,6 +1,7 @@
 #!/usr/bin/env python
 
 import argparse
+import os
 from acserver_libs import AssetGatherer
 
 acserver_builds = {
@@ -10,7 +11,7 @@ acserver_builds = {
 
 def argument_parser():
     parser = argparse.ArgumentParser(description='Assetto Corsa asset inspector - generates database fixtures')
-    parser.add_argument('path', help='path to Steam')
+    parser.add_argument('-s', '--steampath', help='path to Steam', required=False, default='c:\Steam')
     parser.add_argument('-o', '--outfile', default='assetto-assets.zip', help='Assetto Corsa asset output file archive')
     parser.add_argument('-i', '--ignore', help='ignore acserver md5 check - USE AT YOUR OWN RISK', action='store_true')
     args = parser.parse_args()
@@ -19,7 +20,11 @@ def argument_parser():
 
 if __name__ == '__main__':
     args = argument_parser()
-    ag = AssetGatherer(args['path'])
+
+    while not os.path.isdir(args['steampath']):
+        args['steampath'] = raw_input('Please tell the the path to Steam?  (example "c:\Steam")\r\n')
+
+    ag = AssetGatherer(args['steampath'])
     ag.validate_installation()
 
     if not args['ignore']:
