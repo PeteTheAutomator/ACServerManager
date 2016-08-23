@@ -16,10 +16,16 @@ def md5(fname):
     return hash_md5.hexdigest()
 
 
-def zipdir(path, ziph):
-    for root, dirs, files in os.walk(path):
-        for f in files:
-            ziph.write(os.path.join(root, f))
+def make_archive(file_list, archive, root):
+    """
+    'fileList' is a list of file names - full path each name
+    'archive' is the file name for the archive with a full path
+    """
+    a = zipfile.ZipFile(archive, 'w', zipfile.ZIP_DEFLATED)
+    for f in file_list:
+        print "archiving file %s" % f
+        a.write(f, os.path.relpath(f, root))
+    a.close()
 
 
 class AssetGatherer:
@@ -82,9 +88,9 @@ class AssetGatherer:
         ]
 
         for root, dirs, files in os.walk(self.tracks_dir):
-            for file in files:
-                if file in file_list:
-                    source = os.path.join(root, file)
+            for f in files:
+                if f in file_list:
+                    source = os.path.join(root, f)
                     common_prefix = os.path.commonprefix([self.ac_dir, source])
                     target = os.path.join(self.tempdir, os.path.relpath(source, common_prefix))
                     if not os.path.exists(os.path.dirname(target)):
@@ -93,9 +99,9 @@ class AssetGatherer:
 
     def gather_car_files(self):
         for root, dirs, files in os.walk(self.cars_dir):
-            for file in files:
-                if file == 'data.acd':
-                    source = os.path.join(root, file)
+            for f in files:
+                if f == 'data.acd':
+                    source = os.path.join(root, f)
                     common_prefix = os.path.commonprefix([self.ac_dir, source])
                     target = os.path.join(self.tempdir, os.path.relpath(source, common_prefix))
                     if not os.path.exists(os.path.dirname(target)):
@@ -105,17 +111,19 @@ class AssetGatherer:
     def gather_acserver_binary(self):
         copyfile(os.path.join(self.acserver_dir, 'acServer'), os.path.join(self.tempdir, 'acServer'))
 
-    def create_archive(self):
-        zipf = zipfile.ZipFile(self.outfile, 'w', zipfile.ZIP_DEFLATED)
-        zipdir(self.tempdir, zipf)
-        zipf.close()
+    def build_payload(self):
+        file_list = []
+        for root, dirs, files in os.walk(self.tempdir):
+            for f in files:
+                file_list.append(os.path.join(root, f))
+        make_archive(file_list, self.outfile, self.tempdir)
 
     def create(self):
         self.gather_fixtures()
         self.gather_acserver_binary()
         self.gather_track_files()
         self.gather_car_files()
-        self.create_archive()
+        self.build_payload()
 
 
 class Inspector:
@@ -213,7 +221,6 @@ class Inspector:
                 }
             )
             track_pk += 1
-
 
         car_pk = 1
         car_skin_pk = 1
