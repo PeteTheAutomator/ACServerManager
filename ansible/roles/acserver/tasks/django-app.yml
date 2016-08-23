@@ -30,7 +30,6 @@
   with_items:
     - weathers.json
     - track_dynamisms.json
-    - cars_skins_tracks.json
 
 - name: collect django static assets
   django_manage: command=collectstatic virtualenv="{{acserver_virtualenv}}" app_path="{{acserver_app_dir}}"
