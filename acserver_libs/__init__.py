@@ -1,4 +1,5 @@
 import os
+import platform
 import json
 import re
 import sys
@@ -22,7 +23,7 @@ def zipdir(path, ziph):
 
 
 class AssetGatherer:
-    def __init__(self, steam_path, outfile='assetto-assets.zip', tempdir='/var/tmp/assetto-assets'):
+    def __init__(self, steam_path, outfile='assetto-assets.zip', tempdir='tmp'):
         self.steam_path = steam_path
         self.outfile = outfile
         self.tempdir = tempdir
@@ -84,22 +85,22 @@ class AssetGatherer:
             for file in files:
                 if file in file_list:
                     source = os.path.join(root, file)
-                    target = re.sub(self.ac_dir, '', os.path.join(root, file)).strip('/')
-                    destination = os.path.join(self.tempdir, target)
-                    if not os.path.exists(os.path.dirname(destination)):
-                        os.makedirs(os.path.dirname(destination))
-                    copyfile(source, os.path.join(self.tempdir, destination))
+                    common_prefix = os.path.commonprefix([self.ac_dir, source])
+                    target = os.path.join(self.tempdir, os.path.relpath(source, common_prefix))
+                    if not os.path.exists(os.path.dirname(target)):
+                        os.makedirs(os.path.dirname(target))
+                    copyfile(source, target)
 
     def gather_car_files(self):
         for root, dirs, files in os.walk(self.cars_dir):
             for file in files:
                 if file == 'data.acd':
                     source = os.path.join(root, file)
-                    target = re.sub(self.ac_dir, '', os.path.join(root, file)).strip('/')
-                    destination = os.path.join(self.tempdir, target)
-                    if not os.path.exists(os.path.dirname(destination)):
-                        os.makedirs(os.path.dirname(destination))
-                    copyfile(source, os.path.join(self.tempdir, destination))
+                    common_prefix = os.path.commonprefix([self.ac_dir, source])
+                    target = os.path.join(self.tempdir, os.path.relpath(source, common_prefix))
+                    if not os.path.exists(os.path.dirname(target)):
+                        os.makedirs(os.path.dirname(target))
+                    copyfile(source, target)
 
     def gather_acserver_binary(self):
         copyfile(os.path.join(self.acserver_dir, 'acServer'), os.path.join(self.tempdir, 'acServer'))
@@ -132,14 +133,18 @@ class Inspector:
         if not os.path.isdir(cars_root):
             raise Exception('Cannot find cars root directory')
 
-        for root, dirs, files in os.walk(self.path, 'cars'):
+        for root, dirs, files in os.walk(cars_root):
             car_ui_json = os.path.join(root, 'ui', 'ui_car.json')
             if os.path.isfile(car_ui_json):
                 fh = open(car_ui_json)
                 car_ui_json_raw = fh.read()
                 fh.close()
                 try:
-                    car_detail = json.loads(car_ui_json_raw.replace('\r\n', '').replace('\t', ''))
+                    if platform.system() == 'Windows':
+                        car_detail = json.loads(car_ui_json_raw.replace('\n', '').replace('\t', ''))
+                    else:
+                        car_detail = json.loads(car_ui_json_raw.replace('\r\n', '').replace('\t', ''))
+
                     car_detail['skins'] = None
                     for k in car_detail.keys():
                         if k not in ['name', 'brand', 'class', 'tags']:
@@ -160,14 +165,18 @@ class Inspector:
         if not os.path.isdir(tracks_root):
             raise Exception('Cannot find tracks root directory')
 
-        for root, dirs, files in os.walk(self.path, 'tracks'):
+        for root, dirs, files in os.walk(tracks_root):
             if 'ui_track.json' in files:
                 fh = open(os.path.join(root, 'ui_track.json'))
                 track_ui_json_raw = fh.read()
                 fh.close()
                 try:
                     track_ui_json_unicodefix = unicode(track_ui_json_raw, errors='replace')
-                    track_detail = json.loads(track_ui_json_unicodefix.replace('\r\n', '').replace('\t', ''))
+                    if platform.system() == 'Windows':
+                        track_detail = json.loads(track_ui_json_unicodefix.replace('\n', '').replace('\t', ''))
+                    else:
+                        track_detail = json.loads(track_ui_json_unicodefix.replace('\r\n', '').replace('\t', ''))
+
                     for k in track_detail.keys():
                         if k not in ['name', 'description', 'country', 'pitboxes', 'run']:
                             del track_detail[k]
@@ -258,6 +267,3 @@ class Inspector:
             car_pk += 1
 
         return results
-
-
-
