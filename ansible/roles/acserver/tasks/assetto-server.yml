@@ -14,9 +14,6 @@
 - name: disable sudo requiretty
   lineinfile: dest=/etc/sudoers state=present regexp='^Defaults\s+!?requiretty' line='Defaults    !requiretty' validate='visudo -cf %s'
 
-- name: copy assetto corsa dedicated server files
-  synchronize: src=assetto-server dest="{{acserver_server_install_prefix}}"
-
 - name: create assetto-server dir
   file: path="{{acserver_server_install_dir}}" state=directory owner=acserver group=acserver
 
