@@ -1,7 +1,7 @@
 #!/usr/bin/bash
 # Bootstrap script for the Assetto Corsa Server Manager
 
-sudo yum install -y python-setuptools python-dev policycoreutils-python openssl-devel git gcc
+sudo yum install -y python-setuptools python-devel policycoreutils-python openssl-devel git gcc
 sudo easy_install pip
 sudo pip install ansible
 
