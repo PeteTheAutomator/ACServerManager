@@ -31,6 +31,8 @@ Contents:
 
    overview
    installation
+   assetOmator
+   server_setup
    usage
 
 
