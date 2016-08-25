@@ -75,6 +75,3 @@ class Weather(models.Model):
 
 class AssetCollection(models.Model):
     collection = models.FileField(upload_to='assetcollections/%Y/%m/%d')
-
-    def __unicode__(self):
-        return self.collection

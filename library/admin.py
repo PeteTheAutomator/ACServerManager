@@ -4,7 +4,7 @@ from .models import Car, CarSkin, CarTag, Track, TrackDynamism, Weather, AssetCo
 
 class DocumentAdmin(admin.ModelAdmin):
     model = AssetCollection
-    list_display = ('__unicode__', 'process_assets',)
+    list_display = ('collection', 'process_assets',)
     actions = None
 
     def process_assets(self, obj):
