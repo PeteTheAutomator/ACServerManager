@@ -1,9 +1,6 @@
-************
-Installation
-************
-
+*******************
 Server Installation
--------------------
+*******************
 First, sign-up for an `Amazon Web Services (AWS)`_ account.
 
 .. _Amazon Web Services (AWS): https://aws.amazon.com

@@ -1,6 +1,6 @@
-***********
-assetOmator
-***********
+************************
+assetOmator Installation
+************************
 The assetOmator tool is a Python script which inspects your PCs Assetto Corsa installation for assets such as the cars
 and tracks you have installed - official DLC and community mods, and bundles the necessary files into a zip archive.  It
 also builds "fixtures" which populate the Assetto Corsa Server Manager database - again, this comes from the cars and
@@ -45,8 +45,9 @@ Then within the terminal, using the "cd" command, change directory into the extr
 
     cd Downloads\ACServerManager-master\ACServerManager-master
 
-Then run a Python tool called "pip.exe" to install assetOmator.  pip.exe is located in c:\Python27\Scripts by default,
-this is what you'd type - don't forget the dot; type exactly the following...
+Then run a Python tool called "pip.exe" to install assetOmator.
+
+pip.exe is located in c:\Python27\Scripts by default - this is what you'd type - don't forget the dot; type exactly the following...
 
 .. code::
 

@@ -30,8 +30,8 @@ Contents:
    :maxdepth: 2
 
    overview
-   installation
-   assetOmator
+   server_installation
+   assetOmator_installation
    server_setup
    usage
 
