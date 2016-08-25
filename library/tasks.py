@@ -4,7 +4,7 @@ from shutil import copyfile, copytree, rmtree
 from background_task import background
 from datetime import timedelta
 from django.conf import settings
-from .models import Document
+from .models import AssetCollection
 from django.core.management import call_command
 
 
@@ -42,7 +42,7 @@ def validate_assets():
 
 @background(schedule=timedelta(seconds=0))
 def process_assets(document_id):
-    document = Document.objects.get(id=document_id)
+    document = AssetCollection.objects.get(id=document_id)
     assets_tmp_dir = os.path.join(settings.ACSERVER_HOME, 'assets-tmp')
     unzip(document.docfile, assets_tmp_dir)
     validate_assets()
