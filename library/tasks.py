@@ -41,10 +41,10 @@ def validate_assets():
 
 
 @background(schedule=timedelta(seconds=0))
-def process_assets(document_id):
-    document = AssetCollection.objects.get(id=document_id)
+def process_assets(assetcollection_id):
+    assetcollection = AssetCollection.objects.get(id=assetcollection_id)
     assets_tmp_dir = os.path.join(settings.ACSERVER_HOME, 'assets-tmp')
-    unzip(document.collection, assets_tmp_dir)
+    unzip(assetcollection.collection, assets_tmp_dir)
     validate_assets()
 
     src_fixtures_file = os.path.join(assets_tmp_dir, 'fixtures.json')
@@ -67,4 +67,3 @@ def process_assets(document_id):
         os.rename(dest_content_dir, dest_content_dir + '.bak')
 
     copytree(src_content_dir, dest_content_dir)
-
