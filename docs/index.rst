@@ -32,8 +32,7 @@ Contents:
    overview
    server_installation
    assetOmator_installation
-   server_setup
-   usage
+   server_configuration
 
 
 Indices and tables

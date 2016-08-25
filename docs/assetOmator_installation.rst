@@ -61,6 +61,8 @@ Here's how that should look..
 
 Enough command-line fun - you can close the terminal window.
 
+assetOmator Usage
+-----------------
 Using File Explorer, navigate to c:\Python27\Scripts and you should find "assetOmator" in there.
 
 Double-click "assetoOmator" and you'll should see a small window open up.  It may prompt you for Steam's location, and
