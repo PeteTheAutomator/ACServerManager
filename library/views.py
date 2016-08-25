@@ -1,8 +1,6 @@
 from django.shortcuts import redirect
 from django.contrib.auth.decorators import login_required
-from .models import AssetCollection
 from .tasks import process_assets
-from time import sleep
 
 
 @login_required

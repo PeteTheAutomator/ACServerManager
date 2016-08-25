@@ -10,7 +10,7 @@ class DocumentAdmin(admin.ModelAdmin):
     actions = None
 
     def process_assets(self, obj):
-        return '<a href="/library/assetcollection/' + str(obj.pk) + '/process/">Process</a>'
+        return '<a href="/admin/library/assetcollection/' + str(obj.pk) + '/process/">Process</a>'
     process_assets.allow_tags = True
 
 
