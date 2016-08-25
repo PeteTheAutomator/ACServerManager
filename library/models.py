@@ -74,7 +74,7 @@ class Weather(models.Model):
 
 
 class AssetCollection(models.Model):
-    docfile = models.FileField(upload_to='assetcollections/%Y/%m/%d')
+    collection = models.FileField(upload_to='assetcollections/%Y/%m/%d')
 
     def __unicode__(self):
-        return self.docfile
+        return self.collection
