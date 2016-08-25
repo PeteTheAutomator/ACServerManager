@@ -36,16 +36,16 @@ class PresetAdmin(admin.ModelAdmin):
     # - if in a mixed state - stop/restart
     def launch_configuration(self, obj):
         if not obj.acserver_run_status and not obj.stracker_run_status:
-            return '<a href="/session/preset/' + str(obj.pk) + '/launch/">Launch</a>'
+            return '<a href="/admin/session/preset/' + str(obj.pk) + '/launch/">Launch</a>'
         else:
-            return '<a href="/session/preset/' + str(obj.pk) + '/launch/">Re-launch</a>'
+            return '<a href="/admin/session/preset/' + str(obj.pk) + '/launch/">Re-launch</a>'
     launch_configuration.allow_tags = True
 
     def stop_configuration(self, obj):
         if not obj.acserver_run_status and not obj.stracker_run_status:
             return ' - '
         else:
-            return '<a href="/session/preset/' + str(obj.pk) + '/stop/">Stop</a>'
+            return '<a href="/admin/session/preset/' + str(obj.pk) + '/stop/">Stop</a>'
     stop_configuration.allow_tags = True
 
     def acserver_status(self, obj):
