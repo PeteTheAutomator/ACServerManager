@@ -15,7 +15,9 @@
 
 - name: clone ACServerManager project from git
   git: repo="{{acserver_git_repo}}" dest="{{acserver_app_dir}}" force=yes
-  notify: restart httpd
+  notify:
+    - restart httpd
+    - restart djtasks
 
 - name: resolve pips
   pip: requirements="{{acserver_app_dir}}/requirements.txt" virtualenv="{{acserver_virtualenv}}"

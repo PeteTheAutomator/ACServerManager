@@ -1,3 +1,6 @@
 ---
 - name: restart httpd
   service: name=httpd state=restarted
+
+- name: restart djtasks
+  service: name=djtasks state=restarted
