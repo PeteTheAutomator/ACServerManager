@@ -5,7 +5,7 @@ yum install -y python-setuptools python-devel policycoreutils-python openssl-dev
 easy_install pip
 pip install ansible
 
-git clone https://github.com/PeteTheAutomator/ACServerManager.git /var/tmp
+git clone https://github.com/PeteTheAutomator/ACServerManager.git /var/tmp/ACServerManager
 cd /var/tmp/ACServerManager/ansible
 
 cat > ./vars.yml <<EOL
