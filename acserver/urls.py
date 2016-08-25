@@ -20,8 +20,8 @@ admin.site.site_header = 'Assetto Corsa Server Manager'
 admin.site.site_title = 'Assetto Corsa Server Manager'
 
 urlpatterns = [
-    url(r'^admin/preset/(?P<preset_id>[0-9]+)/launch/$', launch_preset, name='launch_preset'),
-    url(r'^admin/preset/(?P<preset_id>[0-9]+)/stop/$', stop_preset, name='stop_preset'),
+    url(r'^admin/session/preset/(?P<preset_id>[0-9]+)/launch/$', launch_preset, name='launch_preset'),
+    url(r'^admin/session/preset/(?P<preset_id>[0-9]+)/stop/$', stop_preset, name='stop_preset'),
     url(r'^admin/', include(admin.site.urls)),
     url(r'^chaining/', include('smart_selects.urls')),
 #    url(r'^session/', include('session.urls')),
