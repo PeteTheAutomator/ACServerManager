@@ -14,7 +14,7 @@ Introduction
 ------------
 
 `Assetto Corsa`_ is a popular motor-racing simulator for the PC and more recently for current generation consoles.  It
-has a thriving online multiplayer community with hundreds private servers each hosted by enthusiasts to race with
+has a thriving online multiplayer community with hundreds of private servers each hosted by enthusiasts to race with
 friends.  Running a private server requires substantial technical knowledge to host it, or you could pay a
 subscription to a game-server hosting company; even so, managing Assetto Corsa sessions (configuring which tracks,
 conditions, cars etc) using the official tool-set leaves a lot to be desired.
@@ -34,11 +34,4 @@ Contents:
    assetOmator_installation
    server_configuration
 
-
-Indices and tables
-==================
-
-* :ref:`genindex`
-* :ref:`modindex`
-* :ref:`search`
 
