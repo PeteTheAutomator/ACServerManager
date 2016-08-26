@@ -33,5 +33,6 @@ Contents:
    server_installation
    assetOmator_installation
    server_configuration
+   support
 
 
