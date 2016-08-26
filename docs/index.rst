@@ -22,8 +22,6 @@ conditions, cars etc) using the official tool-set leaves a lot to be desired.
 This project aims to simplify the process of hosting an Assetto Corsa dedicated server, provides a simple web-based
 user-interface for managing the configuration of gaming sessions, AND can allow users to run their server for **FREE!**
 
-.. _Assetto Corsa: http://www.assettocorsa.net/en/
-
 Contents:
 
 .. toctree::
@@ -35,4 +33,16 @@ Contents:
    server_configuration
    support
 
+Credits
+-------
+`Kunos Simulazioni`_ - the makers of the awesome `Assetto Corsa`_
 
+`Stracker`_ - extremely clever session tracking & timing add-on (installed by this project)
+
+`MinorRating`_ - magical rating system for driver "cleanliness" (to be installed soon by this project)
+
+
+.. _Kunos Simulazioni: http://www.kunos-simulazioni.com/main/
+.. _Assetto Corsa: http://www.assettocorsa.net/en/
+.. _Stracker: http://n-e-y-s.de/main
+.. _MinorRating: http://www.minorating.com/
