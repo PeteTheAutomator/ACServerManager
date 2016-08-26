@@ -4,7 +4,7 @@ from setuptools import setup
 
 setup(
     name='assettomator',
-    version='0.1.4',
+    version='0.1.5',
     description='Asset Collector for Assetto Corsa Server Manager',
     url='https://github.com/PeteTheAutomator/ACServerManager',
     license='MIT',

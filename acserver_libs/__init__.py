@@ -1,7 +1,6 @@
 import os
 import platform
 import json
-import re
 import sys
 from shutil import copyfile
 import hashlib
@@ -9,6 +8,11 @@ import zipfile
 
 
 def md5(fname):
+    """
+    Calculates the md5 hash of a file
+    :param fname: path to the file
+    :return: string (md5 hash)
+    """
     hash_md5 = hashlib.md5()
     with open(fname, "rb") as f:
         for chunk in iter(lambda: f.read(4096), b""):
@@ -18,8 +22,10 @@ def md5(fname):
 
 def make_archive(file_list, archive, root):
     """
-    'fileList' is a list of file names - full path each name
-    'archive' is the file name for the archive with a full path
+    Makes a zip archive
+    :param file_list: a list of files to be included in the archive
+    :param archive: filename of the resulting archive
+    :param root: a path to become the root directory of the archive
     """
     a = zipfile.ZipFile(archive, 'w', zipfile.ZIP_DEFLATED)
     for f in file_list:
@@ -29,6 +35,10 @@ def make_archive(file_list, archive, root):
 
 
 class AssetGatherer:
+    """
+    Given a Steam installation directory, this class will build zip archive of the required files and a database fixture
+    to be loaded into the Assetto Corsa Server Manager
+    """
     def __init__(self, steam_path, outfile='assetto-assets.zip', tempdir='tmp'):
         self.steam_path = steam_path
         self.outfile = outfile
@@ -127,6 +137,9 @@ class AssetGatherer:
 
 
 class Inspector:
+    """
+    Examines the Assetto Corsa content directory and builds a JSON database fixture of tracks, cars and skins
+    """
     def __init__(self, path):
         self.path = path
         self.results = {
@@ -189,8 +202,8 @@ class Inspector:
                         if k not in ['name', 'description', 'country', 'pitboxes', 'run']:
                             del track_detail[k]
                             track_detail['subversion'] = None
-                            workdir = re.sub(tracks_root + '/', '', root)
-                            workdirs_split = re.split('/', workdir)
+                            workdir = os.path.relpath(root, tracks_root)
+                            workdirs_split = workdir.split(os.sep)
                             track_detail['dirname'] = workdirs_split[0]
                             if len(workdirs_split) > 2:
                                 track_detail['subversion'] = workdirs_split[-1]
