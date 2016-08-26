@@ -65,5 +65,5 @@ after a short pause, you'll see a stream of text fly by saying "archiving files"
 should see a zip file in the Scripts folder called "assetto-assets" - this is the file you'll need to upload to the server
 using the Web Interface detailed in the next section.
 
-.. image:: /images/assetOmator/acsm-asset-collections-3.PNG
+.. image:: images/assetOmator/acsm-asset-collections-3.PNG
    :width: 500px
