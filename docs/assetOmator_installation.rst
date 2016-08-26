@@ -26,14 +26,9 @@ Once downloaded, run the installer and you'll be prompted to answer questions re
 
 assetOmator Installation
 ------------------------
-With Python for Windows installed, point your browser at the Assetto Corsa Server Manager project on Github: `ACServerManager`_
+With Python for Windows installed, download a zip archive of the Assetto Corsa Server Manager project from here: `ACServerManager Zip`_
 
-.. _ACServerManager: https://github.com/PeteTheAutomator/ACServerManager
-
-Then click on "Clone or download" button, followed by "Download ZIP" button
-
-.. image:: images/assetOmator/acsm-download-zip.PNG
-   :width: 500px
+.. _ACServerManager Zip: https://github.com/PeteTheAutomator/ACServerManager/archive/master.zip
 
 Locate the downloaded zip file using File Explorer (I'm assuming it's in "Downloads"), right click it and choose "extract all".
 
