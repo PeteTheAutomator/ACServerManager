@@ -13,7 +13,10 @@ def write_config(preset_id):
     preset = Preset.objects.get(id=preset_id)
     acserver_config_dir = os.path.join(settings.ACSERVER_CONFIG_DIR, str(preset_id))
     stracker_config_dir = os.path.join(settings.STRACKER_CONFIG_DIR, str(preset_id))
-    ch = ConfigHandler(acserver_config_dir, stracker_config_dir)
+    # unfortunately the entry list's fixed_setup parameter doesn't abide by a abolute paths and assumes setups are
+    # found within a "setups" subdir of the acServer workdir :(
+    setups_dir = os.path.join(settings.ACSERVER_HOME, 'setups')
+    ch = ConfigHandler(acserver_config_dir, setups_dir, stracker_config_dir)
     ch.write_acserver_config(preset)
     ch.write_entries_config(preset)
     ch.write_welcome_message(preset)
@@ -90,8 +93,9 @@ def time_to_sun_angle(time):
 
 
 class ConfigHandler:
-    def __init__(self, acserver_config_dir, stracker_config_dir):
+    def __init__(self, acserver_config_dir, setups_dir, stracker_config_dir):
         self.acserver_config_dir = acserver_config_dir
+        self.setups_dir = setups_dir
         self.stracker_config_dir = stracker_config_dir
 
         if not os.path.isdir(self.acserver_config_dir):
@@ -217,19 +221,18 @@ class ConfigHandler:
             config.set(car_section, 'BALLAST', str(entry.ballast))
 
             if entry.fixed_setup and entry.car.fixed_setup:
-                setups_dir = os.path.join(self.acserver_config_dir, 'setups')
-                setup_file = os.path.join(setups_dir, entry.car.dirname + '.ini')
+                setup_filename = entry.car.dirname + '.ini'
 
                 # if we haven't already written the setup file (ie - not in the list) then write it
                 if entry.car not in written_fixed_setup_list:
-                    if not os.path.isdir(setups_dir):
-                        os.makedirs(setups_dir)
+                    if not os.path.isdir(self.setups_dir):
+                        os.makedirs(self.setups_dir)
 
-                    fh = open(setup_file, 'w')
+                    fh = open(os.path.join(self.setups_dir, setup_filename, 'w'))
                     fh.write(entry.car.fixed_setup)
                     fh.close()
 
-                config.set(car_section, 'FIXED_SETUP', setup_file)
+                config.set(car_section, 'FIXED_SETUP', setup_filename)
                 written_fixed_setup_list.append(entry.car)
 
             car_count += 1
