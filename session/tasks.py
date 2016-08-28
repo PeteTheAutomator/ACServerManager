@@ -203,6 +203,8 @@ class ConfigHandler:
         cfg_file = open(os.path.join(self.acserver_config_dir, 'entry_list.ini'), 'w')
         car_count = 0
 
+        # maintain a list of fixed_setups that we've written so we don't rewrite the same file
+        written_fixed_setup_list = []
         for entry in preset.entry_set.all():
             car_section = 'CAR_' + str(car_count)
             config.add_section(car_section)
@@ -213,6 +215,23 @@ class ConfigHandler:
             config.set(car_section, 'TEAM', entry.team)
             config.set(car_section, 'GUID', entry.guid)
             config.set(car_section, 'BALLAST', str(entry.ballast))
+
+            if entry.fixed_setup and entry.car.fixed_setup:
+                setups_dir = os.path.join(self.acserver_config_dir, 'setups')
+                setup_file = os.path.join(setups_dir, entry.car.dirname + '.ini')
+
+                # if we haven't already written the setup file (ie - not in the list) then write it
+                if entry.car not in written_fixed_setup_list:
+                    if not os.path.isdir(setups_dir):
+                        os.makedirs(setups_dir)
+
+                    fh = open(setup_file, 'w')
+                    fh.write(entry.car.fixed_setup)
+                    fh.close()
+
+                config.set(car_section, 'FIXED_SETUP', setup_file)
+                written_fixed_setup_list.append(entry.car)
+
             car_count += 1
 
         config.write(cfg_file, space_around_delimiters=False)

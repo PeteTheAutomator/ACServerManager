@@ -4,7 +4,7 @@ from background_task.models import Task, CompletedTask
 from django.conf import settings
 
 
-class DocumentAdmin(admin.ModelAdmin):
+class AssetCollectionAdmin(admin.ModelAdmin):
     model = AssetCollection
     list_display = ('collection', 'process_assets',)
     actions = None
@@ -14,15 +14,23 @@ class DocumentAdmin(admin.ModelAdmin):
     process_assets.allow_tags = True
 
 
+class CarAdmin(admin.ModelAdmin):
+    model = Car
+    fields = ('brand', 'name', 'fixed_setup')
+    readonly_fields = ('name', 'brand')
+    actions = None
+
+
 if settings.ACSERVER_FULL_ADMIN_VIEW:
-    admin.site.register(Car)
+    admin.site.register(Car, CarAdmin)
     admin.site.register(CarSkin)
     admin.site.register(CarTag)
     admin.site.register(Track)
     admin.site.register(TrackDynamism)
     admin.site.register(Weather)
-    admin.site.register(AssetCollection, DocumentAdmin)
+    admin.site.register(AssetCollection, AssetCollectionAdmin)
 else:
-    admin.site.register(AssetCollection, DocumentAdmin)
+    admin.site.register(Car, CarAdmin)
+    admin.site.register(AssetCollection, AssetCollectionAdmin)
     admin.site.unregister(Task)
     admin.site.unregister(CompletedTask)
