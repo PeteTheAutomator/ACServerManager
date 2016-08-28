@@ -15,6 +15,9 @@ class AssetCollectionAdmin(admin.ModelAdmin):
 
 
 class CarAdmin(admin.ModelAdmin):
+    def has_add_permission(self, request):
+        return False
+    
     model = Car
     fields = ('brand', 'name', 'fixed_setup')
     readonly_fields = ('name', 'brand')
