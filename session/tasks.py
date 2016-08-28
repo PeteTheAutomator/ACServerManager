@@ -228,7 +228,7 @@ class ConfigHandler:
                     if not os.path.isdir(self.setups_dir):
                         os.makedirs(self.setups_dir)
 
-                    fh = open(os.path.join(self.setups_dir, setup_filename, 'w'))
+                    fh = open(os.path.join(self.setups_dir, setup_filename), 'w')
                     fh.write(entry.car.fixed_setup)
                     fh.close()
 
