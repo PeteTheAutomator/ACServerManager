@@ -15,7 +15,7 @@ def write_config(preset_id):
     stracker_config_dir = os.path.join(settings.STRACKER_CONFIG_DIR, str(preset_id))
     # unfortunately the entry list's fixed_setup parameter doesn't abide by a abolute paths and assumes setups are
     # found within a "setups" subdir of the acServer workdir :(
-    setups_dir = os.path.join(settings.ACSERVER_HOME, 'setups')
+    setups_dir = os.path.join(settings.ACSERVER_BIN_DIR, 'setups')
     ch = ConfigHandler(acserver_config_dir, setups_dir, stracker_config_dir)
     ch.write_acserver_config(preset)
     ch.write_entries_config(preset)
