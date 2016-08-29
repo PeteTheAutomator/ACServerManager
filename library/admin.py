@@ -22,6 +22,7 @@ class CarAdmin(admin.ModelAdmin):
     fields = ('brand', 'name', 'fixed_setup')
     readonly_fields = ('name', 'brand')
     actions = None
+    search_fields = ['brand', 'name']
 
 
 if settings.ACSERVER_FULL_ADMIN_VIEW:
