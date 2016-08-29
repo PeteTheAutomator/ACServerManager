@@ -161,19 +161,19 @@ class ConfigHandler:
         if preset.server_setting.welcome_message:
             config.set('SERVER', 'WELCOME_MESSAGE', str(os.path.join(self.acserver_config_dir, 'welcome_message.txt')))
 
-        if preset.practice:
+        if preset.practice_time != 0:
             config.add_section('PRACTICE')
             config.set('PRACTICE', 'NAME', 'Free Practice')
             config.set('PRACTICE', 'TIME', str(preset.practice_time))
             config.set('PRACTICE', 'IS_OPEN', str(int(preset.practice_is_open)))
 
-        if preset.qualify:
+        if preset.qualify_time != 0:
             config.add_section('QUALIFY')
             config.set('QUALIFY', 'NAME', 'Qualify')
             config.set('QUALIFY', 'TIME', str(preset.qualify_time))
             config.set('QUALIFY', 'IS_OPEN', str(int(preset.qualify_is_open)))
 
-        if preset.race:
+        if preset.race_laps != 0:
             config.add_section('RACE')
             config.set('RACE', 'NAME', 'Race')
             config.set('RACE', 'LAPS', str(preset.race_laps))

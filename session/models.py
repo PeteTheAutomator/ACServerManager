@@ -64,21 +64,20 @@ class Preset(models.Model):
     name = models.CharField(max_length=64, help_text='A brief label to give the preset some context')
     server_setting = models.ForeignKey(ServerSetting)
     track = models.ForeignKey('library.Track', related_name='track', help_text='The track (and subversion, if any) to race on')
-    track_dynamism = models.ForeignKey('library.TrackDynamism', null=True, blank=True)
+    track_dynamism = models.ForeignKey('library.TrackDynamism', help_text='Track surface conditions')
     max_clients = models.IntegerField(null=True, blank=True, default=None, help_text='Maximum number of clients, or leave blank to use the track\'s number of pitboxes')
     pickup_mode_enabled = models.BooleanField(default=True,
                                               help_text='For sessions that require booking this option must be disabled, otherwise for "first-come-first served" enable this option')
     session_password = models.CharField(max_length=64, null=True, blank=True, default=None, help_text='If you want the session to require a password to join - set that here, otherwise leave blank for a passwordless session')
 
     # session types
-    practice = models.BooleanField(default=1)
-    practice_time = models.IntegerField(default=10)
+    practice_time = models.IntegerField(default=0, help_text='Time (in minutes) for a Practice session or set to 0 for none')
     practice_is_open = models.BooleanField(default=1)
-    qualify = models.BooleanField(default=1)
-    qualify_time = models.IntegerField(default=10)
+
+    qualify_time = models.IntegerField(default=12, help_text='Time (in minutes) for a Qualify session or set to 0 for none')
     qualify_is_open = models.BooleanField(default=1)
-    race = models.BooleanField(default=1)
-    race_laps = models.IntegerField(default=5)
+
+    race_laps = models.IntegerField(default=6, help_text='Number of laps for a Race sesion or set to 0 for none')
     race_wait_time = models.IntegerField(default=10, help_text='Seconds to wait before the start of the session')
     race_is_open = models.IntegerField(default=1, choices=RACE_OPEN_CHOICES)
     weathers = models.ManyToManyField('library.Weather')
