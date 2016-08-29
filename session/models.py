@@ -109,7 +109,7 @@ class Preset(models.Model):
 
 
 class Entry(models.Model):
-    environment = models.ForeignKey(Preset)
+    preset = models.ForeignKey(Preset)
     name = models.CharField(null=True, blank=True, max_length=64)
     car = models.ForeignKey('library.Car')
     skin = ChainedForeignKey(
