@@ -16,7 +16,6 @@ This really depends on how many others find this project useful - these are the 
 
 * simplify/automate as much as possible (this is ongoing, but I really want to make it trivial to deploy/install)
 * enforce the launch of only single instances in the UI (presently it seems you can run multiple servers simultaneously)
-* car presets (so racers begin a session on an equal footing)
 * add minor-rating
 * show/hide "advanced" options (to reduce clutter)
 * revisit forms to ensure validation is bullet-proof and help-text is complete and accurate
