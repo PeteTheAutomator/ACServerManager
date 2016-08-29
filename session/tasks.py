@@ -209,7 +209,11 @@ class ConfigHandler:
 
         # maintain a list of fixed_setups that we've written so we don't rewrite the same file
         written_fixed_setup_list = []
+        car_list = []
         for entry in preset.entry_set.all():
+            if entry.car not in car_list:
+                car_list.append(entry.car)
+
             car_section = 'CAR_' + str(car_count)
             config.add_section(car_section)
             config.set(car_section, 'MODEL', entry.car.dirname)
@@ -239,6 +243,13 @@ class ConfigHandler:
 
         config.write(cfg_file, space_around_delimiters=False)
         cfg_file.close()
+
+        # tidy up any fixed_setups - if we configure a session with a particular car where none of it's entries
+        # uses a fixed_setup
+        for car in car_list:
+            if car not in written_fixed_setup_list:
+                if os.path.isfile(os.path.join(self.setups_dir, car.dirname + '.ini')):
+                    os.remove(os.path.join(self.setups_dir, car.dirname + '.ini'))
 
     def write_welcome_message(self, preset):
         fh = open(os.path.join(self.acserver_config_dir, 'welcome_message.txt'), 'w')
