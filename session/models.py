@@ -64,7 +64,7 @@ class Preset(models.Model):
     name = models.CharField(max_length=64, help_text='A brief label to give the preset some context')
     server_setting = models.ForeignKey(ServerSetting)
     track = models.ForeignKey('library.Track', related_name='track', help_text='The track (and subversion, if any) to race on')
-    track_dynamism = models.ForeignKey('library.TrackDynamism', null=True, blank=True)
+    track_dynamism = models.ForeignKey('library.TrackDynamism', help_text='Track surface conditions')
     max_clients = models.IntegerField(null=True, blank=True, default=None, help_text='Maximum number of clients, or leave blank to use the track\'s number of pitboxes')
     pickup_mode_enabled = models.BooleanField(default=True,
                                               help_text='For sessions that require booking this option must be disabled, otherwise for "first-come-first served" enable this option')

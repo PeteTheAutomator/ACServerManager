@@ -1,4 +1,5 @@
 from django.contrib import admin
+from django.forms import ModelForm
 from .models import ServerSetting, Preset, Entry
 from .tasks import get_server_status
 
@@ -7,10 +8,30 @@ class ServerSettingsAdmin(admin.ModelAdmin):
     model = ServerSetting
     actions = None
 
+    fieldsets = (
+        (None, {
+            'fields': ('name', 'welcome_message', 'admin_password'),
+        }),
+        ('Advanced options', {
+            'classes': ('collapse',),
+            'fields': ('udp_port', 'tcp_port', 'http_port', 'send_buffer_size', 'recv_buffer_size', 'client_send_interval'),
+        })
+    )
+
 
 class EntryInline(admin.StackedInline):
     model = Entry
     extra = 0
+
+    fieldsets = (
+        (None, {
+            'fields': ('car', 'skin',),
+        }),
+        ('Advanced options', {
+            'classes': ('collapse',),
+            'fields': ('name', 'fixed_setup', 'spectator_mode', 'team', 'guid', 'ballast'),
+        })
+    )
 
 
 class PresetAdmin(admin.ModelAdmin):
@@ -21,6 +42,29 @@ class PresetAdmin(admin.ModelAdmin):
         except:
             pass
         super(PresetAdmin, self).__init__(*args, **kwargs)
+
+    fieldsets = (
+        (None, {
+            'fields': ('name', 'server_setting',),
+        }),
+        ('Environmental conditions', {
+            'fields': ('track', 'track_dynamism', 'weathers', 'time_of_day'),
+        }),
+        ('Session type', {
+            'fields': ('practice_time', 'practice_is_open', 'qualify_time', 'qualify_is_open', 'race_laps',
+                       'race_wait_time', 'race_is_open'),
+        }),
+        ('Car management', {
+            'fields': (
+            'tc_allowed', 'abs_allowed', 'stability_allowed', 'autoclutch_allowed', 'force_virtual_mirror',
+            'damage_multiplier', 'fuel_rate', 'tyre_blankets_allowed', 'tyre_wear_rate', 'allowed_tyres_out'),
+        }),
+        ('Advanced options', {
+            'classes': ('collapse',),
+            'fields': ('max_clients', 'pickup_mode_enabled', 'session_password', 'voting_quorum', 'vote_duration',
+                       'kick_quorum', 'race_over_time', 'loop_mode', 'blacklist_mode')
+        }),
+    )
 
     model = Preset
     filter_horizontal = ('weathers',)
