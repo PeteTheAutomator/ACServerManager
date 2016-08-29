@@ -1,6 +1,11 @@
 ---
+- name: test existence of local git repo
+  stat: path=/tmp/django-smart-selects
+  register: djss_local_repo
+
 - name: clone django-smart-selects from git (PR96 -> fix-inlines)
   git: repo=https://github.com/digi604/django-smart-selects.git dest=/tmp/django-smart-selects refspec=pull/96/head:fix-inlines version=fix-inlines
+  when: djss_local_repo.stat.exists == False
 
 - name: install django-smart-selects with pip
   pip: name='file:///tmp/django-smart-selects' virtualenv=/var/lib/acserver

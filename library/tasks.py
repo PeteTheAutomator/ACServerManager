@@ -9,20 +9,8 @@ from django.core.management import call_command
 
 
 def unzip(source_filename, dest_dir):
-    with zipfile.ZipFile(source_filename) as zf:
-        for member in zf.infolist():
-            words = member.filename.split('/')
-            path = dest_dir
-            for word in words[:-1]:
-                while True:
-                    drive, word = os.path.splitdrive(word)
-                    head, word = os.path.split(word)
-                    if not drive:
-                        break
-                if word in (os.curdir, os.pardir, ''):
-                    continue
-                path = os.path.join(path, word)
-            zf.extract(member, path)
+    zip = zipfile.ZipFile(source_filename)
+    zip.extractall(dest_dir)
 
 
 def validate_assets():

@@ -32,6 +32,7 @@ Contents:
    assetOmator_installation
    server_configuration
    support
+   advanced_server_configuration
 
 Credits
 -------

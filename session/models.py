@@ -120,6 +120,7 @@ class Entry(models.Model):
         show_all=False,
         auto_choose=True
     )
+    fixed_setup = models.BooleanField(default=False, help_text='Apply the stored "Car Setup" (if there is one)')
     spectator_mode = models.BooleanField(default=False)
     team = models.CharField(max_length=64, null=True, blank=True)
     guid = models.CharField(max_length=64, null=True, blank=True)

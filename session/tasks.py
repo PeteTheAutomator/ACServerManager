@@ -13,7 +13,10 @@ def write_config(preset_id):
     preset = Preset.objects.get(id=preset_id)
     acserver_config_dir = os.path.join(settings.ACSERVER_CONFIG_DIR, str(preset_id))
     stracker_config_dir = os.path.join(settings.STRACKER_CONFIG_DIR, str(preset_id))
-    ch = ConfigHandler(acserver_config_dir, stracker_config_dir)
+    # unfortunately the entry list's fixed_setup parameter doesn't abide by a abolute paths and assumes setups are
+    # found within a "setups" subdir of the acServer workdir :(
+    setups_dir = os.path.join(settings.ACSERVER_BIN_DIR, 'setups')
+    ch = ConfigHandler(acserver_config_dir, setups_dir, stracker_config_dir)
     ch.write_acserver_config(preset)
     ch.write_entries_config(preset)
     ch.write_welcome_message(preset)
@@ -90,8 +93,9 @@ def time_to_sun_angle(time):
 
 
 class ConfigHandler:
-    def __init__(self, acserver_config_dir, stracker_config_dir):
+    def __init__(self, acserver_config_dir, setups_dir, stracker_config_dir):
         self.acserver_config_dir = acserver_config_dir
+        self.setups_dir = setups_dir
         self.stracker_config_dir = stracker_config_dir
 
         if not os.path.isdir(self.acserver_config_dir):
@@ -203,7 +207,13 @@ class ConfigHandler:
         cfg_file = open(os.path.join(self.acserver_config_dir, 'entry_list.ini'), 'w')
         car_count = 0
 
+        # maintain a list of fixed_setups that we've written so we don't rewrite the same file
+        written_fixed_setup_list = []
+        car_list = []
         for entry in preset.entry_set.all():
+            if entry.car not in car_list:
+                car_list.append(entry.car)
+
             car_section = 'CAR_' + str(car_count)
             config.add_section(car_section)
             config.set(car_section, 'MODEL', entry.car.dirname)
@@ -213,10 +223,33 @@ class ConfigHandler:
             config.set(car_section, 'TEAM', entry.team)
             config.set(car_section, 'GUID', entry.guid)
             config.set(car_section, 'BALLAST', str(entry.ballast))
+
+            if entry.fixed_setup and entry.car.fixed_setup:
+                setup_filename = entry.car.dirname + '.ini'
+
+                # if we haven't already written the setup file (ie - not in the list) then write it
+                if entry.car not in written_fixed_setup_list:
+                    if not os.path.isdir(self.setups_dir):
+                        os.makedirs(self.setups_dir)
+
+                    fh = open(os.path.join(self.setups_dir, setup_filename), 'w')
+                    fh.write(entry.car.fixed_setup)
+                    fh.close()
+
+                config.set(car_section, 'FIXED_SETUP', setup_filename)
+                written_fixed_setup_list.append(entry.car)
+
             car_count += 1
 
         config.write(cfg_file, space_around_delimiters=False)
         cfg_file.close()
+
+        # tidy up any fixed_setups - if we configure a session with a particular car where none of it's entries
+        # uses a fixed_setup
+        for car in car_list:
+            if car not in written_fixed_setup_list:
+                if os.path.isfile(os.path.join(self.setups_dir, car.dirname + '.ini')):
+                    os.remove(os.path.join(self.setups_dir, car.dirname + '.ini'))
 
     def write_welcome_message(self, preset):
         fh = open(os.path.join(self.acserver_config_dir, 'welcome_message.txt'), 'w')

@@ -14,9 +14,15 @@ class Car(models.Model):
     clarse = models.CharField(max_length=64, verbose_name='class')
     tags = models.ManyToManyField(CarTag)
     dirname = models.CharField(max_length=64)
+    fixed_setup = models.TextField(null=True, blank=True,
+                                   help_text='Store a fixed setup here if you wish; the contents can be copied from '
+                                             '"Documents\Assetto Corsa\setups\<car>\<track>\<setup-name>.ini", and '
+                                             'pasted here.  If you check the "fixed setup" option in your Preset\'s '
+                                             'Entries - this fixed setup is applied')
 
     class Meta:
         ordering = ['name']
+        verbose_name = 'Car Setup'
 
     def __unicode__(self):
         return self.name
