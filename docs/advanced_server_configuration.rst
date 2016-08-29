@@ -9,7 +9,7 @@ Let's say you want to "level the playing-field" and have your racers on an ident
 does this - it helps make a nice close race.  This can be acheived by copying and pasting the contents of one of your
 car setup files into the corresponding car in the Assetto Corsa Server Manager UI.
 
-Locate your car setup - these are individual files in your Documents folder (Documents\Assetto Corsa\setups\<car>\<track>\<setup-name>.ini)
+Locate your car setup - these are individual files in your Documents folder (Documents\\Assetto Corsa\\setups\\<car>\\<track>\\<setup-name>.ini)
 
 Open the car setup you want with a text editor (such as notepad) and copy the contents of the entire file to your
 clipboard (CTRL+A followed by CTRL+C).  Then go to your Assetto Corsa Server Manager web UI and locate the same car in
