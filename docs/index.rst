@@ -28,7 +28,8 @@ Contents:
    :maxdepth: 2
 
    overview
-   server_installation
+   server_installation_cloudformation
+   server_installation_manual_ec2
    assetOmator_installation
    server_configuration
    support
