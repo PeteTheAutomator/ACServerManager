@@ -9,7 +9,7 @@ Log into your server's web interface, and you should been taken to the main menu
 .. image:: images/assetOmator/acsm-admin-view.PNG
    :width: 500px
 
-Click on the "Browse" button and navigate to the folder where you stored assetto-asset.zip (probaby c:\Python27\Scripts)
+Click on the "Browse" button and navigate to the folder where you stored assetto-asset.zip (probaby c:\\Python27\\Scripts)
 and select the zip file, then click save - it should take a few moments to upload (depending on your internet connection).
 
 .. image:: images/assetOmator/acsm-asset-collections-2.PNG
