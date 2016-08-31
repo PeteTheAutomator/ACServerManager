@@ -48,7 +48,7 @@ After clicking the blue "Next" button you should be taken to a page which requir
 your new Assetto Corsa Server Manager machine...
 
 * **Stack name** is some arbitrary name for the CloudFormation Stack - "assetto" will do
-* **InstanceType** is the specification of the server - the default "t2.micro" will do
+* **InstanceType** is the specification of the server - the default "t2.micro" will do (t2.micro is the free-tier option; choose anything bigger and you will be charged)
 * **KeyName** is the name of the Key Pair you created earlier
 * **SuperUserEmail** is an email address you may wish to be contacted at (this is not used at the moment; perhaps a future feature may make use of it for sending alerts and such)
 * **SuperUserName** is the name you wish to use to log-into the Assetto Corsa Server Manager
