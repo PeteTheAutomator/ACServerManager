@@ -57,7 +57,7 @@ your new Assetto Corsa Server Manager machine...
 .. image:: images/ascm-cf-caps/acsm-cf-new-stack2.PNG
    :width: 500px
 
-You can safely click the blue "Next" button to skip over the next two screens; the first asks whether you want to apply
+You can safely skip over the next two screens by clicking the blue "Next" button; the first screen asks whether you want to apply
 Tags to your CloudFormation Stack, and the second reviews your options before creating the stack.  Click the blue "Create"
 button at the bottom right of the page and you should be taken to a screen which displays the progress of your Stack creation.
 

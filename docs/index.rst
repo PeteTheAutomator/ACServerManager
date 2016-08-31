@@ -20,7 +20,8 @@ subscription to a game-server hosting company; even so, managing Assetto Corsa s
 conditions, cars etc) using the official tool-set leaves a lot to be desired.
 
 This project aims to simplify the process of hosting an Assetto Corsa dedicated server, provides a simple web-based
-user-interface for managing the configuration of gaming sessions, AND can allow users to run their server for **FREE!**
+user-interface for managing the configuration of gaming sessions, AND can allow users to run their server **FREE-OF-CHARGE
+for up-to a year!**
 
 Contents:
 
