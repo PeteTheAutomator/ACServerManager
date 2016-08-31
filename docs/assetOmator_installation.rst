@@ -16,7 +16,7 @@ Install python - the official Windows download page can be found here: `Python f
 
 .. _Python for Windows: https://www.python.org/downloads/windows/
 
-Choose the "Latest **Python2** Release" NOT Python3.
+Choose the "Latest **Python2.x** Release" NOT Python3.x.
 
 That should bring you to a page with various download links - choose the "Windows MSI Installer" that matches your
 system (if in doubt choose the x86-64 version).
@@ -42,7 +42,7 @@ Then within the terminal, using the "cd" command, change directory into the extr
 
 Then run a Python tool called "pip.exe" to install assetOmator.
 
-pip.exe is located in c:\Python27\Scripts by default - this is what you'd type - don't forget the dot; type exactly the following...
+pip.exe is located in c:\\Python27\\Scripts by default - this is what you'd type - don't forget the dot; type exactly the following...
 
 .. code::
 
@@ -58,7 +58,7 @@ Enough command-line fun - you can close the terminal window.
 
 assetOmator Usage
 -----------------
-Using File Explorer, navigate to c:\Python27\Scripts and you should find "assetOmator" in there.
+Using File Explorer, navigate to c:\\Python27\\Scripts and you should find "assetOmator" in there.
 
 Double-click "assetoOmator" and you'll should see a small window open up.  It may prompt you for Steam's location, and
 after a short pause, you'll see a stream of text fly by saying "archiving files".  The window will close and and you
