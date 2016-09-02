@@ -37,3 +37,4 @@ def stop_preset(request, preset_id):
 @login_required
 def upgrade(request):
     perform_upgrade()
+    return redirect('/admin/')

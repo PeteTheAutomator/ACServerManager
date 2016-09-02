@@ -94,16 +94,20 @@ def perform_upgrade():
     Wipes-out the cloud-init directory and reboots the server; this is a quick & oh-so-dirty method for performing
     updates ;-)
     '''
+    target = None
     cloud_init_dir = '/var/lib/cloud/instance'
     if os.path.islink(cloud_init_dir):
         target = os.path.realpath(cloud_init_dir)
+
+    if not target:
+        raise Exception('Could not resolve cloud-init real directory')
 
     p = Popen(['/bin/sudo', '/bin/rm', '-rf', target + '/*'], stdin=PIPE, stdout=PIPE, stderr=PIPE)
     p.communicate()
     wipe_status_code = p.returncode
 
     if wipe_status_code != 0:
-        raise Exception('Failed to wipe cloud-init directory')
+        raise Exception('Failed to wipe cloud-init directory: ' + target)
 
     p = Popen(['/bin/sudo', '/sbin/reboot'], stdin=PIPE, stdout=PIPE, stderr=PIPE)
     p.communicate()
