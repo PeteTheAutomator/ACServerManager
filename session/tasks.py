@@ -97,12 +97,12 @@ def perform_upgrade():
     target = None
     cloud_init_dir = '/var/lib/cloud/instance'
     if os.path.islink(cloud_init_dir):
-        target = os.path.realpath(cloud_init_dir)
+        target = os.path.join(os.path.realpath(cloud_init_dir), '*')
 
     if not target:
         raise Exception('Could not resolve cloud-init real directory')
 
-    p = Popen(['/bin/sudo', '/bin/rm', '-rf', target + '/*'], stdin=PIPE, stdout=PIPE, stderr=PIPE)
+    p = Popen(['/bin/sudo', '/bin/rm', '-rf', target], stdin=PIPE, stdout=PIPE, stderr=PIPE)
     p.communicate()
     wipe_status_code = p.returncode
 
