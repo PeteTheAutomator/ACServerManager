@@ -60,6 +60,12 @@ class Preset(models.Model):
         (datetime.time(18), '18:00'),
     )
 
+    START_RULE_CHOICES = (
+        (0, 'Car locked until start'),
+        (1, 'Teleport'),
+        (2, 'Drivethru'),
+    )
+
     # important stuff
     name = models.CharField(max_length=64, help_text='A brief label to give the preset some context')
     server_setting = models.ForeignKey(ServerSetting)
@@ -78,14 +84,14 @@ class Preset(models.Model):
     qualify_is_open = models.BooleanField(default=1)
 
     race_laps = models.IntegerField(default=6, help_text='Number of laps for a Race sesion or set to 0 for none')
-    race_wait_time = models.IntegerField(default=10, help_text='Seconds to wait before the start of the session')
+    race_wait_time = models.IntegerField(default=20, help_text='Seconds to wait before the start of the session')
     race_is_open = models.IntegerField(default=1, choices=RACE_OPEN_CHOICES)
     weathers = models.ManyToManyField('library.Weather')
 
     # nitty-gritty details
     time_of_day = models.TimeField(default=datetime.time(10, 00), choices=TIME_OF_DAY_CHOICES)
-    tc_allowed = models.IntegerField(default=0, choices=ASSIST_CHOICES, help_text='Traction-control')
-    abs_allowed = models.IntegerField(default=0, choices=ASSIST_CHOICES, help_text='Anti-lock brakes')
+    tc_allowed = models.IntegerField(default=1, choices=ASSIST_CHOICES, help_text='Traction-control')
+    abs_allowed = models.IntegerField(default=1, choices=ASSIST_CHOICES, help_text='Anti-lock brakes')
     stability_allowed = models.BooleanField(default=0, help_text='Stability-control allowed?')
     autoclutch_allowed = models.BooleanField(default=1, help_text='Automatic clutch allowed?')
     force_virtual_mirror = models.BooleanField(default=0, help_text='Mandatory prominent rear-view mirror?')
@@ -97,9 +103,11 @@ class Preset(models.Model):
     voting_quorum = models.IntegerField(default=75, validators=[MinValueValidator(0), MaxValueValidator(100)], help_text='Percentage of vote that is required for the SESSION vote to pass')
     vote_duration = models.IntegerField(default=20)
     kick_quorum = models.IntegerField(default=85)
-    race_over_time = models.IntegerField(default=180)
+    race_over_time = models.IntegerField(default=90)
     loop_mode = models.BooleanField(default=True)
     blacklist_mode = models.IntegerField(choices=BLACKLIST_MODE_CHOICES, default=0)
+    qualify_max_wait_perc = models.IntegerField(default=120, help_text='This is the factor to calculate the remaining time in a qualify session after the session is ended: 120 means that 120% of the session fastest lap remains to end the current lap')
+    start_rule = models.IntegerField(default=2, choices=START_RULE_CHOICES, help_text='Rules governing race starts / penalties for false-starts. (note: in "Drivethru" mode - if the race has 3 or less laps then the Teleport penalty is enabled)')
 
     acserver_run_status = models.BooleanField(default=False)
     stracker_run_status = models.BooleanField(default=False)

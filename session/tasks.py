@@ -86,7 +86,36 @@ def get_server_status():
 
             if preset_changed:
                 preset.save()
-        
+
+
+@background(schedule=timedelta(seconds=0))
+def perform_upgrade():
+    '''
+    Wipes-out the cloud-init directory and reboots the server; this is a quick & oh-so-dirty method for performing
+    updates ;-)
+    '''
+    target = None
+    cloud_init_dir = '/var/lib/cloud/instance'
+    if os.path.islink(cloud_init_dir):
+        target = os.path.join(os.path.realpath(cloud_init_dir), '*')
+
+    if not target:
+        raise Exception('Could not resolve cloud-init real directory')
+
+    p = Popen('/bin/sudo /bin/rm -rf %s' % target, shell=True, stdin=PIPE, stdout=PIPE, stderr=PIPE)
+    p.communicate()
+    wipe_status_code = p.returncode
+
+    if wipe_status_code != 0:
+        raise Exception('Failed to wipe cloud-init directory: ' + target)
+
+    p = Popen(['/bin/sudo', '/sbin/reboot'], stdin=PIPE, stdout=PIPE, stderr=PIPE)
+    p.communicate()
+    reboot_status_code = p.returncode
+
+    if reboot_status_code != 0:
+        raise Exception('Failed to reboot')
+
 
 def time_to_sun_angle(time):
     return str((time.hour - 13) * 16)
@@ -121,7 +150,7 @@ class ConfigHandler:
             preset.max_clients = preset.track.pitboxes
 
         config.set('SERVER', 'NAME', preset.server_setting.name)
-        config.set('SERVER', 'CARS', ','.join(car_list))
+        config.set('SERVER', 'CARS', ';'.join(car_list))
         config.set('SERVER', 'CONFIG_TRACK', '' if not preset.track.subversion else preset.track.subversion)
         config.set('SERVER', 'TRACK', preset.track.dirname)
         config.set('SERVER', 'SUN_ANGLE', time_to_sun_angle(preset.time_of_day))
@@ -157,6 +186,8 @@ class ConfigHandler:
         config.set('SERVER', 'UDP_PLUGIN_ADDRESS', '127.0.0.1:12000')
         config.set('SERVER', 'AUTH_PLUGIN_ADDRESS', '')
         config.set('SERVER', 'LEGAL_TYRES', 'V;E;HR;ST')
+        config.set('SERVER', 'START_RULE', str(preset.start_rule))
+        config.set('SERVER', 'QUALIFY_MAX_WAIT_PERC', str(preset.qualify_max_wait_perc))
 
         if preset.server_setting.welcome_message:
             config.set('SERVER', 'WELCOME_MESSAGE', str(os.path.join(self.acserver_config_dir, 'welcome_message.txt')))
