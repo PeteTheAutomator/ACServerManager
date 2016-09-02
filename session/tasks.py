@@ -102,7 +102,7 @@ def perform_upgrade():
     if not target:
         raise Exception('Could not resolve cloud-init real directory')
 
-    p = Popen(['/bin/sudo', '/bin/rm', '-rf', target], stdin=PIPE, stdout=PIPE, stderr=PIPE)
+    p = Popen('/bin/sudo /bin/rm -rf %s' % target, shell=True, stdin=PIPE, stdout=PIPE, stderr=PIPE)
     p.communicate()
     wipe_status_code = p.returncode
 
