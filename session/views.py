@@ -3,7 +3,7 @@ from django.template import loader
 from django.shortcuts import redirect
 from django.contrib.auth.decorators import login_required
 from .models import Preset
-from .tasks import write_config, kick_services, get_server_status, stop_services
+from .tasks import write_config, kick_services, get_server_status, stop_services, perform_upgrade
 from time import sleep
 
 
@@ -32,3 +32,8 @@ def stop_preset(request, preset_id):
     get_server_status()
     sleep(3)
     return redirect('/admin/session/preset/')
+
+
+@login_required
+def upgrade(request):
+    perform_upgrade()

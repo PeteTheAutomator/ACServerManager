@@ -86,7 +86,32 @@ def get_server_status():
 
             if preset_changed:
                 preset.save()
-        
+
+
+@background(schedule=timedelta(seconds=0))
+def perform_upgrade():
+    '''
+    Wipes-out the cloud-init directory and reboots the server; this is a quick & oh-so-dirty method for performing
+    updates ;-)
+    '''
+    cloud_init_dir = '/var/lib/cloud/instance'
+    if os.path.islink(cloud_init_dir):
+        target = os.path.realpath(cloud_init_dir)
+
+    p = Popen(['/bin/sudo', '/bin/rm', '-rf', target + '/*'], stdin=PIPE, stdout=PIPE, stderr=PIPE)
+    p.communicate()
+    wipe_status_code = p.returncode
+
+    if wipe_status_code != 0:
+        raise Exception('Failed to wipe cloud-init directory')
+
+    p = Popen(['/bin/sudo', '/sbin/reboot'], stdin=PIPE, stdout=PIPE, stderr=PIPE)
+    p.communicate()
+    reboot_status_code = p.returncode
+
+    if reboot_status_code != 0:
+        raise Exception('Failed to reboot')
+
 
 def time_to_sun_angle(time):
     return str((time.hour - 13) * 16)
