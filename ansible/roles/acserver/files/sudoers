@@ -2,3 +2,4 @@ acserver ALL=(ALL) NOPASSWD: /usr/bin/systemctl stop acserver@*, /usr/bin/system
 acserver ALL=(ALL) NOPASSWD: /usr/bin/systemctl stop stracker@*, /usr/bin/systemctl start stracker@*, /usr/bin/systemctl restart stracker@*, /usr/bin/systemctl status stracker@*
 acserver ALL=(ALL) NOPASSWD: /usr/bin/systemctl list-units
 acserver ALL=(ALL) NOPASSWD: /bin/rm -rf /var/lib/cloud/instances/*, /sbin/reboot
+
