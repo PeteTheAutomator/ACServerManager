@@ -62,7 +62,8 @@ class PresetAdmin(admin.ModelAdmin):
         ('Advanced options', {
             'classes': ('collapse',),
             'fields': ('max_clients', 'pickup_mode_enabled', 'session_password', 'voting_quorum', 'vote_duration',
-                       'kick_quorum', 'race_over_time', 'loop_mode', 'blacklist_mode')
+                       'kick_quorum', 'race_over_time', 'loop_mode', 'blacklist_mode', 'qualify_max_wait_perc',
+                       'start_rule')
         }),
     )
 
