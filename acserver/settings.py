@@ -23,7 +23,7 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 SECRET_KEY = '=vk51q56fo-b2yfr(8uhdg8m^o)v53k9=wvti=$nn^+26w_f3e'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
 ALLOWED_HOSTS = ['*']
 
@@ -112,4 +112,4 @@ ACSERVER_HOME = '/home/acserver'
 ACSERVER_BIN_DIR = os.path.join(ACSERVER_HOME, 'assetto-server')
 ACSERVER_CONFIG_DIR = os.path.join(ACSERVER_HOME, 'assetto-server/cfg')
 STRACKER_CONFIG_DIR = os.path.join(ACSERVER_HOME, 'stracker/cfg')
-ACSERVER_FULL_ADMIN_VIEW = False
+ACSERVER_FULL_ADMIN_VIEW = True
