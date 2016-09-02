@@ -121,7 +121,7 @@ class ConfigHandler:
             preset.max_clients = preset.track.pitboxes
 
         config.set('SERVER', 'NAME', preset.server_setting.name)
-        config.set('SERVER', 'CARS', ','.join(car_list))
+        config.set('SERVER', 'CARS', ';'.join(car_list))
         config.set('SERVER', 'CONFIG_TRACK', '' if not preset.track.subversion else preset.track.subversion)
         config.set('SERVER', 'TRACK', preset.track.dirname)
         config.set('SERVER', 'SUN_ANGLE', time_to_sun_angle(preset.time_of_day))
@@ -157,6 +157,8 @@ class ConfigHandler:
         config.set('SERVER', 'UDP_PLUGIN_ADDRESS', '127.0.0.1:12000')
         config.set('SERVER', 'AUTH_PLUGIN_ADDRESS', '')
         config.set('SERVER', 'LEGAL_TYRES', 'V;E;HR;ST')
+        config.set('SERVER', 'START_RULE', str(preset.start_rule))
+        config.set('SERVER', 'QUALIFY_MAX_WAIT_PERC', str(preset.qualify_max_wait_perc))
 
         if preset.server_setting.welcome_message:
             config.set('SERVER', 'WELCOME_MESSAGE', str(os.path.join(self.acserver_config_dir, 'welcome_message.txt')))
