@@ -112,4 +112,4 @@ ACSERVER_HOME = '/home/acserver'
 ACSERVER_BIN_DIR = os.path.join(ACSERVER_HOME, 'assetto-server')
 ACSERVER_CONFIG_DIR = os.path.join(ACSERVER_HOME, 'assetto-server/cfg')
 STRACKER_CONFIG_DIR = os.path.join(ACSERVER_HOME, 'stracker/cfg')
-ACSERVER_FULL_ADMIN_VIEW = True
+ACSERVER_FULL_ADMIN_VIEW = False
