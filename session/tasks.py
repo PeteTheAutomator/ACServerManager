@@ -109,7 +109,7 @@ def perform_upgrade():
     if wipe_status_code != 0:
         raise Exception('Failed to wipe cloud-init directory: ' + target)
 
-    p = Popen(['/bin/sudo', '/sbin/reboot'], stdin=PIPE, stdout=PIPE, stderr=PIPE)
+    p = Popen(['/bin/sudo', '/sbin/shutdown', '-r', '+1'], stdin=PIPE, stdout=PIPE, stderr=PIPE)
     p.communicate()
     reboot_status_code = p.returncode
 
