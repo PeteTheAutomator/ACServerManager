@@ -1,7 +1,7 @@
 ---
+- include: server.yml
 - include: httpd.yml
 - include: django-app.yml
 - include: assetto-server.yml
 - include: stracker.yml
 - include: minorating.yml
-

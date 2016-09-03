@@ -1,4 +1,7 @@
 ---
+# general server vars
+acserver_timezone: Europe/London
+
 # vars for the django app
 acserver_install_prefix: /usr/local
 acserver_app_dir: "{{acserver_install_prefix}}/ACServerManager"

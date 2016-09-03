@@ -1,0 +1,3 @@
+---
+- name: set the server timezone
+  command: timedatectl set-timezone {{acserver_timezone}}
