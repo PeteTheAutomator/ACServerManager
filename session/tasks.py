@@ -23,6 +23,7 @@ def write_config(preset_id):
     ch.write_entries_config(preset)
     ch.write_welcome_message(preset)
     ch.write_stracker_config(preset)
+    ch.write_minorating_config(preset)
 
 
 @background(schedule=timedelta(seconds=1))
@@ -380,8 +381,8 @@ class ConfigHandler:
         config.set('WELCOME_MSG', 'line3', '')
 
         config.add_section('ACPLUGIN')
-        config.set('ACPLUGIN', 'proxyPluginLocalPort', '-1')
-        config.set('ACPLUGIN', 'proxyPluginPort', '-1')
+        config.set('ACPLUGIN', 'proxyPluginLocalPort', str(preset.server_setting.proxy_plugin_local_port))
+        config.set('ACPLUGIN', 'proxyPluginPort', str(preset.server_setting.proxy_plugin_port))
         config.set('ACPLUGIN', 'rcvPort', '-1')
         config.set('ACPLUGIN', 'sendPort', '-1')
 
@@ -397,8 +398,8 @@ class ConfigHandler:
         settings_dict = {
             'load_server_cfg': '1',
             'ac_server_directory': settings.ACSERVER_BIN_DIR,
-            'ac_server_port': '10004',
-            'plugin_port': '10003',
+            'plugin_port': str(preset.server_setting.proxy_plugin_port),
+            'ac_server_port': str(preset.server_setting.proxy_plugin_local_port),
             'ac_cfg_directory': self.acserver_config_dir,
             'start_new_log_on_new_session': '0',
             'log_server_requests': '0',
@@ -416,4 +417,7 @@ class ConfigHandler:
         for k in settings_dict:
             SubElement(app_settings, 'add', attrib={'key': k, 'value': settings_dict[k]})
 
-        return prettify_xml(root)
+        config_file = os.path.join(settings.MINORATING_CONFIG_DIR, 'MinoRatingPlugin.exe.config')
+        fh = open(config_file, 'w')
+        fh.write(prettify_xml(root))
+        fh.close()
