@@ -436,7 +436,7 @@ class ConfigHandler:
             # if we don't have a recorded trust token but found one in the file - commit it's value to the db and use
             # its value for config writes later in this method
             if trust_token_from_file:
-                server_setting = Preset.server_setting
+                server_setting = preset.server_setting
                 server_setting.minorating_server_trust_token = trust_token_from_file
                 server_setting.save()
                 trust_token = trust_token_from_file
