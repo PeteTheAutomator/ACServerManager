@@ -13,3 +13,9 @@ acserver_server_config_dir: "{{acserver_server_install_dir}}/cfg"
 # vars for stracker
 acserver_stracker_bundle_url: http://www.n-e-y-s.de/downloads/stracker/stable/stracker-V3.2.10.zip
 acserver_stracker_dir: "{{acserver_server_install_prefix}}/stracker"
+
+# vars for minorating and mono
+acserver_minorating_mono_repo: http://download.mono-project.com/repo/centos/
+acserver_minorating_mono_repo_key: http://keyserver.ubuntu.com/pks/lookup?op=get&search=0x3FA7E0328081BFF6A14DA29AA6A19B38D3D831EF
+acserver_minorating_dir: "{{acserver_server_install_dir}}/plugins/minorating"
+acserver_minorating_bundle_url: http://www.minorating.com/download/MinoRatingPlugin_1.4.3.zip

@@ -14,7 +14,8 @@ class ServerSettingsAdmin(admin.ModelAdmin):
         }),
         ('Advanced options', {
             'classes': ('collapse',),
-            'fields': ('udp_port', 'tcp_port', 'http_port', 'send_buffer_size', 'recv_buffer_size', 'client_send_interval'),
+            'fields': ('udp_port', 'tcp_port', 'http_port', 'send_buffer_size', 'recv_buffer_size',
+                       'client_send_interval', 'minorating_server_trust_token'),
         })
     )
 

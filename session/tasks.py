@@ -5,6 +5,8 @@ from datetime import datetime, timedelta
 from .models import Preset
 from django.conf import settings
 from subprocess import Popen, PIPE
+from xml.etree.ElementTree import Element, SubElement, Comment, tostring
+from xml.dom import minidom
 import re
 
 
@@ -120,6 +122,14 @@ def perform_upgrade():
 
 def time_to_sun_angle(time):
     return str((time.hour - 13) * 16)
+
+
+def prettify_xml(elem):
+    """Return a pretty-printed XML string for the Element.
+    """
+    rough_string = tostring(elem, 'utf-8')
+    reparsed = minidom.parseString(rough_string)
+    return reparsed.toprettyxml(indent="  ")
 
 
 class ConfigHandler:
@@ -383,3 +393,27 @@ class ConfigHandler:
         config.write(cfg_file, space_around_delimiters=True)
         cfg_file.close()
 
+    def write_minorating_config(self, preset):
+        settings_dict = {
+            'load_server_cfg': '1',
+            'ac_server_directory': settings.ACSERVER_BIN_DIR,
+            'ac_server_port': '10004',
+            'plugin_port': '10003',
+            'ac_cfg_directory': self.acserver_config_dir,
+            'start_new_log_on_new_session': '0',
+            'log_server_requests': '0',
+            'server_trust_token': preset.server_setting.minorating_server_trust_token,
+        }
+
+        root = Element('configuration')
+        startup = SubElement(root, 'startup')
+        SubElement(startup, 'supportedRuntime', attrib={
+            'version': 'v4.0',
+            'sku': '.NETFramework,Version=v4.5',
+        })
+
+        app_settings = SubElement(root, 'appSettings')
+        for k in settings_dict:
+            SubElement(app_settings, 'add', attrib={'key': k, 'value': settings_dict[k]})
+
+        return prettify_xml(root)

@@ -1,0 +1,18 @@
+---
+- name: install mono key
+  command: rpm --import "{{acserver_minorating_mono_repo_key}}"
+
+- name: enable mono yum repository
+  command: yum-config-manager --add-repo {{acserver_minorating_mono_repo}}
+
+- name: install mono RPMS
+  yum: name=mono-complete state=installed
+
+- name: fetch and extract the minorating bundle archive
+  unarchive: src="{{acserver_minorating_bundle_url}}" dest="{{acserver_minorating_dir}}" remote_src=yes copy=no
+
+- name: set acserver ownership on minorating files
+  file: path="{{acserver_minorating_dir}}" owner=acserver group=acserver recurse=yes
+
+- name: write minorating systemd unit file
+  template: src=minorating/minorating.service.j2 dest=/usr/lib/systemd/system/minorating@.service owner=root group=root mode=0644

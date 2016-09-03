@@ -14,6 +14,7 @@ class ServerSetting(models.Model):
     send_buffer_size = models.IntegerField(default=0, help_text='DOCUMENTATION SOURCE NEEDED')
     recv_buffer_size = models.IntegerField(default=0, help_text='DOCUMENTATION SOURCE NEEDED')
     client_send_interval = models.IntegerField(default=20, verbose_name='client send interval (Hz)', help_text='refresh rate of packet sending by the server. 10Hz = ~100ms. Higher number = higher MP quality = higher bandwidth resources needed. Really high values can create connection issues')
+    minorating_server_trust_token = models.CharField(max_length=48, null=True, blank=True, verbose_name='Unique server token for MinoRating')
 
     def __unicode__(self):
         return self.name
