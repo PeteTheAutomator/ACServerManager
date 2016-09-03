@@ -421,7 +421,7 @@ class ConfigHandler:
         # gets initialised when minorating is activated for the first time
         trust_token = None
         trust_token_from_file = None
-        if not preset.server_settings.minorating_server_trust_token:
+        if not preset.server_setting.minorating_server_trust_token:
             try:
                 et = parse(config_file)
                 root = et.getroot()
