@@ -7,6 +7,7 @@ pip install ansible
 
 git clone https://github.com/PeteTheAutomator/ACServerManager.git /var/tmp/ACServerManager
 cd /var/tmp/ACServerManager/ansible
+git pull
 
 cat > ./vars.yml <<EOL
 superuser_name: $NAME
