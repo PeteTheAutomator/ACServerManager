@@ -2,10 +2,10 @@ import os
 from configparser import ConfigParser
 from background_task import background
 from datetime import datetime, timedelta
-from .models import Preset
+from .models import Preset, ServerSetting
 from django.conf import settings
 from subprocess import Popen, PIPE
-from xml.etree.ElementTree import Element, SubElement, Comment, tostring
+from xml.etree.ElementTree import Element, SubElement, tostring, parse
 from xml.dom import minidom
 import re
 
@@ -415,6 +415,34 @@ class ConfigHandler:
         cfg_file.close()
 
     def write_minorating_config(self, preset):
+        config_file = os.path.join(settings.MINORATING_CONFIG_DIR, 'MinoRatingPlugin.exe.config')
+
+        # if server_settings doesn't have a record of the trust_token, attempt to fetch it from the config xml as this
+        # gets initialised when minorating is activated for the first time
+        trust_token = None
+        trust_token_from_file = None
+        if not preset.server_settings.minorating_server_trust_token:
+            try:
+                et = parse(config_file)
+                root = et.getroot()
+                for add_entry in root.find('appSettings').findall('add'):
+                    add_entry_dict = add_entry.attrib
+                    if 'key' in add_entry_dict and 'value' in add_entry_dict:
+                        if add_entry_dict['key'] == 'server_trust_token':
+                            trust_token_from_file = add_entry_dict['value']
+            except:
+                pass
+
+            # if we don't have a recorded trust token but found one in the file - commit it's value to the db and use
+            # its value for config writes later in this method
+            if trust_token_from_file:
+                server_setting = Preset.server_setting
+                server_setting.minorating_server_trust_token = trust_token_from_file
+                server_setting.save()
+                trust_token = trust_token_from_file
+        else:
+            trust_token = preset.server_setting.minorating_server_trust_token
+
         settings_dict = {
             'load_server_cfg': '1',
             'ac_server_directory': settings.ACSERVER_BIN_DIR,
@@ -423,7 +451,7 @@ class ConfigHandler:
             'ac_cfg_directory': self.acserver_config_dir,
             'start_new_log_on_new_session': '0',
             'log_server_requests': '0',
-            'server_trust_token': preset.server_setting.minorating_server_trust_token,
+            'server_trust_token': trust_token,
         }
 
         root = Element('configuration')
@@ -437,7 +465,6 @@ class ConfigHandler:
         for k in settings_dict:
             SubElement(app_settings, 'add', attrib={'key': k, 'value': settings_dict[k]})
 
-        config_file = os.path.join(settings.MINORATING_CONFIG_DIR, 'MinoRatingPlugin.exe.config')
         fh = open(config_file, 'w')
         fh.write(prettify_xml(root))
         fh.close()
