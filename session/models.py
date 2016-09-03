@@ -114,6 +114,7 @@ class Preset(models.Model):
 
     acserver_run_status = models.BooleanField(default=False)
     stracker_run_status = models.BooleanField(default=False)
+    minorating_run_status = models.BooleanField(default=False)
 
     def __unicode__(self):
         return self.name + ' / ' + self.track.name

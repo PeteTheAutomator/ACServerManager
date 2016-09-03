@@ -73,23 +73,20 @@ class PresetAdmin(admin.ModelAdmin):
     filter_horizontal = ('weathers',)
     inlines = [EntryInline]
     save_as = True
-    list_display = ('__unicode__', 'launch_configuration', 'stop_configuration', 'acserver_status', 'stracker_status')
-    exclude = ('acserver_run_status', 'stracker_run_status',)
+    list_display = ('__unicode__', 'launch_configuration', 'stop_configuration', 'acserver_status', 'stracker_status',
+                    'minorating_status')
+    exclude = ('acserver_run_status', 'stracker_run_status', 'minorating_run_status')
     actions = None
 
-    # stop / start / relaunch
-    # - if both acserver and stracker are down - launch
-    # - if both acserver and stracker are running - stop/restart
-    # - if in a mixed state - stop/restart
     def launch_configuration(self, obj):
-        if not obj.acserver_run_status and not obj.stracker_run_status:
+        if not obj.acserver_run_status and not obj.stracker_run_status and not obj.minorating_run_status:
             return '<a href="/admin/session/preset/' + str(obj.pk) + '/launch/">Launch</a>'
         else:
             return '<a href="/admin/session/preset/' + str(obj.pk) + '/launch/">Re-launch</a>'
     launch_configuration.allow_tags = True
 
     def stop_configuration(self, obj):
-        if not obj.acserver_run_status and not obj.stracker_run_status:
+        if not obj.acserver_run_status and not obj.stracker_run_status and not obj.minorating_run_status:
             return ' - '
         else:
             return '<a href="/admin/session/preset/' + str(obj.pk) + '/stop/">Stop</a>'
@@ -103,6 +100,12 @@ class PresetAdmin(admin.ModelAdmin):
 
     def stracker_status(self, obj):
         if obj.stracker_run_status:
+            return 'running'
+        else:
+            return 'stopped'
+
+    def minorating_status(self, obj):
+        if obj.minorating_run_status:
             return 'running'
         else:
             return 'stopped'

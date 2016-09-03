@@ -41,6 +41,12 @@ def kick_services(preset_id):
     if stracker_return_code != 0:
         raise Exception('failed to restart stracker server process')
 
+    p = Popen(['/bin/sudo', '/usr/bin/systemctl', 'restart', 'minorating@' + str(preset_id)], stdin=PIPE, stdout=PIPE, stderr=PIPE)
+    p.communicate()
+    minorating_return_code = p.returncode
+    if minorating_return_code != 0:
+        raise Exception('failed to restart minorating server process')
+
 
 @background(schedule=timedelta(seconds=1))
 def stop_services(preset_id):
@@ -57,6 +63,12 @@ def stop_services(preset_id):
     if stracker_return_code != 0:
         raise Exception('failed to stop stracker server process')
 
+    p = Popen(['/bin/sudo', '/usr/bin/systemctl', 'stop', 'minorating@' + str(preset_id)], stdin=PIPE, stdout=PIPE, stderr=PIPE)
+    p.communicate()
+    minorating_return_code = p.returncode
+    if minorating_return_code != 0:
+        raise Exception('failed to stop minorating server process')
+
 
 @background(schedule=timedelta(seconds=0))
 def get_server_status():
@@ -69,15 +81,19 @@ def get_server_status():
             preset_changed = False
             acserver_regex = re.compile('\s*acserver@' + str(preset.id) + '\.service\s+loaded active running')
             stracker_regex = re.compile('\s*stracker@' + str(preset.id) + '\.service\s+loaded active running')
+            minorating_regex = re.compile('\s*minorating@' + str(preset.id) + '\.service\s+loaded active running')
 
             acserver_run_status = False
             stracker_run_status = False
+            minorating_run_status = False
 
             for line in output_lines:
                 if re.match(acserver_regex, line):
                     acserver_run_status = True
                 if re.match(stracker_regex, line):
                     stracker_run_status = True
+                if re.match(minorating_regex, line):
+                    minorating_run_status = True
 
             if preset.acserver_run_status != acserver_run_status:
                 preset.acserver_run_status = acserver_run_status
@@ -85,6 +101,10 @@ def get_server_status():
 
             if preset.stracker_run_status != stracker_run_status:
                 preset.stracker_run_status = stracker_run_status
+                preset_changed = True
+
+            if preset.minorating_run_status != minorating_run_status:
+                preset.minorating_run_status = minorating_run_status
                 preset_changed = True
 
             if preset_changed:
