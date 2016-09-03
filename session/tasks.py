@@ -419,7 +419,7 @@ class ConfigHandler:
 
         # if server_settings doesn't have a record of the trust_token, attempt to fetch it from the config xml as this
         # gets initialised when minorating is activated for the first time
-        trust_token = None
+        trust_token = ''
         trust_token_from_file = None
         if not preset.server_setting.minorating_server_trust_token:
             try:
