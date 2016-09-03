@@ -8,6 +8,8 @@
 - name: install mono RPMS
   yum: name=mono-complete state=installed
 
+- name: make acserver plugins directory
+
 - name: fetch and extract the minorating bundle archive
   unarchive: src="{{acserver_minorating_bundle_url}}" dest="{{acserver_minorating_dir}}" remote_src=yes copy=no
 

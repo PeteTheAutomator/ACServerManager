@@ -17,6 +17,9 @@
 - name: create assetto-server dir
   file: path="{{acserver_server_install_dir}}" state=directory owner=acserver group=acserver
 
+- name: create assetto-server plugins dir
+  file: path="{{acserver_server_plugins_dir}}" state=directory owner=acserver group=acserver
+
 - name: write acserver systemd unit file
   template: src=acserver/acserver.service.j2 dest=/usr/lib/systemd/system/acserver@.service owner=root group=root mode=0644
 
