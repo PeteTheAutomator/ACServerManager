@@ -2,9 +2,11 @@ import os
 from configparser import ConfigParser
 from background_task import background
 from datetime import datetime, timedelta
-from .models import Preset
+from .models import Preset, ServerSetting
 from django.conf import settings
 from subprocess import Popen, PIPE
+from xml.etree.ElementTree import Element, SubElement, tostring, parse
+from xml.dom import minidom
 import re
 
 
@@ -21,6 +23,7 @@ def write_config(preset_id):
     ch.write_entries_config(preset)
     ch.write_welcome_message(preset)
     ch.write_stracker_config(preset)
+    ch.write_minorating_config(preset)
 
 
 @background(schedule=timedelta(seconds=1))
@@ -38,6 +41,12 @@ def kick_services(preset_id):
     if stracker_return_code != 0:
         raise Exception('failed to restart stracker server process')
 
+    p = Popen(['/bin/sudo', '/usr/bin/systemctl', 'restart', 'minorating@' + str(preset_id)], stdin=PIPE, stdout=PIPE, stderr=PIPE)
+    p.communicate()
+    minorating_return_code = p.returncode
+    if minorating_return_code != 0:
+        raise Exception('failed to restart minorating server process')
+
 
 @background(schedule=timedelta(seconds=1))
 def stop_services(preset_id):
@@ -54,6 +63,12 @@ def stop_services(preset_id):
     if stracker_return_code != 0:
         raise Exception('failed to stop stracker server process')
 
+    p = Popen(['/bin/sudo', '/usr/bin/systemctl', 'stop', 'minorating@' + str(preset_id)], stdin=PIPE, stdout=PIPE, stderr=PIPE)
+    p.communicate()
+    minorating_return_code = p.returncode
+    if minorating_return_code != 0:
+        raise Exception('failed to stop minorating server process')
+
 
 @background(schedule=timedelta(seconds=0))
 def get_server_status():
@@ -66,15 +81,19 @@ def get_server_status():
             preset_changed = False
             acserver_regex = re.compile('\s*acserver@' + str(preset.id) + '\.service\s+loaded active running')
             stracker_regex = re.compile('\s*stracker@' + str(preset.id) + '\.service\s+loaded active running')
+            minorating_regex = re.compile('\s*minorating@' + str(preset.id) + '\.service\s+loaded active running')
 
             acserver_run_status = False
             stracker_run_status = False
+            minorating_run_status = False
 
             for line in output_lines:
                 if re.match(acserver_regex, line):
                     acserver_run_status = True
                 if re.match(stracker_regex, line):
                     stracker_run_status = True
+                if re.match(minorating_regex, line):
+                    minorating_run_status = True
 
             if preset.acserver_run_status != acserver_run_status:
                 preset.acserver_run_status = acserver_run_status
@@ -82,6 +101,10 @@ def get_server_status():
 
             if preset.stracker_run_status != stracker_run_status:
                 preset.stracker_run_status = stracker_run_status
+                preset_changed = True
+
+            if preset.minorating_run_status != minorating_run_status:
+                preset.minorating_run_status = minorating_run_status
                 preset_changed = True
 
             if preset_changed:
@@ -120,6 +143,14 @@ def perform_upgrade():
 
 def time_to_sun_angle(time):
     return str((time.hour - 13) * 16)
+
+
+def prettify_xml(elem):
+    """Return a pretty-printed XML string for the Element.
+    """
+    rough_string = tostring(elem, 'utf-8')
+    reparsed = minidom.parseString(rough_string)
+    return reparsed.toprettyxml(indent="  ")
 
 
 class ConfigHandler:
@@ -370,8 +401,8 @@ class ConfigHandler:
         config.set('WELCOME_MSG', 'line3', '')
 
         config.add_section('ACPLUGIN')
-        config.set('ACPLUGIN', 'proxyPluginLocalPort', '-1')
-        config.set('ACPLUGIN', 'proxyPluginPort', '-1')
+        config.set('ACPLUGIN', 'proxyPluginLocalPort', str(preset.server_setting.proxy_plugin_local_port))
+        config.set('ACPLUGIN', 'proxyPluginPort', str(preset.server_setting.proxy_plugin_port))
         config.set('ACPLUGIN', 'rcvPort', '-1')
         config.set('ACPLUGIN', 'sendPort', '-1')
 
@@ -383,3 +414,57 @@ class ConfigHandler:
         config.write(cfg_file, space_around_delimiters=True)
         cfg_file.close()
 
+    def write_minorating_config(self, preset):
+        config_file = os.path.join(settings.MINORATING_CONFIG_DIR, 'MinoRatingPlugin.exe.config')
+
+        # if server_settings doesn't have a record of the trust_token, attempt to fetch it from the config xml as this
+        # gets initialised when minorating is activated for the first time
+        trust_token = ''
+        trust_token_from_file = None
+        if not preset.server_setting.minorating_server_trust_token:
+            try:
+                et = parse(config_file)
+                root = et.getroot()
+                for add_entry in root.find('appSettings').findall('add'):
+                    add_entry_dict = add_entry.attrib
+                    if 'key' in add_entry_dict and 'value' in add_entry_dict:
+                        if add_entry_dict['key'] == 'server_trust_token':
+                            trust_token_from_file = add_entry_dict['value']
+            except:
+                pass
+
+            # if we don't have a recorded trust token but found one in the file - commit it's value to the db and use
+            # its value for config writes later in this method
+            if trust_token_from_file:
+                server_setting = preset.server_setting
+                server_setting.minorating_server_trust_token = trust_token_from_file
+                server_setting.save()
+                trust_token = trust_token_from_file
+        else:
+            trust_token = preset.server_setting.minorating_server_trust_token
+
+        settings_dict = {
+            'load_server_cfg': '1',
+            'ac_server_directory': settings.ACSERVER_BIN_DIR,
+            'plugin_port': str(preset.server_setting.proxy_plugin_port),
+            'ac_server_port': str(preset.server_setting.proxy_plugin_local_port),
+            'ac_cfg_directory': self.acserver_config_dir,
+            'start_new_log_on_new_session': '0',
+            'log_server_requests': '0',
+            'server_trust_token': trust_token,
+        }
+
+        root = Element('configuration')
+        startup = SubElement(root, 'startup')
+        SubElement(startup, 'supportedRuntime', attrib={
+            'version': 'v4.0',
+            'sku': '.NETFramework,Version=v4.5',
+        })
+
+        app_settings = SubElement(root, 'appSettings')
+        for k in settings_dict:
+            SubElement(app_settings, 'add', attrib={'key': k, 'value': settings_dict[k]})
+
+        fh = open(config_file, 'w')
+        fh.write(prettify_xml(root))
+        fh.close()

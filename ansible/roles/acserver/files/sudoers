@@ -1,5 +1,6 @@
 acserver ALL=(ALL) NOPASSWD: /usr/bin/systemctl stop acserver@*, /usr/bin/systemctl start acserver@*, /usr/bin/systemctl restart acserver@*, /usr/bin/systemctl status acserver@*
 acserver ALL=(ALL) NOPASSWD: /usr/bin/systemctl stop stracker@*, /usr/bin/systemctl start stracker@*, /usr/bin/systemctl restart stracker@*, /usr/bin/systemctl status stracker@*
+acserver ALL=(ALL) NOPASSWD: /usr/bin/systemctl stop minorating@*, /usr/bin/systemctl start minorating@*, /usr/bin/systemctl restart minorating@*, /usr/bin/systemctl status minorating@*
 acserver ALL=(ALL) NOPASSWD: /usr/bin/systemctl list-units
 acserver ALL=(ALL) NOPASSWD: /bin/rm -rf /var/lib/cloud/instances/*, /sbin/shutdown -r +1
 

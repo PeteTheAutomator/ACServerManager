@@ -1,0 +1,14 @@
+[Unit]
+Description=MinoRating for Assetto Corsa - preset %I
+After=syslog.target network.target
+
+[Service]
+User=acserver
+WorkingDirectory={{acserver_server_install_dir}}
+ExecStart=/bin/mono {{acserver_minorating_dir}}/MinoRatingPlugin.exe
+ExecReload=/bin/kill -HUP $MAINPID
+KillMode=process
+
+[Install]
+WantedBy=multi-user.target
+

@@ -33,6 +33,7 @@ Contents:
    server_installation_manual_ec2
    assetOmator_installation
    server_configuration
+   server_maintenance
    support
    advanced_server_configuration
 
