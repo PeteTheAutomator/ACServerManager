@@ -5,6 +5,14 @@ import datetime
 
 
 class ServerSetting(models.Model):
+    MINORATING_GRADE_CHOICES = (
+        ('A', 'A - exemplary'),
+        ('AB', 'AB - clean racer (or better)'),
+        ('ABC', 'ABC - rookie (or better)'),
+        ('ABCN', 'ABCN - new/unlisted racers (or better)'),
+        ('ABCNW', 'ABCNW - anybody (including wreckers)'),
+    )
+
     name = models.CharField(max_length=64, help_text='The name of the server - this will appear in the Assetto Corsa\'s listing of online servers for the public to join')
     welcome_message = models.TextField(null=True, blank=True, help_text='Place a welcome message here - this will display some dialog to clients upon joining a session which they must click to close')
     admin_password = models.CharField(max_length=64, help_text='Server Admin Password - joining the session using this password grants the user admin privilges (allowing you to skip sessions, kick users, etc)')
@@ -14,7 +22,8 @@ class ServerSetting(models.Model):
     send_buffer_size = models.IntegerField(default=0, help_text='DOCUMENTATION SOURCE NEEDED')
     recv_buffer_size = models.IntegerField(default=0, help_text='DOCUMENTATION SOURCE NEEDED')
     client_send_interval = models.IntegerField(default=20, verbose_name='client send interval (Hz)', help_text='refresh rate of packet sending by the server. 10Hz = ~100ms. Higher number = higher MP quality = higher bandwidth resources needed. Really high values can create connection issues')
-    minorating_server_trust_token = models.CharField(max_length=48, null=True, blank=True, verbose_name='Unique server token for MinoRating')
+    minorating_grade = models.CharField(max_length=8, choices=MINORATING_GRADE_CHOICES, default='ABCN', help_text='Minorating Grade required to join this server\'s sessions (driver proficiency - see http://www.minorating.com/Grades for details)')
+    minorating_server_trust_token = models.CharField(max_length=48, null=True, blank=True, verbose_name='Unique server token for MinoRating', help_text='this value is initialised when the server contacts Minorating for the first time; you may wish to record this value if migrating to another server')
     proxy_plugin_port = models.IntegerField(default=10003)
     proxy_plugin_local_port = models.IntegerField(default=10004)
 

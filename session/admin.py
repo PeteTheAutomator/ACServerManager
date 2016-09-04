@@ -10,7 +10,7 @@ class ServerSettingsAdmin(admin.ModelAdmin):
 
     fieldsets = (
         (None, {
-            'fields': ('name', 'welcome_message', 'admin_password'),
+            'fields': ('name', 'welcome_message', 'admin_password', 'minorating_grade'),
         }),
         ('Advanced options', {
             'classes': ('collapse',),
