@@ -22,4 +22,5 @@ acserver_stracker_dir: "{{acserver_server_install_prefix}}/stracker"
 acserver_minorating_mono_repo: http://download.mono-project.com/repo/centos/
 acserver_minorating_mono_repo_key: http://keyserver.ubuntu.com/pks/lookup?op=get&search=0x3FA7E0328081BFF6A14DA29AA6A19B38D3D831EF
 acserver_minorating_dir: "{{acserver_server_plugins_dir}}/minorating"
-acserver_minorating_bundle_url: http://www.minorating.com/download/MinoRatingPlugin_1.4.3.zip
+acserver_minorating_plugin_version: 2.1.0
+acserver_minorating_bundle_url: "http://www.minorating.com/download/MinoRatingPlugin_{{acserver_minorating_plugin_version}}.zip"
