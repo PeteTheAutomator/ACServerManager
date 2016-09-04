@@ -11,7 +11,7 @@ class ServerSetting(models.Model):
         ('ABC', 'ABC - rookie (or better)'),
         ('ABCN', 'ABCN - rookie or new/unlisted racers (or better)'),
         ('ABCDN', 'ABCDN - dirty racers welcome'),
-        ('ABCDNW', 'ABCNW - anybody (including wreckers)'),
+        ('ABCDNW', 'ABCDNW - anybody (including wreckers)'),
     )
 
     name = models.CharField(max_length=64, help_text='The name of the server - this will appear in the Assetto Corsa\'s listing of online servers for the public to join')
