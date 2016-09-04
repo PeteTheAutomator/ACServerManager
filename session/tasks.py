@@ -1,5 +1,5 @@
 import os
-from configparser import ConfigParser
+from configparser import ConfigParser, RawConfigParser
 from background_task import background
 from datetime import datetime, timedelta
 from .models import Preset, ServerSetting
@@ -166,7 +166,7 @@ class ConfigHandler:
             os.makedirs(self.stracker_config_dir)
 
     def write_acserver_config(self, preset):
-        config = ConfigParser()
+        config = RawConfigParser()
         config.optionxform = str
         cfg_file = open(os.path.join(self.acserver_config_dir, 'server_cfg.ini'), 'w')
         config.add_section('SERVER')
