@@ -216,7 +216,7 @@ class ConfigHandler:
         config.set('SERVER', 'MAX_CLIENTS', str(preset.max_clients))
         config.set('SERVER', 'UDP_PLUGIN_LOCAL_PORT', '11000')
         config.set('SERVER', 'UDP_PLUGIN_ADDRESS', '127.0.0.1:12000')
-        config.set('SERVER', 'AUTH_PLUGIN_ADDRESS', '')
+        config.set('SERVER', 'AUTH_PLUGIN_ADDRESS', '127.0.0.1:50041/acauth?timeout=300&andurl1=www.minorating.com%3A805/minodata/auth/' + preset.server_setting.minorating_grade + '/')
         config.set('SERVER', 'LEGAL_TYRES', 'V;E;HR;ST')
         config.set('SERVER', 'START_RULE', str(preset.start_rule))
         config.set('SERVER', 'QUALIFY_MAX_WAIT_PERC', str(preset.qualify_max_wait_perc))
