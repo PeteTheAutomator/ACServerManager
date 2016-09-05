@@ -80,7 +80,7 @@ class Preset(models.Model):
     )
 
     # important stuff
-    name = models.CharField(max_length=64, help_text='A brief label to give the preset some context')
+    name = models.CharField(max_length=64, null=True, blank=True, help_text='A brief label to give the preset some context')
     server_setting = models.ForeignKey(ServerSetting)
     track = models.ForeignKey('library.Track', related_name='track', help_text='The track (and subversion, if any) to race on')
     track_dynamism = models.ForeignKey('library.TrackDynamism', help_text='Track surface conditions')
@@ -127,7 +127,26 @@ class Preset(models.Model):
     minorating_run_status = models.BooleanField(default=False)
 
     def __unicode__(self):
-        return self.name + ' / ' + self.track.name
+
+        if self.name:
+            return self.name
+
+        entries = self.entry_set.all()
+        car_list = []
+        car_list_string_trunc = None
+        for entry in entries:
+                if entry.car.name not in car_list:
+                    car_list.append(entry.car.name)
+
+        if len(car_list) > 0:
+            car_list_string = ','.join(car_list)
+            car_list_string_trunc = (car_list_string[:40] + '..' if len(car_list_string) > 42 else car_list_string)
+
+        if self.track:
+            if len(car_list) > 0:
+                return self.track.name + ' (' + car_list_string_trunc + ')'
+            else:
+                return self.track.name
 
 
 class Entry(models.Model):

@@ -1,5 +1,4 @@
 from django.contrib import admin
-from django.forms import ModelForm
 from .models import ServerSetting, Preset, Entry
 from .tasks import get_server_status
 
@@ -45,6 +44,7 @@ class PresetAdmin(admin.ModelAdmin):
             pass
         super(PresetAdmin, self).__init__(*args, **kwargs)
 
+
     fieldsets = (
         (None, {
             'fields': ('name', 'server_setting',),
@@ -76,7 +76,7 @@ class PresetAdmin(admin.ModelAdmin):
     list_display = ('__unicode__', 'launch_configuration', 'stop_configuration', 'acserver_status', 'stracker_status',
                     'minorating_status')
     exclude = ('acserver_run_status', 'stracker_run_status', 'minorating_run_status')
-    actions = None
+    #actions = None
 
     def launch_configuration(self, obj):
         if not obj.acserver_run_status and not obj.stracker_run_status and not obj.minorating_run_status:

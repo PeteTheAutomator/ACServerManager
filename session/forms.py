@@ -1,32 +1,24 @@
-''' PARKING CUSTOM FORMS FOR NOW
-
-
 from django import forms
-from .models import Environment, EntryGroup, Entry
+from library.models import Track, TrackDynamism, Weather, Car
+from session.models import Preset, ServerSetting
 
 
-class EnvironmentForm(forms.ModelForm):
-    class Meta:
-        model = Environment
-        exclude = ('',)
-
-    def __init__(self, *args, **kwargs):
-        super(EnvironmentForm, self).__init__(*args, **kwargs)
-        self.fields['voting_quorum'].widget.attrs.update({'class': 'advanced'})
-        self.fields['vote_duration'].widget.attrs.update({'class': 'advanced'})
+class EnvironmentForm(forms.Form):
+    server_setting = forms.ModelChoiceField(queryset=ServerSetting.objects.all())
+    track = forms.ModelChoiceField(queryset=Track.objects.all())
+    track_dynamism = forms.ModelChoiceField(queryset=TrackDynamism.objects.all())
+    weather = forms.ModelChoiceField(queryset=Weather.objects.all())
+    time_of_day = forms.ChoiceField(Preset.TIME_OF_DAY_CHOICES)
 
 
-class EntryForm(forms.ModelForm):
-    class Meta:
-        model = Entry
-        exclude = ('',)
+class EntrySetForm(forms.Form):
+    car = forms.ModelChoiceField(queryset=Car.objects.all())
+    quantity = forms.IntegerField()
+    apply_fixed_setup = forms.BooleanField(required=False)
 
 
-EntryFormSet = forms.formset_factory(EntryForm, extra=1)
+class SessionTypeForm(forms.Form):
+    practice_time = forms.IntegerField()
+    qualify_time = forms.IntegerField()
+    race_laps = forms.IntegerField()
 
-
-class EntryGroupForm(forms.ModelForm):
-    class Meta:
-        model = EntryGroup
-        exclude = ('',)
-'''
