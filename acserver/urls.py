@@ -16,6 +16,8 @@ from django.conf.urls import include, url
 from django.contrib import admin
 from session.views import launch_preset, stop_preset, upgrade
 from library.views import process_assetcollection
+from session.views import PresetWizard
+
 
 admin.site.site_header = 'Assetto Corsa Server Manager'
 admin.site.site_title = 'Assetto Corsa Server Manager'
@@ -23,6 +25,7 @@ admin.site.site_title = 'Assetto Corsa Server Manager'
 urlpatterns = [
     url(r'^admin/session/preset/(?P<preset_id>[0-9]+)/launch/$', launch_preset, name='launch_preset'),
     url(r'^admin/session/preset/(?P<preset_id>[0-9]+)/stop/$', stop_preset, name='stop_preset'),
+    url(r'^admin/session/presetwizard/', PresetWizard.as_view()),
     url(r'^admin/upgrade/', upgrade, name='upgrade'),
     url(r'^admin/library/assetcollection/(?P<assetcollection_id>[0-9]+)/process/$', process_assetcollection, name='process_assetcollection'),
     url(r'^admin/', include(admin.site.urls)),
