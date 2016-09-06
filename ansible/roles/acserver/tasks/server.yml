@@ -1,3 +1,8 @@
 ---
 - name: set the server timezone
   command: timedatectl set-timezone {{acserver_timezone}}
+  register: tz_result
+  until: tz_result.rc == 0
+  retries: 10
+  delay: 1
+  ignore_errors: yes
