@@ -7,8 +7,7 @@ from time import sleep
 from session.models import Entry, Preset, ServerSetting
 from library.models import CarSkin, Weather, TrackDynamism, Track
 from formtools.wizard.views import SessionWizardView
-from session.forms import EntrySetForm, EnvironmentForm, SessionTypeForm
-
+from session.forms import EntrySetForm, EnvironmentForm, SessionTypeForm, EntrySetFormSet
 
 
 @login_required
@@ -41,49 +40,65 @@ def upgrade(request):
 
 
 def process_form_data(form_list):
-    form_data_list = [form.cleaned_data for form in form_list]
-    form_data = {}
-    for d in form_data_list:
-        form_data.update(d)
+    form_data = [form.cleaned_data for form in form_list]
 
-    # TODO: add weather to many-to-many
     p = Preset(
-        server_setting=form_data['server_setting'],
-        track=form_data['track'],
-        track_dynamism=form_data['track_dynamism'],
-        time_of_day=form_data['time_of_day'],
-        practice_time=form_data['practice_time'],
-        qualify_time=form_data['qualify_time'],
-        race_laps=form_data['race_laps'],
+        server_setting=form_data[0]['server_setting'],
+        track=form_data[0]['track'],
+        track_dynamism=form_data[0]['track_dynamism'],
+        time_of_day=form_data[0]['time_of_day'],
+        practice_time=form_data[2]['practice_time'],
+        qualify_time=form_data[2]['qualify_time'],
+        race_laps=form_data[2]['race_laps'],
     )
     p.save()
-    p.weathers.add(form_data['weather'])
+    p.weathers.add(form_data[0]['weather'])
     p.save()
 
-    car_skins = CarSkin.objects.filter(car=form_data['car'])
-    entry_count = 0
-    car_skin_id = 0
-    while entry_count < form_data['quantity']:
-        car_skin = car_skins[car_skin_id]
-        e = Entry(
-            preset=p,
-            car=form_data['car'],
-            skin=car_skin,
-            fixed_setup=form_data['apply_fixed_setup']
-        )
-        e.save()
+    for entry_group in form_data[1]:
+        if len(entry_group) == 0:
+            continue
 
-        if car_skin_id == (len(car_skins) - 1):
-            car_skin_id = 0
-        else:
-            car_skin_id += 1
+        car_skins = CarSkin.objects.filter(car=entry_group['car'])
+        entry_count = 0
+        car_skin_id = 0
 
-        entry_count += 1
+        while entry_count < entry_group['quantity']:
+            car_skin = car_skins[car_skin_id]
+            e = Entry(
+                preset=p,
+                car=entry_group['car'],
+                skin=car_skin,
+                fixed_setup=entry_group['apply_fixed_setup']
+            )
+            e.save()
+
+            if car_skin_id == (len(car_skins) - 1):
+                car_skin_id = 0
+            else:
+                car_skin_id += 1
+
+            entry_count += 1
+
+
+FORMS = [
+    ('environment', EnvironmentForm),
+    ('entryset', EntrySetFormSet),
+    ('session', SessionTypeForm),
+]
+
+TEMPLATES = {
+    'environment': 'admin/session/preset/presetwizard.html',
+    'entryset': 'admin/session/preset/presetwizard-formset.html',
+    'session': 'admin/session/preset/presetwizard.html',
+}
 
 
 class PresetWizard(SessionWizardView):
-    form_list = [EnvironmentForm, EntrySetForm, SessionTypeForm]
-    template_name = 'admin/session/preset/presetwizard.html'
+    form_list = FORMS
+
+    def get_template_names(self):
+        return [TEMPLATES[self.steps.current]]
 
     # Here we set default values for each of the wizard's steps (initial_dict_preliminary).  This
     # forms the wizard's "initial_dict" property which can evolve as steps progress based on
@@ -105,38 +120,40 @@ class PresetWizard(SessionWizardView):
         weather = None
 
     initial_dict_preliminary = {
-        '0': {
+        'environment': {
             'server_setting': static_server_setting,
             'time_of_day': '11:00:00',
             'weather': weather,
             'track_dynamism': track_dynamism,
         },
-        '1': {
-            'quantity': None,
-        },
-        '2': {
+        #'entryset': {
+        #    'quantity': None,
+        #},
+        'session': {
             'practice_time': 0,
             'qualify_time': 12,
             'race_laps': 6,
         }
     }
 
+
     def get_form_initial(self, step):
-        '''
+        """
         Evolve the initial_dict for a step based on choices made in the previous step(s)
         :param step:
         :return: initial_dict
-        '''
+        """
         initial_dict_current = self.initial_dict_preliminary.get(step)
-        if step == '1':
-            prev_data = self.storage.get_step_data('0')
-            track_id = prev_data.get('0-track', '')
+        if step == 'entryset':
+            prev_data = self.storage.get_step_data('environment')
+            track_id = prev_data.get('environment-track', '')
             try:
                 pitboxes = Track.objects.get(id=track_id).pitboxes
                 initial_dict_current['quantity'] = pitboxes
             except:
                 pass
         return initial_dict_current
+
 
     def done(self, form_list, **kwargs):
         process_form_data(form_list)

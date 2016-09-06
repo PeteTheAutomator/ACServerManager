@@ -1,6 +1,6 @@
 from django import forms
 from library.models import Track, TrackDynamism, Weather, Car
-from session.models import Preset, ServerSetting
+from session.models import Preset, ServerSetting, Entry
 
 
 class EnvironmentForm(forms.Form):
@@ -14,7 +14,10 @@ class EnvironmentForm(forms.Form):
 class EntrySetForm(forms.Form):
     car = forms.ModelChoiceField(queryset=Car.objects.all())
     quantity = forms.IntegerField()
-    apply_fixed_setup = forms.BooleanField(required=False)
+    apply_fixed_setup = forms.BooleanField(required=False, help_text='If you have a fixed setup stored for this car, tick this box to apply it - otherwise allow racers to apply their own customisations in-game')
+
+
+EntrySetFormSet = forms.formset_factory(EntrySetForm, extra=5)
 
 
 class SessionTypeForm(forms.Form):
