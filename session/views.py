@@ -10,6 +10,7 @@ from formtools.wizard.views import SessionWizardView
 from session.forms import EntrySetForm, EnvironmentForm, SessionTypeForm
 
 
+
 @login_required
 def launch_preset(request, preset_id):
     preset = Preset.objects.get(id=preset_id)
@@ -80,30 +81,53 @@ def process_form_data(form_list):
         entry_count += 1
 
 
-initial_dict_static = {
-    '0': {
-        'server_setting': ServerSetting.objects.all()[0],
-        'time_of_day': '11:00:00',
-        'weather': Weather.objects.get(name='Clear'),
-        'track_dynamism': TrackDynamism.objects.get(name='Fast'),
-    },
-    '1': {
-        'quantity': None,
-    },
-    '2': {
-        'practice_time': 0,
-        'qualify_time': 12,
-        'race_laps': 6,
-    }
-}
-
-
 class PresetWizard(SessionWizardView):
     form_list = [EnvironmentForm, EntrySetForm, SessionTypeForm]
     template_name = 'admin/session/preset/presetwizard.html'
 
+    # Here we set default values for each of the wizard's steps (initial_dict_preliminary).  This
+    # forms the wizard's "initial_dict" property which can evolve as steps progress based on
+    # previous step data - e.g. a track's pitboxes influences the default value for car quantity.
+    all_server_settings = ServerSetting.objects.all()
+    if len(all_server_settings) > 0:
+        static_server_setting = all_server_settings[0]
+    else:
+        static_server_setting = None
+
+    try:
+        track_dynamism = TrackDynamism.objects.get(name='Fast')
+    except TrackDynamism.DoesNotExist:
+        track_dynamism = None
+
+    try:
+        weather = Weather.objects.get(name='Clear')
+    except Weather.DoesNotExist:
+        weather = None
+
+    initial_dict_preliminary = {
+        '0': {
+            'server_setting': static_server_setting,
+            'time_of_day': '11:00:00',
+            'weather': weather,
+            'track_dynamism': track_dynamism,
+        },
+        '1': {
+            'quantity': None,
+        },
+        '2': {
+            'practice_time': 0,
+            'qualify_time': 12,
+            'race_laps': 6,
+        }
+    }
+
     def get_form_initial(self, step):
-        initial_dict_current = initial_dict_static.get(step)
+        '''
+        Evolve the initial_dict for a step based on choices made in the previous step(s)
+        :param step:
+        :return: initial_dict
+        '''
+        initial_dict_current = self.initial_dict_preliminary.get(step)
         if step == '1':
             prev_data = self.storage.get_step_data('0')
             track_id = prev_data.get('0-track', '')
