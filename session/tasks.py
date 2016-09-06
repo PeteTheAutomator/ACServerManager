@@ -145,6 +145,15 @@ def time_to_sun_angle(time):
     return str((time.hour - 13) * 16)
 
 
+def xstr(s):
+    """
+    Converts None types to an empty string, else the same string
+    """
+    if s is None:
+        return ''
+    return str(s)
+
+
 def prettify_xml(elem):
     """Return a pretty-printed XML string for the Element.
     """
@@ -183,7 +192,7 @@ class ConfigHandler:
 
         config.set('SERVER', 'NAME', preset.server_setting.name)
         config.set('SERVER', 'CARS', ';'.join(car_list))
-        config.set('SERVER', 'CONFIG_TRACK', '' if not preset.track.subversion else preset.track.subversion)
+        config.set('SERVER', 'CONFIG_TRACK', xstr(preset.track.subversion))
         config.set('SERVER', 'TRACK', preset.track.dirname)
         config.set('SERVER', 'SUN_ANGLE', time_to_sun_angle(preset.time_of_day))
         config.set('SERVER', 'PASSWORD', str(preset.session_password))
@@ -279,12 +288,12 @@ class ConfigHandler:
 
             car_section = 'CAR_' + str(car_count)
             config.add_section(car_section)
-            config.set(car_section, 'MODEL', entry.car.dirname)
-            config.set(car_section, 'SKIN', entry.skin.name)
+            config.set(car_section, 'MODEL', xstr(entry.car.dirname))
+            config.set(car_section, 'SKIN', xstr(entry.skin.name))
             config.set(car_section, 'SPECTATOR_MODE', str(int(entry.spectator_mode)))
-            config.set(car_section, 'DRIVER_NAME', entry.name)
-            config.set(car_section, 'TEAM', entry.team)
-            config.set(car_section, 'GUID', entry.guid)
+            config.set(car_section, 'DRIVER_NAME', xstr(entry.name))
+            config.set(car_section, 'TEAM', xstr(entry.team))
+            config.set(car_section, 'GUID', xstr(entry.guid))
             config.set(car_section, 'BALLAST', str(entry.ballast))
 
             if entry.fixed_setup and entry.car.fixed_setup:
