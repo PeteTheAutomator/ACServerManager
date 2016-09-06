@@ -41,7 +41,6 @@
     command: "/bin/bash -c \"source {{acserver_virtualenv}}/bin/activate && {{acserver_app_dir}}/manage.py createsuperuser --username={{superuser_name}} --email={{superuser_email}}\""
     responses:
       Password: "{{superuser_pass}}"
-      Password: "{{superuser_pass}}"
   failed_when: False
 
 - name: allow apache write access to django app dir
