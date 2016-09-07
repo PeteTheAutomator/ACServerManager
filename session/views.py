@@ -126,16 +126,12 @@ class PresetWizard(SessionWizardView):
             'weather': weather,
             'track_dynamism': track_dynamism,
         },
-        #'entryset': {
-        #    'quantity': None,
-        #},
         'session': {
             'practice_time': 0,
             'qualify_time': 12,
             'race_laps': 6,
         }
     }
-
 
     def get_form_initial(self, step):
         """
@@ -154,6 +150,23 @@ class PresetWizard(SessionWizardView):
                 pass
         return initial_dict_current
 
+    def get_context_data(self, form, **kwargs):
+        context = super(PresetWizard, self).get_context_data(form=form, **kwargs)
+        if self.steps.current == 'entryset':
+            track_info = {
+                'name': None,
+                'pitboxes': None,
+            }
+            prev_data = self.storage.get_step_data('environment')
+            track_id = prev_data.get('environment-track', '')
+            try:
+                track = Track.objects.get(id=track_id)
+                track_info['name'] = track.name
+                track_info['pitboxes'] = track.pitboxes
+            except Track.DoesNotExist:
+                pass
+            context.update({'track_info': track_info})
+        return context
 
     def done(self, form_list, **kwargs):
         process_form_data(form_list)

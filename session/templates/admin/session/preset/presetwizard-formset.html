@@ -17,7 +17,11 @@
 
 {% block content %}
 
-<p>Step {{ wizard.steps.step1 }} of {{ wizard.steps.count }}</p>
+<p>Step {{ wizard.steps.step1 }} of {{ wizard.steps.count }}
+
+{% if track_info.name and track_info.pitboxes %}
+<h1>{{ track_info.name }} has {{ track_info.pitboxes }} pitboxes; this is the maximum total number of cars you can select</h1>
+{% endif %}
 
 <form action="" method="post">{% csrf_token %}
 
