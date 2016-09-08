@@ -14,9 +14,9 @@ Including another URLconf
 """
 from django.conf.urls import include, url
 from django.contrib import admin
-from session.views import launch_preset, stop_preset, upgrade
+from session.views import launch_preset, stop_preset, upgrade, constance_config_view, PresetWizard, main_menu, \
+    PresetIndexView, PresetUpdate, PresetDelete
 from library.views import process_assetcollection
-from session.views import PresetWizard
 
 
 admin.site.site_header = 'Assetto Corsa Server Manager'
@@ -25,9 +25,16 @@ admin.site.site_title = 'Assetto Corsa Server Manager'
 urlpatterns = [
     url(r'^admin/session/preset/(?P<preset_id>[0-9]+)/launch/$', launch_preset, name='launch_preset'),
     url(r'^admin/session/preset/(?P<preset_id>[0-9]+)/stop/$', stop_preset, name='stop_preset'),
-    url(r'^admin/session/presetwizard/', PresetWizard.as_view()),
+    url(r'^admin/session/presetwizard/', PresetWizard.as_view(), name='preset'),
     url(r'^admin/upgrade/', upgrade, name='upgrade'),
     url(r'^admin/library/assetcollection/(?P<assetcollection_id>[0-9]+)/process/$', process_assetcollection, name='process_assetcollection'),
     url(r'^admin/', include(admin.site.urls)),
     url(r'^chaining/', include('smart_selects.urls')),
+
+    url(r'^ac/$', main_menu, name='main_menu'),
+    url(r'^ac/settings/', constance_config_view, name='constance_config_view'),
+    url(r'^ac/preset/$', PresetIndexView.as_view()),
+    url(r'^ac/preset/(?P<pk>[0-9])+/$', PresetUpdate.as_view(), name='preset-update'),
+    url(r'^ac/preset/(?P<pk>[0-9])+/delete/$', PresetDelete.as_view(), name='preset-delete'),
+    url(r'^ac/presetwizard/$', PresetWizard.as_view()),
 ]

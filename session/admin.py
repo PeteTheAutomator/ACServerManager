@@ -2,6 +2,8 @@ from django.contrib import admin
 from .models import Preset, Entry
 from .tasks import get_server_status
 
+from constance.admin import ConstanceAdmin, ConstanceForm, Config
+
 
 class EntryInline(admin.StackedInline):
     model = Entry
@@ -94,4 +96,15 @@ class PresetAdmin(admin.ModelAdmin):
             return 'stopped'
 
 
+class CustomConfigForm(ConstanceForm):
+    def __init__(self, *args, **kwargs):
+        super(CustomConfigForm, self).__init__(*args, **kwargs)
+
+
+class ConfigAdmin(ConstanceAdmin):
+    change_list_form = CustomConfigForm
+
+
 admin.site.register(Preset, PresetAdmin)
+admin.site.unregister([Config])
+admin.site.register([Config], ConfigAdmin)

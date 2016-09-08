@@ -1,5 +1,5 @@
 from django.http import HttpResponseRedirect
-from django.shortcuts import redirect
+from django.shortcuts import redirect, render
 from django.contrib.auth.decorators import login_required
 from .tasks import write_config, kick_services, get_server_status, stop_services, perform_upgrade
 from time import sleep
@@ -7,7 +7,11 @@ from time import sleep
 from session.models import Entry, Preset
 from library.models import CarSkin, Weather, TrackDynamism, Track
 from formtools.wizard.views import SessionWizardView
-from session.forms import EnvironmentForm, SessionTypeForm, EntrySetFormSet
+from session.forms import EnvironmentForm, SessionTypeForm, EntrySetFormSet, SettingsForm
+
+from django.views import generic
+
+from constance import config as constance_config
 
 
 @login_required
@@ -87,9 +91,9 @@ FORMS = [
 ]
 
 TEMPLATES = {
-    'environment': 'admin/session/preset/presetwizard.html',
-    'entryset': 'admin/session/preset/presetwizard-formset.html',
-    'session': 'admin/session/preset/presetwizard.html',
+    'environment': 'ac/entry_wizard.html',
+    'entryset': 'ac/entry_wizard.html',
+    'session': 'ac/entry_wizard.html',
 }
 
 
@@ -162,4 +166,62 @@ class PresetWizard(SessionWizardView):
 
     def done(self, form_list, **kwargs):
         process_form_data(form_list)
-        return HttpResponseRedirect('/admin/session/preset/')
+        return HttpResponseRedirect('/ac/preset/')
+
+
+def constance_config_view(request):
+    initial_dict = {
+        'name': constance_config.name,
+        'welcome_message': constance_config.welcome_message,
+        'admin_password': constance_config.admin_password,
+        'minorating_grade': constance_config.minorating_grade,
+        'minorating_server_trust_token': constance_config.minorating_server_trust_token,
+        'client_send_interval': constance_config.client_send_interval,
+    }
+
+    if request.method == 'POST':
+        form = SettingsForm(request.POST)
+        if form.is_valid():
+            form_data = form.cleaned_data
+            constance_config.name = form_data['name']
+            constance_config.welcome_message = form_data['welcome_message']
+            constance_config.admin_password = form_data['admin_password']
+            constance_config.minorating_grade = form_data['minorating_grade']
+            constance_config.minorating_server_trust_token = form_data['minorating_server_trust_token']
+            constance_config.client_send_interval = form_data['client_send_interval']
+            return HttpResponseRedirect('/ac/')
+    else:
+        form = SettingsForm(initial=initial_dict)
+
+    return render(request, 'ac/settings.html', {'form': form})
+
+
+def main_menu(request):
+    return render(request, 'ac/menu.html')
+
+
+class PresetIndexView(generic.ListView):
+    template_name = 'ac/list.html'
+    context_object_name = 'preset_list'
+
+    def get_queryset(self):
+        return Preset.objects.all()
+
+
+PRESET_FIELDS = ('name', 'track', 'track_dynamism', 'max_clients', 'pickup_mode_enabled', 'session_password',
+                 'practice_time', 'practice_is_open', 'qualify_time', 'qualify_is_open', 'race_laps', 'race_wait_time',
+                 'race_is_open', 'weathers', 'time_of_day', 'tc_allowed', 'abs_allowed', 'stability_allowed',
+                 'autoclutch_allowed', 'force_virtual_mirror', 'damage_multiplier', 'fuel_rate',
+                 'tyre_blankets_allowed', 'tyre_wear_rate', 'allowed_tyres_out', 'voting_quorum', 'vote_duration',
+                 'kick_quorum', 'race_over_time', 'loop_mode', 'blacklist_mode', 'qualify_max_wait_perc', 'start_rule')
+
+
+class PresetUpdate(generic.UpdateView):
+    model = Preset
+    template_name = 'ac/detail.html'
+    fields = PRESET_FIELDS
+    success_url = '/ac/preset/'
+
+class PresetDelete(generic.DeleteView):
+    model = Preset
+    success_url = '/ac/preset/'

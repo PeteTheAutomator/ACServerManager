@@ -1,0 +1,18 @@
+{% extends 'ac/base.html' %}
+
+{% block content %}
+
+{% if preset_list %}
+    {% for preset in preset_list %}
+        <li><a href="/ac/preset/{{ preset.id }}/">{{ preset }}</a></li>
+    {% endfor %}
+{% else %}
+    <p>No presets are available.</p>
+{% endif %}
+
+<hr>
+
+<li><a href="/ac/preset/add/">Add a preset manually</a></li>
+<li><a href="/ac/presetwizard/">Add a preset using the Wizard</a></li>
+
+{% endblock %}
