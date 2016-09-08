@@ -1,23 +1,6 @@
 from django.contrib import admin
-from .models import ServerSetting, Preset, Entry
+from .models import Preset, Entry
 from .tasks import get_server_status
-
-
-class ServerSettingsAdmin(admin.ModelAdmin):
-    model = ServerSetting
-    actions = None
-
-    fieldsets = (
-        (None, {
-            'fields': ('name', 'welcome_message', 'admin_password', 'minorating_grade'),
-        }),
-        ('Advanced options', {
-            'classes': ('collapse',),
-            'fields': ('udp_port', 'tcp_port', 'http_port', 'send_buffer_size', 'recv_buffer_size',
-                       'client_send_interval', 'minorating_server_trust_token', 'proxy_plugin_port',
-                       'proxy_plugin_local_port'),
-        })
-    )
 
 
 class EntryInline(admin.StackedInline):
@@ -47,7 +30,7 @@ class PresetAdmin(admin.ModelAdmin):
 
     fieldsets = (
         (None, {
-            'fields': ('name', 'server_setting',),
+            'fields': ('name',),
         }),
         ('Environmental conditions', {
             'fields': ('track', 'track_dynamism', 'weathers', 'time_of_day'),
@@ -111,5 +94,4 @@ class PresetAdmin(admin.ModelAdmin):
             return 'stopped'
 
 
-admin.site.register(ServerSetting, ServerSettingsAdmin)
 admin.site.register(Preset, PresetAdmin)

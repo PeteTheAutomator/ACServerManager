@@ -23,10 +23,9 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 SECRET_KEY = '=vk51q56fo-b2yfr(8uhdg8m^o)v53k9=wvti=$nn^+26w_f3e'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
+DEBUG = True
 
 ALLOWED_HOSTS = ['*']
-
 
 # Application definition
 
@@ -38,6 +37,8 @@ INSTALLED_APPS = (
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'constance',
+    'constance.backends.database',
     'formtools',
     'background_task',
     'smart_selects',
@@ -108,6 +109,52 @@ USE_TZ = True
 STATIC_URL = '/static/'
 STATIC_ROOT = '/usr/local/ACServerManager/static'
 MEDIA_ROOT = '/usr/local/ACServerManager/media'
+
+MINORATING_GRADE_CHOICES = (
+    ('A', 'A - exemplary'),
+    ('AB', 'AB - clean racer (or better)'),
+    ('ABC', 'ABC - rookie (or better)'),
+    ('ABCN', 'ABCN - rookie or new/unlisted racers (or better)'),
+    ('ABCDN', 'ABCDN - dirty racers welcome'),
+    ('ABCDNW', 'ABCDNW - anybody (including wreckers)'),
+)
+
+CONSTANCE_BACKEND = 'constance.backends.database.DatabaseBackend'
+
+CONSTANCE_ADDITIONAL_FIELDS = {
+    'mr_grade_choices': ['django.forms.fields.ChoiceField', {
+        'widget': 'django.forms.Select',
+        'choices': (
+            ('A', 'A - exemplary'),
+            ('AB', 'AB - clean racer (or better)'),
+            ('ABC', 'ABC - rookie (or better)'),
+            ('ABCN', 'ABCN - rookie or new/unlisted racers (or better)'),
+            ('ABCDN', 'ABCDN - dirty racers welcome'),
+            ('ABCDNW', 'ABCDNW - anybody (including wreckers)'),
+        )
+    }],
+}
+
+CONSTANCE_CONFIG = {
+    'name': ('Meekys AC Server', 'The name of the server - this will appear in the Assetto Corsa\'s listing of online servers for the public to join', str),
+    'welcome_message': ('Hello there!', 'Place a welcome message here - this will display some dialog to clients upon joining a session which they must click to close', str),
+    'admin_password': ('changeme', 'Server Admin Password - joining the session using this password grants the user admin privilges (allowing you to skip sessions, kick users, etc)', str),
+    'minorating_grade': ('ABCN', 'Minorating Grade required to join this server\'s sessions (driver proficiency - see http://www.minorating.com/Grades for details)', 'mr_grade_choices'),
+    'udp_port': (9600, 'Assetto Corsa server UDP port number', int),
+    'tcp_port': (9600, 'Assetto Corsa server TCP port number', int),
+    'http_port': (8081, 'Lobby port number', int),
+    'send_buffer_size': (0, 'DOCUMENTATION SOURCE NEEDED', int),
+    'recv_buffer_size': (0, 'DOCUMENTATION SOURCE NEEDED', int),
+    'client_send_interval': (20, 'refresh rate of packet sending by the server. 10Hz = ~100ms. Higher number = higher MP quality = higher bandwidth resources needed. Really high values can create connection issues', int),
+    'minorating_server_trust_token': ('', 'this value is initialised when the server contacts Minorating for the first time; you may wish to record this value if migrating to another server', str),
+    'proxy_plugin_port': (10003, '', int),
+    'proxy_plugin_local_port': (10004, '', int),
+}
+
+CONSTANCE_CONFIG_FIELDSETS = {
+    'General Settings': ('name', 'welcome_message', 'admin_password', 'minorating_grade'),
+    'Advanced Settings': ('udp_port', 'tcp_port', 'http_port', 'send_buffer_size', 'recv_buffer_size', 'client_send_interval', 'minorating_server_trust_token', 'proxy_plugin_port', 'proxy_plugin_local_port'),
+}
 
 ACSERVER_HOME = '/home/acserver'
 ACSERVER_BIN_DIR = os.path.join(ACSERVER_HOME, 'assetto-server')

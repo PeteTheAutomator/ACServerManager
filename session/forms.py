@@ -1,10 +1,9 @@
 from django import forms
 from library.models import Track, TrackDynamism, Weather, Car
-from session.models import Preset, ServerSetting
+from session.models import Preset
 
 
 class EnvironmentForm(forms.Form):
-    server_setting = forms.ModelChoiceField(queryset=ServerSetting.objects.all())
     track = forms.ModelChoiceField(queryset=Track.objects.all())
     track_dynamism = forms.ModelChoiceField(queryset=TrackDynamism.objects.all())
     weather = forms.ModelChoiceField(queryset=Weather.objects.all())

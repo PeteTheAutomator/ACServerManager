@@ -4,10 +4,10 @@ from django.contrib.auth.decorators import login_required
 from .tasks import write_config, kick_services, get_server_status, stop_services, perform_upgrade
 from time import sleep
 
-from session.models import Entry, Preset, ServerSetting
+from session.models import Entry, Preset
 from library.models import CarSkin, Weather, TrackDynamism, Track
 from formtools.wizard.views import SessionWizardView
-from session.forms import EntrySetForm, EnvironmentForm, SessionTypeForm, EntrySetFormSet
+from session.forms import EnvironmentForm, SessionTypeForm, EntrySetFormSet
 
 
 @login_required
@@ -43,7 +43,6 @@ def process_form_data(form_list):
     form_data = [form.cleaned_data for form in form_list]
 
     p = Preset(
-        server_setting=form_data[0]['server_setting'],
         track=form_data[0]['track'],
         track_dynamism=form_data[0]['track_dynamism'],
         time_of_day=form_data[0]['time_of_day'],
@@ -103,12 +102,6 @@ class PresetWizard(SessionWizardView):
     # Here we set default values for each of the wizard's steps (initial_dict_preliminary).  This
     # forms the wizard's "initial_dict" property which can evolve as steps progress based on
     # previous step data - e.g. a track's pitboxes influences the default value for car quantity.
-    all_server_settings = ServerSetting.objects.all()
-    if len(all_server_settings) > 0:
-        static_server_setting = all_server_settings[0]
-    else:
-        static_server_setting = None
-
     try:
         track_dynamism = TrackDynamism.objects.get(name='Fast')
     except TrackDynamism.DoesNotExist:
@@ -121,7 +114,6 @@ class PresetWizard(SessionWizardView):
 
     initial_dict_preliminary = {
         'environment': {
-            'server_setting': static_server_setting,
             'time_of_day': '11:00:00',
             'weather': weather,
             'track_dynamism': track_dynamism,

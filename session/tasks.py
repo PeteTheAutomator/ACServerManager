@@ -1,8 +1,9 @@
 import os
 from configparser import ConfigParser, RawConfigParser
 from background_task import background
-from datetime import datetime, timedelta
-from .models import Preset, ServerSetting
+from datetime import timedelta
+from .models import Preset
+from constance import config as constance_config
 from django.conf import settings
 from subprocess import Popen, PIPE
 from xml.etree.ElementTree import Element, SubElement, tostring, parse
@@ -21,7 +22,7 @@ def write_config(preset_id):
     ch = ConfigHandler(acserver_config_dir, setups_dir, stracker_config_dir)
     ch.write_acserver_config(preset)
     ch.write_entries_config(preset)
-    ch.write_welcome_message(preset)
+    ch.write_welcome_message()
     ch.write_stracker_config(preset)
     ch.write_minorating_config(preset)
 
@@ -190,22 +191,22 @@ class ConfigHandler:
         if not preset.max_clients:
             preset.max_clients = preset.track.pitboxes
 
-        config.set('SERVER', 'NAME', preset.server_setting.name)
+        config.set('SERVER', 'NAME', constance_config.name)
         config.set('SERVER', 'CARS', ';'.join(car_list))
         config.set('SERVER', 'CONFIG_TRACK', xstr(preset.track.subversion))
         config.set('SERVER', 'TRACK', preset.track.dirname)
         config.set('SERVER', 'SUN_ANGLE', time_to_sun_angle(preset.time_of_day))
         config.set('SERVER', 'PASSWORD', str(preset.session_password))
-        config.set('SERVER', 'ADMIN_PASSWORD', str(preset.server_setting.admin_password))
-        config.set('SERVER', 'UDP_PORT', str(preset.server_setting.udp_port))
-        config.set('SERVER', 'TCP_PORT', str(preset.server_setting.tcp_port))
-        config.set('SERVER', 'HTTP_PORT', str(preset.server_setting.http_port))
+        config.set('SERVER', 'ADMIN_PASSWORD', str(constance_config.admin_password))
+        config.set('SERVER', 'UDP_PORT', str(constance_config.udp_port))
+        config.set('SERVER', 'TCP_PORT', str(constance_config.tcp_port))
+        config.set('SERVER', 'HTTP_PORT', str(constance_config.http_port))
         config.set('SERVER', 'PICKUP_MODE_ENABLED', str(int(preset.pickup_mode_enabled)))
         config.set('SERVER', 'LOOP_MODE', str(int(preset.loop_mode)))
         config.set('SERVER', 'SLEEP_TIME', '1')
-        config.set('SERVER', 'CLIENT_SEND_INTERVAL', str(preset.server_setting.client_send_interval))
-        config.set('SERVER', 'SEND_BUFFER_SIZE', str(preset.server_setting.send_buffer_size))
-        config.set('SERVER', 'RECV_BUFFER_SIZE', str(preset.server_setting.recv_buffer_size))
+        config.set('SERVER', 'CLIENT_SEND_INTERVAL', str(constance_config.client_send_interval))
+        config.set('SERVER', 'SEND_BUFFER_SIZE', str(constance_config.send_buffer_size))
+        config.set('SERVER', 'RECV_BUFFER_SIZE', str(constance_config.recv_buffer_size))
         config.set('SERVER', 'RACE_OVER_TIME', str(preset.race_over_time))
         config.set('SERVER', 'KICK_QUORUM', str(preset.kick_quorum))
         config.set('SERVER', 'VOTING_QUORUM', str(preset.voting_quorum))
@@ -225,12 +226,12 @@ class ConfigHandler:
         config.set('SERVER', 'MAX_CLIENTS', str(preset.max_clients))
         config.set('SERVER', 'UDP_PLUGIN_LOCAL_PORT', '11000')
         config.set('SERVER', 'UDP_PLUGIN_ADDRESS', '127.0.0.1:12000')
-        config.set('SERVER', 'AUTH_PLUGIN_ADDRESS', '127.0.0.1:50041/acauth?timeout=300&andurl1=www.minorating.com%3A805/minodata/auth/' + preset.server_setting.minorating_grade + '/')
+        config.set('SERVER', 'AUTH_PLUGIN_ADDRESS', '127.0.0.1:50041/acauth?timeout=300&andurl1=www.minorating.com%3A805/minodata/auth/' + constance_config.minorating_grade + '/')
         config.set('SERVER', 'LEGAL_TYRES', 'V;E;HR;ST')
         config.set('SERVER', 'START_RULE', str(preset.start_rule))
         config.set('SERVER', 'QUALIFY_MAX_WAIT_PERC', str(preset.qualify_max_wait_perc))
 
-        if preset.server_setting.welcome_message:
+        if constance_config.welcome_message:
             config.set('SERVER', 'WELCOME_MESSAGE', str(os.path.join(self.acserver_config_dir, 'welcome_message.txt')))
 
         if preset.practice_time != 0:
@@ -323,9 +324,9 @@ class ConfigHandler:
                 if os.path.isfile(os.path.join(self.setups_dir, car.dirname + '.ini')):
                     os.remove(os.path.join(self.setups_dir, car.dirname + '.ini'))
 
-    def write_welcome_message(self, preset):
+    def write_welcome_message(self):
         fh = open(os.path.join(self.acserver_config_dir, 'welcome_message.txt'), 'w')
-        fh.write(preset.server_setting.welcome_message)
+        fh.write(constance_config.welcome_message)
         fh.close()
 
     def write_stracker_config(self, preset):
@@ -384,7 +385,7 @@ class ConfigHandler:
         config.set('DB_COMPRESSION', 'needs_empty_server', '1')
 
         config.add_section('HTTP_CONFIG')
-        config.set('HTTP_CONFIG', 'admin_password', preset.server_setting.admin_password)
+        config.set('HTTP_CONFIG', 'admin_password', constance_config.admin_password)
         config.set('HTTP_CONFIG', 'admin_username', 'admin')
         config.set('HTTP_CONFIG', 'auth_log_file', '')
         config.set('HTTP_CONFIG', 'banner', '')
@@ -410,8 +411,8 @@ class ConfigHandler:
         config.set('WELCOME_MSG', 'line3', '')
 
         config.add_section('ACPLUGIN')
-        config.set('ACPLUGIN', 'proxyPluginLocalPort', str(preset.server_setting.proxy_plugin_local_port))
-        config.set('ACPLUGIN', 'proxyPluginPort', str(preset.server_setting.proxy_plugin_port))
+        config.set('ACPLUGIN', 'proxyPluginLocalPort', str(constance_config.proxy_plugin_local_port))
+        config.set('ACPLUGIN', 'proxyPluginPort', str(constance_config.proxy_plugin_port))
         config.set('ACPLUGIN', 'rcvPort', '-1')
         config.set('ACPLUGIN', 'sendPort', '-1')
 
@@ -426,11 +427,11 @@ class ConfigHandler:
     def write_minorating_config(self, preset):
         config_file = os.path.join(settings.MINORATING_CONFIG_DIR, 'MinoRatingPlugin.exe.config')
 
-        # if server_settings doesn't have a record of the trust_token, attempt to fetch it from the config xml as this
+        # if constance doesn't have a record of the trust_token, attempt to fetch it from the config xml as this
         # gets initialised when minorating is activated for the first time
         trust_token = ''
         trust_token_from_file = None
-        if not preset.server_setting.minorating_server_trust_token:
+        if not constance_config.minorating_server_trust_token:
             try:
                 et = parse(config_file)
                 root = et.getroot()
@@ -445,18 +446,16 @@ class ConfigHandler:
             # if we don't have a recorded trust token but found one in the file - commit it's value to the db and use
             # its value for config writes later in this method
             if trust_token_from_file:
-                server_setting = preset.server_setting
-                server_setting.minorating_server_trust_token = trust_token_from_file
-                server_setting.save()
+                constance_config.minorating_server_trust_token = trust_token_from_file
                 trust_token = trust_token_from_file
         else:
-            trust_token = preset.server_setting.minorating_server_trust_token
+            trust_token = constance_config.minorating_server_trust_token
 
         settings_dict = {
             'load_server_cfg': '1',
             'ac_server_directory': settings.ACSERVER_BIN_DIR,
-            'plugin_port': str(preset.server_setting.proxy_plugin_port),
-            'ac_server_port': str(preset.server_setting.proxy_plugin_local_port),
+            'plugin_port': str(constance_config.proxy_plugin_port),
+            'ac_server_port': str(constance_config.proxy_plugin_local_port),
             'ac_cfg_directory': self.acserver_config_dir,
             'start_new_log_on_new_session': '0',
             'log_server_requests': '0',
