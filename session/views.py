@@ -1,10 +1,12 @@
 from django.http import HttpResponseRedirect
 from django.shortcuts import redirect, render
 from django.contrib.auth.decorators import login_required
+from rest_framework import viewsets
 from .tasks import write_config, kick_services, get_server_status, stop_services, perform_upgrade
 from time import sleep
 
 from session.models import Entry, Preset
+from session.serializers import PresetSerializer, EntrySerializer
 from library.models import CarSkin, Weather, TrackDynamism, Track
 from formtools.wizard.views import SessionWizardView
 from session.forms import EnvironmentForm, SessionTypeForm, EntrySetFormSet, SettingsForm
@@ -12,6 +14,23 @@ from session.forms import EnvironmentForm, SessionTypeForm, EntrySetFormSet, Set
 from django.views import generic
 
 from constance import config as constance_config
+
+
+
+class PresetViewSet(viewsets.ModelViewSet):
+    """
+    API endpoint that allows Presets to be viewed or edited.
+    """
+    queryset = Preset.objects.all()
+    serializer_class = PresetSerializer
+
+
+class EntryViewSet(viewsets.ModelViewSet):
+    """
+    API endpoint that allows Entries to be viewed or edited.
+    """
+    queryset = Entry.objects.all()
+    serializer_class = EntrySerializer
 
 
 @login_required
@@ -55,7 +74,7 @@ def process_form_data(form_list):
         race_laps=form_data[2]['race_laps'],
     )
     p.save()
-    p.weathers.add(form_data[0]['weather'])
+    p.wevva.add(form_data[0]['weather'])
     p.save()
 
     for entry_group in form_data[1]:

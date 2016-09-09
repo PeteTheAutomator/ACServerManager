@@ -37,6 +37,7 @@ INSTALLED_APPS = (
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'rest_framework',
     'constance',
     'constance.backends.database',
     'bootstrap3',
@@ -111,6 +112,13 @@ STATIC_URL = '/static/'
 STATIC_ROOT = '/usr/local/ACServerManager/static'
 MEDIA_ROOT = '/usr/local/ACServerManager/media'
 
+
+REST_FRAMEWORK = {
+    'DEFAULT_PERMISSION_CLASSES': ('rest_framework.permissions.IsAdminUser',),
+    'PAGE_SIZE': 10
+}
+
+
 MINORATING_GRADE_CHOICES = (
     ('A', 'A - exemplary'),
     ('AB', 'AB - clean racer (or better)'),
@@ -161,5 +169,5 @@ ACSERVER_HOME = '/home/acserver'
 ACSERVER_BIN_DIR = os.path.join(ACSERVER_HOME, 'assetto-server')
 ACSERVER_CONFIG_DIR = os.path.join(ACSERVER_HOME, 'assetto-server/cfg')
 STRACKER_CONFIG_DIR = os.path.join(ACSERVER_HOME, 'stracker/cfg')
-ACSERVER_FULL_ADMIN_VIEW = False
 MINORATING_CONFIG_DIR = os.path.join(ACSERVER_BIN_DIR, 'plugins/minorating')
+ACSERVER_FULL_ADMIN_VIEW = True

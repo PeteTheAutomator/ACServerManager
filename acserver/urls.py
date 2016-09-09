@@ -14,13 +14,28 @@ Including another URLconf
 """
 from django.conf.urls import include, url
 from django.contrib import admin
-from session.views import launch_preset, stop_preset, upgrade, constance_config_view, PresetWizard, main_menu, \
+from rest_framework import routers
+from session.views import PresetViewSet, EntryViewSet, launch_preset, stop_preset, upgrade, constance_config_view, PresetWizard, main_menu, \
     PresetIndexView, PresetAdd, PresetUpdate, PresetDelete
-from library.views import process_assetcollection
+from library.views import process_assetcollection, CarViewSet, CarSkinViewSet, CarTagViewSet, TrackViewSet, \
+    TrackDynamismViewSet, WeatherViewSet, AssetCollectionViewSet
 
 
 admin.site.site_header = 'Assetto Corsa Server Manager'
 admin.site.site_title = 'Assetto Corsa Server Manager'
+
+
+router = routers.DefaultRouter()
+router.register(r'cars', CarViewSet)
+router.register(r'carskins', CarSkinViewSet)
+router.register(r'cartags', CarTagViewSet)
+router.register(r'tracks', TrackViewSet)
+router.register(r'trackdynamisms', TrackDynamismViewSet)
+router.register(r'weathers', WeatherViewSet)
+router.register(r'assetcollections', AssetCollectionViewSet)
+router.register(r'presets', PresetViewSet)
+router.register(r'entries', EntryViewSet)
+
 
 urlpatterns = [
     url(r'^admin/session/preset/(?P<preset_id>[0-9]+)/launch/$', launch_preset, name='launch_preset'),
@@ -30,6 +45,9 @@ urlpatterns = [
     url(r'^admin/library/assetcollection/(?P<assetcollection_id>[0-9]+)/process/$', process_assetcollection, name='process_assetcollection'),
     url(r'^admin/', include(admin.site.urls)),
     url(r'^chaining/', include('smart_selects.urls')),
+
+    url(r'^api/', include(router.urls)),
+    url(r'^api-auth/', include('rest_framework.urls', namespace='rest_framework')),
 
     url(r'^ac/$', main_menu, name='main_menu'),
     url(r'^ac/settings/', constance_config_view, name='constance_config_view'),
