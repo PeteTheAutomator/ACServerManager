@@ -39,6 +39,7 @@ INSTALLED_APPS = (
     'django.contrib.staticfiles',
     'constance',
     'constance.backends.database',
+    'bootstrap3',
     'formtools',
     'background_task',
     'smart_selects',

@@ -216,12 +216,24 @@ PRESET_FIELDS = ('name', 'track', 'track_dynamism', 'max_clients', 'pickup_mode_
                  'kick_quorum', 'race_over_time', 'loop_mode', 'blacklist_mode', 'qualify_max_wait_perc', 'start_rule')
 
 
+class PresetAdd(generic.CreateView):
+    model = Preset
+    fields = PRESET_FIELDS
+    template_name = 'ac/detail.html'
+
+
 class PresetUpdate(generic.UpdateView):
     model = Preset
     template_name = 'ac/detail.html'
     fields = PRESET_FIELDS
     success_url = '/ac/preset/'
 
+
 class PresetDelete(generic.DeleteView):
     model = Preset
     success_url = '/ac/preset/'
+    template_name = 'ac/confirm.html'
+
+
+def fuckoff(request):
+    pass

@@ -15,7 +15,7 @@ Including another URLconf
 from django.conf.urls import include, url
 from django.contrib import admin
 from session.views import launch_preset, stop_preset, upgrade, constance_config_view, PresetWizard, main_menu, \
-    PresetIndexView, PresetUpdate, PresetDelete
+    PresetIndexView, PresetAdd, PresetUpdate, PresetDelete
 from library.views import process_assetcollection
 
 
@@ -34,6 +34,7 @@ urlpatterns = [
     url(r'^ac/$', main_menu, name='main_menu'),
     url(r'^ac/settings/', constance_config_view, name='constance_config_view'),
     url(r'^ac/preset/$', PresetIndexView.as_view()),
+    url(r'^ac/preset/add/$', PresetAdd.as_view(), name='preset-add'),
     url(r'^ac/preset/(?P<pk>[0-9])+/$', PresetUpdate.as_view(), name='preset-update'),
     url(r'^ac/preset/(?P<pk>[0-9])+/delete/$', PresetDelete.as_view(), name='preset-delete'),
     url(r'^ac/presetwizard/$', PresetWizard.as_view()),

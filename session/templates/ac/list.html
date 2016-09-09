@@ -4,7 +4,7 @@
 
 {% if preset_list %}
     {% for preset in preset_list %}
-        <li><a href="/ac/preset/{{ preset.id }}/">{{ preset }}</a></li>
+        <li><a href="/ac/preset/{{ preset.id }}/">{{ preset }}</a>   <a href="/ac/preset/{{ preset.id }}/delete/">Delete</a></li>
     {% endfor %}
 {% else %}
     <p>No presets are available.</p>
