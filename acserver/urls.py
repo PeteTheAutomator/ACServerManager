@@ -45,10 +45,8 @@ urlpatterns = [
     url(r'^admin/library/assetcollection/(?P<assetcollection_id>[0-9]+)/process/$', process_assetcollection, name='process_assetcollection'),
     url(r'^admin/', include(admin.site.urls)),
     url(r'^chaining/', include('smart_selects.urls')),
-
-    url(r'^api/', include(router.urls)),
-    url(r'^api-auth/', include('rest_framework.urls', namespace='rest_framework')),
-
+#    url(r'^api/', include(router.urls)),
+#    url(r'^api-auth/', include('rest_framework.urls', namespace='rest_framework')),
     url(r'^ac/$', main_menu, name='main_menu'),
     url(r'^ac/settings/', constance_config_view, name='constance_config_view'),
     url(r'^ac/preset/$', PresetIndexView.as_view()),

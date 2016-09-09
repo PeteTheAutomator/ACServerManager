@@ -5,6 +5,7 @@ import sys
 from shutil import copyfile
 import hashlib
 import zipfile
+import requests
 
 
 def md5(fname):
@@ -287,3 +288,27 @@ class Inspector:
             car_pk += 1
 
         return results
+
+
+class ACManagerAPI:
+    def __init__(self, baseurl='http://localhost:8000'):
+        self.baseurl = baseurl
+        self.api_auth = self.baseurl + '/api-auth/login/'
+        self.api = self.baseurl + '/api'
+
+    def test_conn(self):
+        r = requests.head(self.api_auth)
+        if r.status_code != 200:
+            raise Exception('Got unexpected http status code {0} from {1}'.format(r.status_code, self.api_authl))
+
+    def get_tracks(self):
+        results = []
+        next_url = self.api + '/cars/'
+        while next_url:
+            r = requests.get(next_url)
+            if r.status_code != 200:
+                raise Exception('Got unexpected http status code {0} from {1}'.format(r.status_code, next_url))
+            results += (r.json().get('results'))
+            next_url = r.json().get('next')
+        return results
+
